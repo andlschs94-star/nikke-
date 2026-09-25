@@ -308,10 +308,26 @@ function setDropRateStage(part,stage){dropRateSettings[part]=Number(stage)||9;sa
 function setDropRatePool(v){dropRateSettings.pool=Math.max(1,Math.min(100,Number(v)||1));saveDropRateSettings();renderDropRatePanel()}
 function renderOwnedCorporatePanel(){
   const box=document.getElementById('ownedCorporatePanel');if(!box)return;
-  const ownedCorporate=getOwnedCorporateTotals();
+  const companies=['엘리시온','미실리스','테트라','필그림','어브노멀'];
   const fmt=n=>Number(n).toLocaleString('ko-KR');
-  const ownedTotal=Object.values(ownedCorporate).reduce((a,b)=>a+b,0);
-  box.innerHTML='<div class="corp-owned-wrap corp-owned-standalone"><div class="corp-owned-title">보유 중인 기업장비 개수</div><div class="corp-owned-note">현재 사이트에 등록된 <b>모든 캐릭터</b>를 기준으로 집계하며, <b>미사용 캐릭터도 포함</b>합니다. 현재 장착 데이터에서 기업장비로 분류되는 부위를 셉니다.</div><div class="corp-owned-table-wrap"><table class="corp-owned-table"><thead><tr><th>머리</th><th>몸통</th><th>장갑</th><th>다리</th><th>전체</th></tr></thead><tbody><tr>'+gearParts.map(p=>{const n=ownedCorporate[p]||0;return '<td class="'+(n?'nonzero':'')+'">'+fmt(n)+'개</td>';}).join('')+'<td class="owned-total">'+fmt(ownedTotal)+'개</td></tr></tbody></table></div></div>';
+  const totalsByCompany={};
+  companies.forEach(c=>totalsByCompany[c]={머리:0,몸통:0,장갑:0,다리:0});
+  data.forEach(r=>{
+    const company=String(r['기업']??'').trim();
+    if(!totalsByCompany[company]) totalsByCompany[company]={머리:0,몸통:0,장갑:0,다리:0};
+    gearParts.forEach(p=>{
+      if(gearPartCategory(r,p)==='company') totalsByCompany[company][p]++;
+    });
+  });
+  const rows=companies.map(company=>{
+    const counts=totalsByCompany[company]||{머리:0,몸통:0,장갑:0,다리:0};
+    const total=gearParts.reduce((sum,p)=>sum+counts[p],0);
+    return '<tr><td class="company-cell">'+esc(company)+'</td>'+
+      gearParts.map(p=>'<td class="'+(counts[p]?'nonzero':'')+'">'+fmt(counts[p])+'개</td>').join('')+
+      '<td class="owned-total">'+fmt(total)+'개</td></tr>';
+  }).join('');
+  const grand=companies.reduce((sum,c)=>sum+gearParts.reduce((s,p)=>s+totalsByCompany[c][p],0),0);
+  box.innerHTML='<div class="corp-owned-wrap corp-owned-standalone"><div class="corp-owned-title">보유 중인 기업장비 개수</div><div class="corp-owned-note">현재 사이트에 등록된 <b>모든 캐릭터</b>를 기준으로 기업별로 집계하며, <b>미사용 캐릭터도 포함</b>합니다.</div><div class="corp-owned-table-wrap"><table class="corp-owned-table"><thead><tr><th>기업</th><th>머리</th><th>몸통</th><th>장갑</th><th>다리</th><th>전체</th></tr></thead><tbody>'+rows+'<tr class="total-row"><td>전체</td>'+gearParts.map(p=>'<td>'+fmt(companies.reduce((s,c)=>s+totalsByCompany[c][p],0))+'개</td>').join('')+'<td class="owned-total">'+fmt(grand)+'개</td></tr></tbody></table></div></div>';
 }
 function renderKpis(){
   const orderCompany=['엘리시온','미실리스','테트라','필그림','어브노멀'];
