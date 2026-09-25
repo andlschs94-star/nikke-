@@ -328,9 +328,14 @@ window.addEventListener('message',e=>{
       detailCount:p.detailCount||0,matched,changed,unresolved:(p.unresolved||[]).length
     }));
   }catch(_){}
-  renderTable();
-  renderKpis();
-  renderDropRatePanel();
+  // 동기화한 계정을 즉시 화면에도 표시합니다.
+  if(syncAccount!==activeAccount){
+    switchAccount(syncAccount);
+  }else{
+    renderTable();
+    renderKpis();
+    renderDropRatePanel();
+  }
   closeBlablalinkSyncGuide();
   const unresolved=Array.isArray(p.unresolved)?p.unresolved.length:0;
   toast('BlablaLink 동기화 완료 · '+matched+'명 반영 · '+changed+'개 부위 변경'+(unresolved?' · 미매칭 '+unresolved+'명':''));
