@@ -134,11 +134,10 @@ window.addEventListener('message',e=>{
     if(idx==null)continue;
     matched++;
     const r=data[idx];
-    const charCorp=normalizeSyncCorp(r['기업']);
-    for(const part of gearParts){
+        for(const part of gearParts){
       const rawCorp=normalizeSyncCorp(u?.parts?.[part]);
       const key=part+'_기업장비';
-      const next=!rawCorp?'':(rawCorp===charCorp?'company':'other');
+      const next=rawCorp||'';
       if(String(r[key]??'')!==next){r[key]=next;changed++}
     }
   }
