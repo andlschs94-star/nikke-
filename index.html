@@ -850,7 +850,7 @@ function switchAccount(account){
   updateDetailColumnButton();
   updateAccountButtons();
 }
-document.getElementById('search').addEventListener('input',renderTable);document.getElementById('drawer').addEventListener('click',e=>{if(e.target.id==='drawer')closeDrawer()});renderHeader();renderTable();updateHideTargetButtons();updateUnusedViewButton();updateDetailColumnButton();
+document.getElementById('search').addEventListener('input',renderTable);document.getElementById('drawer').addEventListener('click',e=>{if(e.target.id==='drawer')closeDrawer()});renderHeader();renderTable();updateHideTargetButtons();updateUnusedViewButton();updateDetailColumnButton();updateAccountButtons();
 
 
 function openExcludeCharacterModal(){const m=document.getElementById('excludeModal');if(!m)return;m.hidden=false;const q=document.getElementById('excludeSearch');if(q){q.value='';setTimeout(()=>q.focus(),0)}renderExcludeCharacterList();}
