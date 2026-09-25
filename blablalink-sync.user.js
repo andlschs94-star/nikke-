@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         NIKKE Gear Manager - BlablaLink 자동 장비 동기화
 // @namespace    https://andlschs94-star.github.io/nikke-/
-// @version      1.0.7
+// @version      1.0.8
 // @updateURL    https://raw.githubusercontent.com/andlschs94-star/nikke-/main/blablalink-sync.user.js
 // @downloadURL  https://raw.githubusercontent.com/andlschs94-star/nikke-/main/blablalink-sync.user.js
 // @description  로그인된 BlablaLink 세션에서 NIKKE 캐릭터별 기업장비 현황을 NIKKE Gear Manager로 전송합니다.
@@ -61,41 +61,87 @@
   };
 
   function getRawCorp(char, slot) {
-    const candidates = [
-      char?.[slot + '_equip_corporation_type'],
-      char?.[slot + '_corporation_type'],
-      char?.[slot + '_equip_manufacturer'],
-      char?.[slot + '_equip_company'],
-      char?.[slot + '_manufacturer'],
-      char?.[slot + '_company'],
-      char?.[slot]
-    ];
+    // BlablaLink 응답은 버전/엔드포인트에 따라 장비 필드명이 달라질 수 있으므로
+    // 슬롯명 + 기업/제조사 계열 키를 함께 탐색합니다.
+    const aliases = {
+      head:['head','helmet','helm','head_equip','head_equipment','equip_head'],
+      torso:['torso','body','chest','armor','torso_equip','body_equip','equip_torso','equip_body'],
+      arm:['arm','glove','gloves','gauntlet','hand','arm_equip','equip_arm'],
+      leg:['leg','legs','shoe','shoes','foot','feet','leg_equip','equip_leg']
+    };
+    const slotWords = aliases[slot] || [slot];
     const visited = new Set();
-    function scan(value, depth=0){
+
+    function scan(value, depth=0, keyHint=''){
+      if(value==null || depth>7) return null;
+
       const direct = normalizeCorp(value);
       if(direct) return direct;
-      if(!value || typeof value!=='object' || depth>4 || visited.has(value)) return null;
+
+      if(typeof value !== 'object') return null;
+      if(visited.has(value)) return null;
       visited.add(value);
+
       for(const [key,v] of Object.entries(value)){
-        const k=String(key).toLowerCase();
-        if(/corporation|manufacturer|company|maker|equip.*corp|corp.*type/.test(k)){
+        const k=String(key).toLowerCase().replace(/[^a-z0-9_가-힣]/g,'');
+        const slotMatch=slotWords.some(w=>k.includes(String(w).toLowerCase().replace(/[^a-z0-9_]/g,'')));
+        const corpKey=/corporation|manufacturer|company|maker|corp|manufacturerid|corporationid|companyid/.test(k);
+
+        // 슬롯과 기업 관련 키가 함께 있는 경우를 최우선으로 봅니다.
+        if(slotMatch && corpKey){
           const corp=normalizeCorp(v);
           if(corp) return corp;
+          const nested=scan(v,depth+1,k);
+          if(nested) return nested;
         }
       }
-      for(const v of Object.values(value)){
-        if(v && typeof v==='object'){
-          const corp=scan(v,depth+1);
-          if(corp) return corp;
+
+      // 장비 객체 자체가 슬롯명 아래에 있는 경우.
+      for(const [key,v] of Object.entries(value)){
+        const k=String(key).toLowerCase();
+        const slotMatch=slotWords.some(w=>k.includes(String(w).toLowerCase()));
+        if(slotMatch && v && typeof v==='object'){
+          const nested=scan(v,depth+1,k);
+          if(nested) return nested;
         }
       }
+
+      // 마지막 보조 탐색: 현재 객체가 이미 슬롯 객체로 판단되면 기업 키를 깊게 찾습니다.
+      const contextIsSlot=slotWords.some(w=>String(keyHint).toLowerCase().includes(String(w).toLowerCase()));
+      if(contextIsSlot){
+        for(const [key,v] of Object.entries(value)){
+          const k=String(key).toLowerCase();
+          if(/corporation|manufacturer|company|maker|corp/.test(k)){
+            const corp=normalizeCorp(v);
+            if(corp) return corp;
+            const nested=scan(v,depth+1,k);
+            if(nested) return nested;
+          }
+        }
+      }
+
       return null;
     }
-    for(const value of candidates){
-      const corp=scan(value);
-      if(corp) return corp;
+
+    // 흔히 사용되는 직접 필드들.
+    const directKeys=[];
+    for(const w of slotWords){
+      directKeys.push(
+        w+'_equip_corporation_type', w+'_corporation_type',
+        w+'_equip_manufacturer', w+'_manufacturer',
+        w+'_equip_company', w+'_company',
+        w+'_equip', w+'_equipment'
+      );
     }
-    return null;
+    for(const key of directKeys){
+      if(char?.[key]!==undefined){
+        const corp=scan(char[key],0,key);
+        if(corp) return corp;
+      }
+    }
+
+    // 전체 응답을 슬롯 문맥까지 포함해 탐색.
+    return scan(char,0,'');
   }
 
   function rememberAccountFromBody(url, body){
