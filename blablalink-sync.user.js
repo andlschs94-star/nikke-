@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         NIKKE Gear Manager - BlablaLink 자동 장비 동기화
 // @namespace    https://andlschs94-star.github.io/nikke-/
-// @version      1.0.2
+// @version      1.0.3
 // @updateURL    https://raw.githubusercontent.com/andlschs94-star/nikke-/main/blablalink-sync.user.js
 // @downloadURL  https://raw.githubusercontent.com/andlschs94-star/nikke-/main/blablalink-sync.user.js
 // @description  로그인된 BlablaLink 세션에서 NIKKE 캐릭터별 기업장비 현황을 NIKKE Gear Manager로 전송합니다.
@@ -39,9 +39,18 @@
   });
 
   const normalizeCorp = (v) => {
+    if (v && typeof v === 'object') {
+      for (const key of ['corporation_type','corporationType','type','code','id','value','name']) {
+        if (v[key] !== undefined && v[key] !== null && v[key] !== '') {
+          const nested = normalizeCorp(v[key]);
+          if (nested) return nested;
+        }
+      }
+      return null;
+    }
     if (typeof v === 'number' && Number.isFinite(v)) return CORPORATIONS[v] || null;
     const s = String(v ?? '').trim().toUpperCase();
-    if (!s) return null;
+    if (!s || s === '0' || s === 'NONE' || s === 'ALL' || s === 'NULL' || s === 'UNDEFINED') return null;
     if (/^\d+$/.test(s)) return CORPORATIONS[Number(s)] || null;
     const aliases = {
       'ELYSION':'ELYSION','MISSILIS':'MISSILIS','TETRA':'TETRA','PILGRIM':'PILGRIM',
@@ -50,6 +59,20 @@
     };
     return aliases[s] || null;
   };
+
+  function getRawCorp(char, slot) {
+    const candidates = [
+      char?.[`${slot}_equip_corporation_type`],
+      char?.[`${slot}_corporation_type`],
+      char?.[`${slot}_equip_manufacturer`],
+      char?.[`${slot}_equip_company`]
+    ];
+    for (const value of candidates) {
+      const corp = normalizeCorp(value);
+      if (corp) return corp;
+    }
+    return null;
+  }
 
   function rememberAccountFromBody(url, body){
     try{
@@ -241,8 +264,7 @@
 
       const parts = {};
       for(const [slot, part] of [['head','머리'],['torso','몸통'],['arm','장갑'],['leg','다리']]){
-        const raw = char?.[slot + '_equip_corporation_type'];
-        parts[part] = normalizeCorp(raw);
+        parts[part] = getRawCorp(char, slot);
       }
       updates.push({name, name_code:code, parts});
     }
