@@ -312,6 +312,16 @@ function renderDropRatePanel(){
 }
 function setDropRateStage(part,stage){dropRateSettings[part]=Number(stage)||9;saveDropRateSettings();renderDropRatePanel()}
 function setDropRatePool(v){dropRateSettings.pool=Math.max(1,Math.min(100,Number(v)||1));saveDropRateSettings();renderDropRatePanel()}
+let ownedCorporateExpanded=false;
+let ownedCorporateCompanyExpanded={};
+function toggleOwnedCorporatePanel(){
+  ownedCorporateExpanded=!ownedCorporateExpanded;
+  renderOwnedCorporatePanel();
+}
+function toggleOwnedCorporateCompany(company){
+  ownedCorporateCompanyExpanded[company]=!ownedCorporateCompanyExpanded[company];
+  renderOwnedCorporatePanel();
+}
 function renderOwnedCorporatePanel(){
   const box=document.getElementById('ownedCorporatePanel');if(!box)return;
   const companies=['엘리시온','미실리스','테트라','필그림','어브노멀'];
@@ -320,29 +330,33 @@ function renderOwnedCorporatePanel(){
   const totalsByGroup={};
   companies.forEach(company=>classes.forEach(cls=>{totalsByGroup[company+'|'+cls]={머리:0,몸통:0,장갑:0,다리:0};}));
   data.forEach(r=>{
-    const cls=gearClassName(r['클래스']);
-    if(!classes.includes(cls))return;
+    const cls=gearClassName(r['클래스']);if(!classes.includes(cls))return;
     gearParts.forEach(p=>{
       if(gearPartCategory(r,p)!=='company')return;
-      // 기업장비의 기업은 착용 캐릭터의 기업이 아니라 '장비 자체의 기업'을 사용한다.
-      // 타기업 장비도 착용할 수 있으므로 루주가 테트라 장비를 착용했다고 해서
-      // 그 장비를 테트라로 재분류하지 않는다. 루주의 클래스만 지원형으로 집계한다.
       const gearCompany=gearCompanyName(r[p+'_기업장비']);
-      if(!companies.includes(gearCompany))return;
-      totalsByGroup[gearCompany+'|'+cls][p]++;
+      if(companies.includes(gearCompany)) totalsByGroup[gearCompany+'|'+cls][p]++;
     });
   });
-  const rows=companies.map(company=>classes.map(cls=>{
-    const counts=totalsByGroup[company+'|'+cls];
-    const total=gearParts.reduce((sum,p)=>sum+counts[p],0);
-    return '<tr><td class="company-cell">'+esc(company)+'</td><td class="class-cell">'+esc(cls)+'</td>'+
-      gearParts.map(p=>'<td class="'+(counts[p]?'nonzero':'')+'">'+fmt(counts[p])+'개</td>').join('')+
-      '<td class="owned-total">'+fmt(total)+'개</td></tr>';
-  }).join('')).join('');
+  const companyTotals={};
+  companies.forEach(company=>{
+    companyTotals[company]={머리:0,몸통:0,장갑:0,다리:0};
+    classes.forEach(cls=>gearParts.forEach(p=>companyTotals[company][p]+=totalsByGroup[company+'|'+cls][p]));
+  });
+  const rows=companies.map(company=>{
+    const open=ownedCorporateCompanyExpanded[company]===true;
+    const c=companyTotals[company];
+    const total=gearParts.reduce((s,p)=>s+c[p],0);
+    const header='<tr class="corp-company-toggle" onclick="toggleOwnedCorporateCompany(\''+company+'\')" style="cursor:pointer"><td class="company-cell"><b>'+esc(company)+'</b></td><td colspan="4"><span style="color:#8490aa;font-size:10px">'+(open?'− 클릭하여 접기':'＋ 클릭하여 클래스별 보기')+'</span></td><td class="owned-total">'+fmt(total)+'개</td></tr>';
+    const detail=open?classes.map(cls=>{
+      const counts=totalsByGroup[company+'|'+cls], sum=gearParts.reduce((s,p)=>s+counts[p],0);
+      return '<tr><td></td><td class="class-cell">'+esc(cls)+'</td>'+gearParts.map(p=>'<td class="'+(counts[p]?'nonzero':'')+'">'+fmt(counts[p])+'개</td>').join('')+'<td class="owned-total">'+fmt(sum)+'개</td></tr>';
+    }).join(''):'';
+    return header+detail;
+  }).join('');
   const grandByPart={머리:0,몸통:0,장갑:0,다리:0};
-  Object.values(totalsByGroup).forEach(counts=>gearParts.forEach(p=>grandByPart[p]+=counts[p]));
-  const grand=gearParts.reduce((sum,p)=>sum+grandByPart[p],0);
-  box.innerHTML='<div class="corp-owned-wrap corp-owned-standalone"><div class="corp-owned-title">보유 중인 기업장비 개수</div><div class="corp-owned-note">현재 사이트에 등록된 <b>모든 캐릭터</b>를 기준으로 집계하며, <b>미사용 캐릭터도 포함</b>합니다. 기업은 <b>장비 자체의 기업</b>, 클래스는 <b>실제 착용 캐릭터의 클래스</b>를 기준으로 합니다. 따라서 타기업 장비도 해당 캐릭터의 클래스로 집계됩니다.</div><div class="corp-owned-table-wrap"><table class="corp-owned-table"><thead><tr><th>기업</th><th>클래스</th><th>머리</th><th>몸통</th><th>장갑</th><th>다리</th><th>전체</th></tr></thead><tbody>'+rows+'<tr class="total-row"><td colspan="2">전체</td>'+gearParts.map(p=>'<td>'+fmt(grandByPart[p])+'개</td>').join('')+'<td class="owned-total">'+fmt(grand)+'개</td></tr></tbody></table></div></div>';
+  companies.forEach(c=>gearParts.forEach(p=>grandByPart[p]+=companyTotals[c][p]));
+  const grand=gearParts.reduce((s,p)=>s+grandByPart[p],0);
+  box.innerHTML='<div class="drop-rate-accordion"><button type="button" class="drop-rate-toggle" onclick="toggleOwnedCorporatePanel()" aria-expanded="'+(ownedCorporateExpanded?'true':'false')+'"><span>보유 중인 기업장비 개수</span><span>'+(ownedCorporateExpanded?'−':'＋')+'</span></button><div '+(ownedCorporateExpanded?'':'hidden')+'><div class="corp-owned-wrap corp-owned-standalone"><div class="corp-owned-note">모든 캐릭터 기준 · 기업은 장비 자체의 기업 · 클래스는 실제 착용 캐릭터의 클래스 · 미사용 캐릭터 포함</div><div class="corp-owned-table-wrap"><table class="corp-owned-table"><thead><tr><th>기업</th><th>클래스</th><th>머리</th><th>몸통</th><th>장갑</th><th>다리</th><th>전체</th></tr></thead><tbody>'+rows+'<tr class="total-row"><td colspan="2">전체</td>'+gearParts.map(p=>'<td>'+fmt(grandByPart[p])+'개</td>').join('')+'<td class="owned-total">'+fmt(grand)+'개</td></tr></tbody></table></div></div></div></div>';
 }
 function renderKpis(){
   const orderCompany=['엘리시온','미실리스','테트라','필그림','어브노멀'];
