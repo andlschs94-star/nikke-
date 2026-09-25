@@ -319,7 +319,6 @@
 
   const boot = () => {
     // 관리 사이트 팝업과의 연결은 READY/HELLO 핸드셰이크로 처리합니다.
-    setTimeout(()=>addStandaloneButton(), 1200);
     if(window.opener && window.opener !== window){
       try{
         window.opener.postMessage({type:'NIKKE_GM_BL_READY'}, TARGET_ORIGIN);
