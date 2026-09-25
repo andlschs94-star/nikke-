@@ -275,8 +275,15 @@
       await delay(800);
 
       const chars = await fetchCharacters();
-      const codes = chars.map(x => x?.name_code).filter(Boolean);
-      if(!codes.length) throw new Error('보유 캐릭터를 찾지 못했습니다.');
+      // 계정에 있는 전체 캐릭터 중 현재 사이트/내장 매핑으로 이름을 확인할 수 있는 캐릭터만 조회합니다.
+      // 새 캐릭터가 아직 사이트에 없더라도 동기화 자체가 "미매칭"으로 끝나지 않게 합니다.
+      const codes = chars
+        .map(x => x?.name_code)
+        .filter(v => v !== undefined && v !== null && String(v).trim() !== '')
+        .map(v => String(v))
+        .filter((v, i, a) => a.indexOf(v) === i)
+        .filter(code => Boolean(BUILTIN_NAME_CODES[code]) || Boolean(state.codeToName.get(code)));
+      if(!codes.length) throw new Error('현재 사이트와 매칭되는 보유 캐릭터를 찾지 못했습니다. 동기화 스크립트가 최신 버전인지 확인하세요.');
 
       showStatus('NIKKE Gear Manager: 장비 기업 정보를 조회 중… ('+codes.length+'명)');
       const details = await fetchDetails(codes);
@@ -290,7 +297,7 @@
             ok:true,
             nickname:state.nickname,
             areaId:state.areaId,
-            characterCount:chars.length,
+            characterCount:codes.length,
             detailCount:details.length,
             updates,
             unresolved
