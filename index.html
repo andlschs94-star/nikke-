@@ -352,6 +352,19 @@ window.addEventListener('message',e=>{
       .filter(Boolean)
       .filter(name=>!syncedNames.has(name))
   );
+  // 동기화 결과에 없는 캐릭터는 미사용 처리와 함께 4부위 장비를 모두 일반장비(9T)로 초기화합니다.
+  // 다음 동기화에서 해당 캐릭터가 다시 확인되면 실제 장비 정보로 덮어씁니다.
+  for(const name of nextUnused){
+    const idx=byName.get(name);
+    if(idx==null)continue;
+    const row=targetData[idx];
+    for(const part of gearParts){
+      const tierKey=part+'_티어', levelKey=part+'_레벨', corpKey=part+'_기업장비';
+      if(num(row[tierKey])!==9){row[tierKey]=9;changed++}
+      if(num(row[levelKey])!==0){row[levelKey]=0;changed++}
+      if(String(row[corpKey]??'')!==''){row[corpKey]='';changed++}
+    }
+  }
   try{
     localStorage.setItem(accountStorageKey(ACCOUNT_STORAGE_PREFIX,syncAccount),JSON.stringify(targetData));
     localStorage.setItem(accountStorageKey(ACCOUNT_UNUSED_PREFIX,syncAccount),JSON.stringify([...nextUnused]));
@@ -696,7 +709,7 @@ function loadAccountUnused(account){
 let selectedCharacters=loadAccountSelection(activeAccount);
 let unusedCharacters=loadAccountUnused(activeAccount);
 function isUnusedCharacter(i,r){const n=characterName(i,r);return n?unusedCharacters.has(n):false;}
-function saveUnusedCharacters(){try{localStorage.setItem(UNUSED_STORAGE,JSON.stringify([...unusedCharacters]));}catch(e){}}
+function saveUnusedCharacters(){try{localStorage.setItem(accountStorageKey(ACCOUNT_UNUSED_PREFIX,activeAccount),JSON.stringify([...unusedCharacters]));}catch(e){}}
 function updateUnusedViewButton(){
   const b=document.getElementById('unusedViewBtn');
   if(!b)return;
