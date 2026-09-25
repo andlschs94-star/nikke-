@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         NIKKE Gear Manager - BlablaLink 자동 장비 동기화
 // @namespace    https://andlschs94-star.github.io/nikke-/
-// @version      1.0.9
+// @version      1.0.10
 // @updateURL    https://raw.githubusercontent.com/andlschs94-star/nikke-/main/blablalink-sync.user.js
 // @downloadURL  https://raw.githubusercontent.com/andlschs94-star/nikke-/main/blablalink-sync.user.js
 // @description  로그인된 BlablaLink 세션에서 NIKKE 캐릭터별 기업장비 현황을 NIKKE Gear Manager로 전송합니다.
@@ -241,7 +241,24 @@
   async function postJson(url, body){
     const res = await fetch(url, {
       method:'POST',
-      headers:{'Content-Type':'application/json;charset=UTF-8','Accept':'application/json'},
+      headers:{
+        'Content-Type':'application/json;charset=UTF-8',
+        'Accept':'application/json',
+        'x-channel-type':'2',
+        'x-language':'ko',
+        'x-common-params':JSON.stringify({
+          game_id:'16',
+          area_id:'global',
+          source:'pc_web',
+          intl_game_id:'29080',
+          language:'ko',
+          env:'prod',
+          data_statistics_scene:'outer',
+          data_statistics_page_id:location.href,
+          data_statistics_client_type:'pc_web',
+          data_statistics_lang:'ko'
+        })
+      },
       credentials:'include',
       body:JSON.stringify(body)
     });
@@ -301,7 +318,11 @@
             name_codes: chunk
           });
           if (String(j?.code ?? '') === '0'){
-            if (Array.isArray(j?.data?.character_details)) out.push(...j.data.character_details);
+            if (Array.isArray(j?.data?.character_details)) {
+              out.push(...j.data.character_details);
+              // 실제 BlablaLink 응답 구조 확인을 위해 첫 상세 응답을 콘솔에 남깁니다.
+              if (out.length <= 2) console.log('[NIKKE GM] GetUserCharacterDetails sample:', j.data.character_details[0]);
+            }
             ok = true;
           } else if (attempt === 1) {
             throw new Error(j?.message || j?.msg || '장비 상세 조회 실패');
