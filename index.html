@@ -139,7 +139,7 @@ th,td{padding:8px 8px}
 .corp-owned-standalone{margin:0 0 12px;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:#0a1220}
 .corp-owned-standalone .corp-owned-title{background:#0f192b}
 </style></head><body>
-<div class="site-version-corner">VERSION 0.57</div><button type="button" class="sidebar-toggle" id="sidebarToggle" aria-label="메뉴 열기" title="메뉴" onclick="const s=document.getElementById('sidebar'),b=document.getElementById('sidebarBackdrop'),o=s.classList.toggle('open');b.classList.toggle('open',o);this.classList.toggle('open',o);this.textContent=o?'×':'☰';this.setAttribute('aria-label',o?'메뉴 닫기':'메뉴 열기')">☰</button>
+<div class="site-version-corner">VERSION 0.58</div><button type="button" class="sidebar-toggle" id="sidebarToggle" aria-label="메뉴 열기" title="메뉴" onclick="const s=document.getElementById('sidebar'),b=document.getElementById('sidebarBackdrop'),o=s.classList.toggle('open');b.classList.toggle('open',o);this.classList.toggle('open',o);this.textContent=o?'×':'☰';this.setAttribute('aria-label',o?'메뉴 닫기':'메뉴 열기')">☰</button>
 <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
 <div class="app"><aside class="sidebar" id="sidebar"><div class="brand"><div class="logo">N</div><div><h1>NIKKE Gear Manager</h1><p>장비·성장 현황 관리</p></div></div><div class="nav"><button class="active">캐릭터 관리</button></div><div class="section"><div class="section-title">데이터</div><button class="btn" onclick="exportCSV()">현재 목록 CSV 저장</button><button class="btn" onclick="exportJSON()">백업 JSON 저장</button><button class="btn" onclick="openBlablalinkSyncGuide()">BlablaLink 장비 자동 동기화</button><div class="blsync-box"><b>기업장비 현황 자동 반영</b><br>BlablaLink 로그인 세션에서 장비의 기업 타입을 읽어 현재 사이트 데이터에 반영합니다.</div><button class="btn danger" onclick="resetAll()">원본 데이터로 초기화</button></div><div class="section" style="font-size:11px;color:#6f7b96;line-height:1.6">수정사항은 브라우저 내부 저장소에 자동 저장됩니다.<br>캐릭터를 클릭하면 상세정보를 수정할 수 있습니다.</div></aside>
 <main class="main"><div class="topbar"><div><div class="eyebrow">NIKKE / INVENTORY</div><h2>캐릭터 장비 현황</h2></div><div class="actions account-switcher"><button type="button" class="btn account-switch-btn active" data-account="제닐스" onclick="switchAccount('제닐스')">제닐스</button><button type="button" class="btn account-switch-btn" data-account="대상혁" onclick="switchAccount('대상혁')">대상혁</button></div></div><div class="kpis" id="kpis"></div>
@@ -253,7 +253,7 @@ let blSyncTimer=null;
 let blSyncAccount='';
 let blSyncAccountStartedAt='';
 function normalizeSyncCorp(v){
-  if(typeof v==='number'&&Number.isFinite(v)) return ({1:'ELYSION',2:'MISSILIS',3:'TETRA',4:'PILGRIM',7:'ABNORMAL'})[v]||null;
+  if(typeof v==='number'&&Number.isFinite(v)) return ({1:'ELYSION',2:'MISSILIS',3:'TETRA',4:'PILGRIM',5:'ABNORMAL',7:'ABNORMAL'})[v]||null;
   const s=String(v??'').trim().toUpperCase();
   if(!s)return null;
   if(/^\d+$/.test(s)) return ({1:'ELYSION',2:'MISSILIS',3:'TETRA',4:'PILGRIM',7:'ABNORMAL'})[Number(s)]||null;
@@ -262,9 +262,9 @@ function normalizeSyncCorp(v){
 function openBlablalinkSyncGuide(){const m=document.getElementById('blsyncModal');if(m)m.hidden=false}
 function closeBlablalinkSyncGuide(){const m=document.getElementById('blsyncModal');if(m)m.hidden=true}
 function setBlSyncStatus(t){const el=document.getElementById('blsyncStatus');if(el)el.textContent=t||''}
-function startBlablalinkSync(){
-  // 동기화를 시작한 계정을 고정해 다른 계정 데이터와 섞이지 않도록 합니다.
-  blSyncAccount=activeAccount;
+function startBlablalinkSync(targetAccount){
+  // 버튼으로 지정한 계정을 동기화 대상으로 고정합니다. 현재 화면에서 선택한 계정과 무관합니다.
+  blSyncAccount=ACCOUNTS.includes(targetAccount)?targetAccount:activeAccount;
   blSyncAccountStartedAt=new Date().toISOString();
   blSyncToken=(crypto.randomUUID?crypto.randomUUID():String(Date.now())+'-'+Math.random().toString(36).slice(2));
   blSyncPopup=window.open('https://www.blablalink.com/','nikkeBlablalinkSync','width=520,height=760,resizable=yes,scrollbars=yes');
@@ -945,12 +945,13 @@ function setQuickGearStatus(i,part,status){
         <li>브라우저에 <b>Tampermonkey</b> 같은 사용자 스크립트 확장 기능을 설치합니다.</li>
         <li><a class="blsync-link" href="https://raw.githubusercontent.com/andlschs94-star/nikke-/main/blablalink-sync.user.js" target="_blank" rel="noopener">NIKKE Gear Manager 동기화 스크립트 설치</a>를 엽니다.</li>
         <li>BlablaLink에 로그인되어 있는지 확인합니다.</li>
-        <li>아래 <b>BlablaLink 열고 동기화</b> 버튼을 누르면 새 창에서 계정 장비를 조회해 이 사이트로 반영합니다.</li>
+        <li>아래에서 <b>동기화할 계정</b>을 직접 선택하면 해당 계정에만 장비를 반영합니다. 현재 화면에서 다른 계정을 보고 있어도 선택한 계정으로 고정됩니다.</li>
       </ol>
       <div class="blsync-note">비밀번호·쿠키·토큰을 이 사이트에 입력하지 않습니다. 로그인 세션은 BlablaLink 쪽에서 사용되고, 동기화 결과에서 기업장비 타입만 받아옵니다.</div>
-      <div class="blsync-actions">
-        <button class="btn primary" type="button" onclick="startBlablalinkSync()">BlablaLink 열고 동기화</button>
-        <button class="btn" type="button" onclick="closeBlablalinkSyncGuide()">취소</button>
+      <div class="blsync-actions" style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+        <button class="btn primary" type="button" onclick="startBlablalinkSync('제닐스')">제닐스 동기화</button>
+        <button class="btn primary" type="button" onclick="startBlablalinkSync('대상혁')">대상혁 동기화</button>
+        <button class="btn" type="button" onclick="closeBlablalinkSyncGuide()" style="grid-column:1/-1">취소</button>
       </div>
       <div class="blsync-status" id="blsyncStatus"></div>
     </div>
