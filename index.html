@@ -338,13 +338,27 @@ window.addEventListener('message',e=>{
       }
     }
   }
-  // BlablaLink가 반환한 캐릭터 목록을 해당 계정의 보유 캐릭터 목록으로도 반영합니다.
-  // 계정을 바꾼 상태에서 동기화가 완료되어도 시작한 계정의 선택 상태만 변경합니다.
+  // BlablaLink가 반환한 캐릭터 목록을 해당 계정의 보유 캐릭터 목록으로 간주합니다.
+  // 제닐스의 전체 캐릭터 수를 기준으로, 동기화 결과에 없는 캐릭터는 해당 계정에서 자동으로 "미사용" 처리합니다.
+  // 반대로 이번 동기화에서 확인된 캐릭터는 기존 자동 미사용 표시를 해제합니다.
+  const syncedNames=new Set(
+    (Array.isArray(p.updates)?p.updates:[])
+      .map(u=>String(u?.name??'').trim())
+      .filter(Boolean)
+  );
+  const nextUnused=new Set(
+    targetData
+      .map(r=>String(r?.['이름']??'').trim())
+      .filter(Boolean)
+      .filter(name=>!syncedNames.has(name))
+  );
   try{
     localStorage.setItem(accountStorageKey(ACCOUNT_STORAGE_PREFIX,syncAccount),JSON.stringify(targetData));
+    localStorage.setItem(accountStorageKey(ACCOUNT_UNUSED_PREFIX,syncAccount),JSON.stringify([...nextUnused]));
   }catch(e){console.warn('계정별 동기화 저장 실패',e)}
   if(syncAccount===activeAccount){
     data=targetData;
+    unusedCharacters=nextUnused;
   }
   try{
     localStorage.setItem('nikkeBlSyncMeta_'+encodeURIComponent(syncAccount),JSON.stringify({
