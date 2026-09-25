@@ -135,11 +135,14 @@ th,td{padding:8px 8px}
 .corp-owned-table td{font-size:15px;color:#dbe4f6;font-weight:900}
 .corp-owned-table td.nonzero{color:#cfc2ff}
 .corp-owned-table .owned-total{background:#121c2f;color:#fff;font-size:16px}
+/* v0.20 separate owned equipment panel */
+.corp-owned-standalone{margin:0 0 12px;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:#0a1220}
+.corp-owned-standalone .corp-owned-title{background:#0f192b}
 </style></head><body>
 <button type="button" class="sidebar-toggle" id="sidebarToggle" aria-label="메뉴 열기" title="메뉴" onclick="const s=document.getElementById('sidebar'),b=document.getElementById('sidebarBackdrop'),o=s.classList.toggle('open');b.classList.toggle('open',o);this.classList.toggle('open',o);this.textContent=o?'×':'☰';this.setAttribute('aria-label',o?'메뉴 닫기':'메뉴 열기')">☰</button>
 <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
-<div class="app"><aside class="sidebar" id="sidebar"><div class="brand"><div class="logo">N</div><div><h1>NIKKE Gear Manager</h1><p>장비·성장 현황 관리</p><div style="margin-top:4px;font-size:9px;color:#6f7b96;font-weight:800;letter-spacing:.08em">VERSION 0.19</div></div></div><div class="nav"><button class="active">캐릭터 관리</button></div><div class="section"><div class="section-title">데이터</div><button class="btn" onclick="exportCSV()">현재 목록 CSV 저장</button><button class="btn" onclick="exportJSON()">백업 JSON 저장</button><button class="btn" onclick="openBlablalinkSyncGuide()">BlablaLink 장비 자동 동기화</button><div class="blsync-box"><b>기업장비 현황 자동 반영</b><br>BlablaLink 로그인 세션에서 장비의 기업 타입을 읽어 현재 사이트 데이터에 반영합니다.</div><button class="btn danger" onclick="resetAll()">원본 데이터로 초기화</button></div><div class="section" style="font-size:11px;color:#6f7b96;line-height:1.6">수정사항은 브라우저 내부 저장소에 자동 저장됩니다.<br>캐릭터를 클릭하면 상세정보를 수정할 수 있습니다.</div></aside>
-<main class="main"><div class="topbar"><div><div class="eyebrow">NIKKE / INVENTORY</div><h2>캐릭터 장비 현황</h2></div><div class="site-version visible-version">VERSION 0.19</div><div class="actions"><button class="btn primary" onclick="document.getElementById('search').focus()">캐릭터 검색</button></div></div><div class="kpis" id="kpis"></div>
+<div class="app"><aside class="sidebar" id="sidebar"><div class="brand"><div class="logo">N</div><div><h1>NIKKE Gear Manager</h1><p>장비·성장 현황 관리</p><div style="margin-top:4px;font-size:9px;color:#6f7b96;font-weight:800;letter-spacing:.08em">VERSION 0.20</div></div></div><div class="nav"><button class="active">캐릭터 관리</button></div><div class="section"><div class="section-title">데이터</div><button class="btn" onclick="exportCSV()">현재 목록 CSV 저장</button><button class="btn" onclick="exportJSON()">백업 JSON 저장</button><button class="btn" onclick="openBlablalinkSyncGuide()">BlablaLink 장비 자동 동기화</button><div class="blsync-box"><b>기업장비 현황 자동 반영</b><br>BlablaLink 로그인 세션에서 장비의 기업 타입을 읽어 현재 사이트 데이터에 반영합니다.</div><button class="btn danger" onclick="resetAll()">원본 데이터로 초기화</button></div><div class="section" style="font-size:11px;color:#6f7b96;line-height:1.6">수정사항은 브라우저 내부 저장소에 자동 저장됩니다.<br>캐릭터를 클릭하면 상세정보를 수정할 수 있습니다.</div></aside>
+<main class="main"><div class="topbar"><div><div class="eyebrow">NIKKE / INVENTORY</div><h2>캐릭터 장비 현황</h2></div><div class="site-version visible-version">VERSION 0.20</div><div class="actions"><button class="btn primary" onclick="document.getElementById('search').focus()">캐릭터 검색</button></div></div><div class="kpis" id="kpis"></div>
 <section class="panel"><div class="panel-head"><div><h3>전체 캐릭터</h3><small id="countText"></small></div><div class="panel-head-right panel-management-tools"><button type="button" class="manage-btn" id="excludeCharacterBtn" onclick="openExcludeCharacterModal()">캐릭터 제외하기</button><button type="button" class="manage-btn" id="completionFilterBtn" onclick="toggleCompletionFilter(event)">완료 캐릭터 숨기기</button><button type="button" class="manage-btn" onclick="clearFilters()">필터 초기화</button><button type="button" class="manage-btn" onclick="resetColumnOrder()">열 순서 초기화</button><button type="button" class="unused-view-btn" id="unusedViewBtn" onclick="toggleUnusedVisibility()">미사용 캐릭터 보기</button><button type="button" class="detail-column-btn" id="detailColumnBtn" onclick="toggleDetailColumns()">상세 항목 표시</button><div class="searchbar"><input id="search" placeholder="캐릭터 / 무기 / 스킬 검색…"></div></div></div><select id="powerSort" hidden><option value="desc" selected>전투력 높은 순</option><option value="asc">전투력 낮은 순</option><option value="none">기본 순</option></select>
 <div class="table-wrap"><table><thead><tr id="tableHeadRow"></tr></thead><tbody id="tbody"></tbody></table></div></section></main></div>
 
@@ -299,10 +302,17 @@ function renderDropRatePanel(){
     return `<div class="drop-rate-card"><h4>${p} 던전</h4><div class="drop-rate-row"><label>파밍 단계</label><select onchange="setDropRateStage('${p}',this.value)">${Object.entries(DROP_RATES).map(([st,rt])=>`<option value="${st}" ${Number(st)===stage?'selected':''}>${st}단계 · ${rt}%</option>`).join('')}</select></div><div class="drop-rate-value">${rate}%</div><div class="drop-rate-sub">기업장비 등장 확률</div><div class="drop-rate-result">현재 필요 수량 <b>${fmt(n)}개</b><br>원하는 1종의 이론상 획득 확률 <b>${target.toFixed(2)}%</b><br>필요 수량 기준 이론상 클리어 <b>${fmt(exp)}회</b></div></div>`;
   }).join('');
   const ownedTotal=Object.values(ownedCorporate).reduce((a,b)=>a+b,0);
-  box.innerHTML=`<div class="drop-rate-wrap"><div class="drop-rate-head"><div><h3>기업장비 획득 확률</h3><div class="drop-rate-note">각 부위 던전은 1~9단계별 기업장비 등장 확률을 사용합니다. 기업장비는 설정한 종류 수 중 무작위로 등장합니다.</div></div><div class="drop-rate-pool"><label>랜덤 기업장비 종류 수</label><input type="number" min="1" max="100" value="${pool}" onchange="setDropRatePool(this.value)"></div></div><div class="drop-rate-grid">${cards}</div><div class="drop-rate-footnote">단일 목표 장비 확률은 <b>단계 확률 ÷ 랜덤 기업장비 종류 수</b>로 계산합니다. 현재 기본값은 15종이며 직접 변경할 수 있습니다.</div><div class="corp-owned-wrap"><div class="corp-owned-title">보유 중인 기업장비 개수</div><div class="corp-owned-note">현재 사이트에 등록된 <b>모든 캐릭터</b>를 기준으로 집계하며, <b>미사용 캐릭터도 포함</b>합니다. 현재 장착 데이터에서 기업장비로 분류되는 부위를 셉니다.</div><div class="corp-owned-table-wrap"><table class="corp-owned-table"><thead><tr><th>머리</th><th>몸통</th><th>장갑</th><th>다리</th><th>전체</th></tr></thead><tbody><tr>${gearParts.map(p=>{const n=ownedCorporate[p]||0;return `<td class="${n?'nonzero':''}">${fmt(n)}개</td>`}).join('')}<td class="owned-total">${fmt(ownedTotal)}개</td></tr></tbody></table></div></div></div>`;
+  box.innerHTML=`<div class="drop-rate-wrap"><div class="drop-rate-head"><div><h3>기업장비 획득 확률</h3><div class="drop-rate-note">각 부위 던전은 1~9단계별 기업장비 등장 확률을 사용합니다. 기업장비는 설정한 종류 수 중 무작위로 등장합니다.</div></div><div class="drop-rate-pool"><label>랜덤 기업장비 종류 수</label><input type="number" min="1" max="100" value="${pool}" onchange="setDropRatePool(this.value)"></div></div><div class="drop-rate-grid">${cards}</div><div class="drop-rate-footnote">단일 목표 장비 확률은 <b>단계 확률 ÷ 랜덤 기업장비 종류 수</b>로 계산합니다. 현재 기본값은 15종이며 직접 변경할 수 있습니다.</div></div>`;
 }
 function setDropRateStage(part,stage){dropRateSettings[part]=Number(stage)||9;saveDropRateSettings();renderDropRatePanel()}
 function setDropRatePool(v){dropRateSettings.pool=Math.max(1,Math.min(100,Number(v)||1));saveDropRateSettings();renderDropRatePanel()}
+function renderOwnedCorporatePanel(){
+  const box=document.getElementById('ownedCorporatePanel');if(!box)return;
+  const ownedCorporate=getOwnedCorporateTotals();
+  const fmt=n=>Number(n).toLocaleString('ko-KR');
+  const ownedTotal=Object.values(ownedCorporate).reduce((a,b)=>a+b,0);
+  box.innerHTML='<div class="corp-owned-wrap corp-owned-standalone"><div class="corp-owned-title">보유 중인 기업장비 개수</div><div class="corp-owned-note">현재 사이트에 등록된 <b>모든 캐릭터</b>를 기준으로 집계하며, <b>미사용 캐릭터도 포함</b>합니다. 현재 장착 데이터에서 기업장비로 분류되는 부위를 셉니다.</div><div class="corp-owned-table-wrap"><table class="corp-owned-table"><thead><tr><th>머리</th><th>몸통</th><th>장갑</th><th>다리</th><th>전체</th></tr></thead><tbody><tr>'+gearParts.map(p=>{const n=ownedCorporate[p]||0;return '<td class="'+(n?'nonzero':'')+'">'+fmt(n)+'개</td>';}).join('')+'<td class="owned-total">'+fmt(ownedTotal)+'개</td></tr></tbody></table></div></div>';
+}
 function renderKpis(){
   const orderCompany=['엘리시온','미실리스','테트라','필그림','어브노멀'];
   const orderClass=['화력형','방어형','지원형'];
@@ -328,6 +338,7 @@ function renderKpis(){
       </button>
       <div id="dropRatePanel" ${dropRateExpanded?'':'hidden'}></div>
     </div>
+    <div id="ownedCorporatePanel"></div>
     <div class="gear-summary-wrap">
       <div class="gear-summary-title">기업장비 필요 현황</div>
       <div class="gear-summary-note">현재 <b>체크한 캐릭터</b>만 집계합니다. <b>일반장비</b>를 착용한 부위는 다음 단계인 기업장비가 필요한 것으로 계산하며, 미착용과 10T 오버로드는 제외합니다. <b>캐릭터가 0명인 기업+클래스 조합도 표시</b>합니다. 현재 선택: <b>${selectedCharacters.size}명</b></div>
@@ -340,6 +351,7 @@ function renderKpis(){
       </table>
     </div>`;
   renderDropRatePanel();
+  renderOwnedCorporatePanel();
 }
 function getFiltered(){
   const searchEl=document.getElementById('search');
