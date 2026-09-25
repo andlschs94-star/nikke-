@@ -139,7 +139,7 @@ th,td{padding:8px 8px}
 .corp-owned-standalone{margin:0 0 12px;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:#0a1220}
 .corp-owned-standalone .corp-owned-title{background:#0f192b}
 </style></head><body>
-<div class="site-version-corner">VERSION 0.62</div><button type="button" class="sidebar-toggle" id="sidebarToggle" aria-label="메뉴 열기" title="메뉴" onclick="const s=document.getElementById('sidebar'),b=document.getElementById('sidebarBackdrop'),o=s.classList.toggle('open');b.classList.toggle('open',o);this.classList.toggle('open',o);this.textContent=o?'×':'☰';this.setAttribute('aria-label',o?'메뉴 닫기':'메뉴 열기')">☰</button>
+<div class="site-version-corner">VERSION 0.63</div><button type="button" class="sidebar-toggle" id="sidebarToggle" aria-label="메뉴 열기" title="메뉴" onclick="const s=document.getElementById('sidebar'),b=document.getElementById('sidebarBackdrop'),o=s.classList.toggle('open');b.classList.toggle('open',o);this.classList.toggle('open',o);this.textContent=o?'×':'☰';this.setAttribute('aria-label',o?'메뉴 닫기':'메뉴 열기')">☰</button>
 <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
 <div class="app"><aside class="sidebar" id="sidebar"><div class="brand"><div class="logo">N</div><div><h1>NIKKE Gear Manager</h1><p>장비·성장 현황 관리</p></div></div><div class="nav"><button class="active">캐릭터 관리</button></div><div class="section"><div class="section-title">데이터</div><button class="btn" onclick="exportCSV()">현재 목록 CSV 저장</button><button class="btn" onclick="exportJSON()">백업 JSON 저장</button><button class="btn" onclick="openBlablalinkSyncGuide()">BlablaLink 장비 자동 동기화</button><div class="blsync-box"><b>기업장비 현황 자동 반영</b><br>BlablaLink 로그인 세션에서 장비의 기업 타입을 읽어 현재 사이트 데이터에 반영합니다.</div><button class="btn danger" onclick="resetAll()">원본 데이터로 초기화</button></div><div class="section" style="font-size:11px;color:#6f7b96;line-height:1.6">수정사항은 브라우저 내부 저장소에 자동 저장됩니다.<br>캐릭터를 클릭하면 상세정보를 수정할 수 있습니다.</div></aside>
 <main class="main"><div class="topbar"><div><div class="eyebrow">NIKKE / INVENTORY</div><h2>캐릭터 장비 현황</h2></div><div class="actions account-switcher"><button type="button" class="btn account-switch-btn active" data-account="제닐스" onclick="switchAccount('제닐스')">제닐스</button><button type="button" class="btn account-switch-btn" data-account="대상혁" onclick="switchAccount('대상혁')">대상혁</button></div></div><div class="kpis" id="kpis"></div>
@@ -157,6 +157,7 @@ const LEGACY_STORAGE='nikkeGearManagerV5';
 const ACCOUNT_STORAGE_PREFIX='nikkeGearManagerV6_account_';
 const ACCOUNT_SELECTION_PREFIX='nikke_character_selection_v1_';
 const ACCOUNT_UNUSED_PREFIX='nikke_unused_characters_v3_';
+const ACCOUNT_UNOWNED_PREFIX='nikke_unowned_characters_v1_';
 const ACCOUNT_STATE_STORAGE='nikke_active_account_v1';
 const ACCOUNTS=['제닐스','대상혁'];
 let activeAccount='제닐스';
@@ -310,6 +311,7 @@ window.addEventListener('message',e=>{
   // 동기화를 시작한 계정에만 결과를 적용합니다.
   const syncAccount=ACCOUNTS.includes(blSyncAccount)?blSyncAccount:activeAccount;
   const targetData=syncAccount===activeAccount?data:readAccountData(syncAccount);
+  const nextUnowned=new Set();
   const byName=new Map(targetData.map((r,i)=>[String(r?.['이름']??'').trim(),i]));
   let matched=0,changed=0;
   const syncedIndices=new Set();
@@ -352,6 +354,7 @@ window.addEventListener('message',e=>{
       .filter(Boolean)
       .filter(name=>!syncedNames.has(name))
   );
+  nextUnused.forEach(name=>nextUnowned.add(name));
   // 동기화 결과에 없는 캐릭터는 미사용 처리하고, 보유 정보는 모두 최저 상태로 초기화합니다.
   // 다음 동기화에서 해당 캐릭터가 다시 확인되면 실제 정보로 덮어씁니다.
   for(const name of nextUnused){
@@ -380,10 +383,12 @@ window.addEventListener('message',e=>{
   try{
     localStorage.setItem(accountStorageKey(ACCOUNT_STORAGE_PREFIX,syncAccount),JSON.stringify(targetData));
     localStorage.setItem(accountStorageKey(ACCOUNT_UNUSED_PREFIX,syncAccount),JSON.stringify([...nextUnused]));
+    localStorage.setItem(accountStorageKey(ACCOUNT_UNOWNED_PREFIX,syncAccount),JSON.stringify([...nextUnowned]));
   }catch(e){console.warn('계정별 동기화 저장 실패',e)}
   if(syncAccount===activeAccount){
     data=targetData;
     unusedCharacters=nextUnused;
+    unownedCharacters=nextUnowned;
   }
   try{
     localStorage.setItem('nikkeBlSyncMeta_'+encodeURIComponent(syncAccount),JSON.stringify({
@@ -611,7 +616,7 @@ function renderTable(){
     const cells={
       선택:`<button type="button" class="valid-toggle ${selectedCharacters.has(i)?'active':''}" onclick="event.stopPropagation();toggleCharacterSelection(${i},${selectedCharacters.has(i)?'false':'true'})" aria-label="${esc(r['이름'])} 유효 여부">유효</button>`,
       이름:`<button class="name-btn" onclick="openDrawer(${i})">${esc(r['이름'])}</button>`,
-      미사용:`<button type="button" class="unused-status-toggle ${isUnusedCharacter(i,r)?'active':''}" onclick="event.stopPropagation();toggleUnusedCharacter(${i},${!isUnusedCharacter(i,r)})" aria-label="${esc(r['이름'])} 미사용 여부">미사용</button>`,
+      미사용:`<button type="button" class="unused-status-toggle ${isUnusedCharacter(i,r)?'active':''}" onclick="event.stopPropagation();toggleUnusedCharacter(${i},${!isUnusedCharacter(i,r)})" aria-label="${esc(r['이름'])} 미사용 여부">${unownedCharacters.has(characterName(i,r))?'미보유':'미사용'}</button>`,
       머리:gearCells['머리'], 몸통:gearCells['몸통'], 장갑:gearCells['장갑'], 다리:gearCells['다리'],
       전투력:num(r['전투력']).toLocaleString(),
       기업:`<span class="tag">${esc(r['기업'])}</span>`,
@@ -688,6 +693,17 @@ function loadAccountSelection(account){
 }
 function saveSelectedCharacters(){try{localStorage.setItem(accountStorageKey(ACCOUNT_SELECTION_PREFIX,activeAccount),JSON.stringify([...selectedCharacters]));}catch(e){}}
 function characterName(i,r){return String((r||data[i]||{})['이름']??'').trim();}
+function loadAccountUnowned(account){
+  try{
+    const saved=localStorage.getItem(accountStorageKey(ACCOUNT_UNOWNED_PREFIX,account));
+    if(saved!==null){
+      const v=JSON.parse(saved);
+      return new Set(Array.isArray(v)?v.map(x=>String(x).trim()).filter(Boolean):[]);
+    }
+  }catch(e){}
+  return new Set();
+}
+let unownedCharacters=loadAccountUnowned(activeAccount);
 function loadAccountUnused(account){
   try{
     const key=accountStorageKey(ACCOUNT_UNUSED_PREFIX,account);
@@ -945,6 +961,7 @@ function switchAccount(account){
   data=readAccountData(activeAccount);
   selectedCharacters=loadAccountSelection(activeAccount);
   unusedCharacters=loadAccountUnused(activeAccount);
+  unownedCharacters=loadAccountUnowned(activeAccount);
   editIndex=-1;
   closeHeaderFilter();
   closeCompletionFilter();
