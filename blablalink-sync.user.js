@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         NIKKE Gear Manager - BlablaLink 자동 장비 동기화
 // @namespace    https://andlschs94-star.github.io/nikke-/
-// @version      1.0.4
+// @version      1.0.5
 // @updateURL    https://raw.githubusercontent.com/andlschs94-star/nikke-/main/blablalink-sync.user.js
 // @downloadURL  https://raw.githubusercontent.com/andlschs94-star/nikke-/main/blablalink-sync.user.js
 // @description  로그인된 BlablaLink 세션에서 NIKKE 캐릭터별 기업장비 현황을 NIKKE Gear Manager로 전송합니다.
@@ -62,14 +62,38 @@
 
   function getRawCorp(char, slot) {
     const candidates = [
-      char?.[`${slot}_equip_corporation_type`],
-      char?.[`${slot}_corporation_type`],
-      char?.[`${slot}_equip_manufacturer`],
-      char?.[`${slot}_equip_company`]
+      char?.[slot + '_equip_corporation_type'],
+      char?.[slot + '_corporation_type'],
+      char?.[slot + '_equip_manufacturer'],
+      char?.[slot + '_equip_company'],
+      char?.[slot + '_manufacturer'],
+      char?.[slot + '_company'],
+      char?.[slot]
     ];
-    for (const value of candidates) {
-      const corp = normalizeCorp(value);
-      if (corp) return corp;
+    const visited = new Set();
+    function scan(value, depth=0){
+      const direct = normalizeCorp(value);
+      if(direct) return direct;
+      if(!value || typeof value!=='object' || depth>4 || visited.has(value)) return null;
+      visited.add(value);
+      for(const [key,v] of Object.entries(value)){
+        const k=String(key).toLowerCase();
+        if(/corporation|manufacturer|company|maker|equip.*corp|corp.*type/.test(k)){
+          const corp=normalizeCorp(v);
+          if(corp) return corp;
+        }
+      }
+      for(const v of Object.values(value)){
+        if(v && typeof v==='object'){
+          const corp=scan(v,depth+1);
+          if(corp) return corp;
+        }
+      }
+      return null;
+    }
+    for(const value of candidates){
+      const corp=scan(value);
+      if(corp) return corp;
     }
     return null;
   }
