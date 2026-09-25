@@ -176,7 +176,7 @@ if(Array.isArray(legacyData)){
   });
   try{localStorage.setItem(STORAGE,JSON.stringify(data));}catch(e){}
 }
-let filters={기업:new Set(),속성:new Set(),클래스:new Set(),무기:new Set(),버스트:new Set(),큐브:new Set(),장비부위별:{머리:new Set(),몸통:new Set(),장갑:new Set(),다리:new Set()}};
+let filters={이름:new Set(),기업:new Set(),속성:new Set(),클래스:new Set(),무기:new Set(),버스트:new Set(),큐브:new Set(),장비부위별:{머리:new Set(),몸통:new Set(),장갑:new Set(),다리:new Set()}};
 let completionFilters={hideFullOverload:false,hideFullCompany:false,hideUnused:true};
 try{completionFilters.hideUnused=localStorage.getItem('nikke_hide_unused_filter')!=='0'}catch(_){}
 let completionPopover=null;
@@ -406,6 +406,7 @@ function getFiltered(){
       const hay=[r['이름'],r['무기'],r['스킬1'],r['스킬2'],r['버스트스킬']].map(x=>String(x??'').toLowerCase()).join(' ');
       if(!hay.includes(q)) return false;
     }
+    if(filters.이름.size&&!filters.이름.has(String(r['이름']??''))) return false;
     if(filters.기업.size&&!filters.기업.has(r['기업'])) return false;
     if(filters.속성.size&&!filters.속성.has(r['속성'])) return false;
     if(filters.클래스.size&&!filters.클래스.has(r['클래스'])) return false;
@@ -600,7 +601,7 @@ function renderHeaderOptions(key,container,btn){
     container.appendChild(opts);
     const clear=document.createElement('button');clear.className='column-filter-clear';clear.textContent=`${part} 필터 해제`;clear.onclick=()=>{set.clear();renderHeaderOptions(key,container,btn);renderTable()};container.appendChild(clear);return;
   }
-  const values=key==='큐브'?cubeValues():(key==='버스트'?['버스트1','버스트2','버스트3','ALL']:sets[key]||[]);
+  const values=key==='이름'?data.map(r=>String(r['이름']??'').trim()).filter(Boolean).filter((v,i,a)=>a.indexOf(v)===i):key==='큐브'?cubeValues():(key==='버스트'?['버스트1','버스트2','버스트3','ALL']:sets[key]||[]);
   const opts=document.createElement('div');opts.className='column-filter-options';
   values.forEach(v=>{const set=filters[key]||new Set();const b=document.createElement('button');b.className='column-filter-option '+(set.has(v)?'active':'');b.innerHTML=`<span>${esc(v)||'없음'}</span><span class="check">✓</span>`;b.onclick=()=>{setMultiFilter(key,v);renderHeaderOptions(key,container,btn);renderTable()};opts.appendChild(b)});
   container.appendChild(opts);
