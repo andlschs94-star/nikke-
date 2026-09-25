@@ -95,12 +95,16 @@ th,td{padding:8px 8px}
 .unused-inline-control{display:inline-flex;align-items:center;gap:5px;flex:none;color:#ff9aae;font-size:9px;font-weight:900;white-space:nowrap}
 .unused-inline-label{cursor:pointer}
 .unused-inline-control input{margin:0}
+/* v0.12 column visibility controls */
+.detail-column-btn{width:auto!important;margin:0!important;white-space:nowrap;border:1px solid #2f3b56;background:#0d1527;color:#cdd7e8;border-radius:9px;padding:9px 11px;font-size:11px;font-weight:800;cursor:pointer}
+.detail-column-btn.active{border-color:#927dff;background:#211d3b;color:#fff}
+@media(max-width:650px){.panel-head-right{gap:6px}.detail-column-btn,.unused-view-btn{width:100%!important}}
 </style></head><body>
 <button type="button" class="sidebar-toggle" id="sidebarToggle" aria-label="메뉴 열기" title="메뉴" onclick="const s=document.getElementById('sidebar'),b=document.getElementById('sidebarBackdrop'),o=s.classList.toggle('open');b.classList.toggle('open',o);this.classList.toggle('open',o);this.textContent=o?'×':'☰';this.setAttribute('aria-label',o?'메뉴 닫기':'메뉴 열기')">☰</button>
 <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
-<div class="app"><aside class="sidebar" id="sidebar"><div class="brand"><div class="logo">N</div><div><h1>NIKKE Gear Manager</h1><p>장비·성장 현황 관리</p><div style="margin-top:4px;font-size:9px;color:#6f7b96;font-weight:800;letter-spacing:.08em">VERSION 0.11</div></div></div><div class="nav"><button class="active">캐릭터 관리</button></div><div class="section"><div class="section-title">데이터</div><button class="btn" onclick="exportCSV()">현재 목록 CSV 저장</button><button class="btn" onclick="exportJSON()">백업 JSON 저장</button><button class="btn" onclick="openBlablalinkSyncGuide()">BlablaLink 장비 자동 동기화</button><div class="blsync-box"><b>기업장비 현황 자동 반영</b><br>BlablaLink 로그인 세션에서 장비의 기업 타입을 읽어 현재 사이트 데이터에 반영합니다.</div><button class="btn danger" onclick="resetAll()">원본 데이터로 초기화</button></div><div class="section" style="font-size:11px;color:#6f7b96;line-height:1.6">수정사항은 브라우저 내부 저장소에 자동 저장됩니다.<br>캐릭터를 클릭하면 상세정보를 수정할 수 있습니다.</div></aside>
+<div class="app"><aside class="sidebar" id="sidebar"><div class="brand"><div class="logo">N</div><div><h1>NIKKE Gear Manager</h1><p>장비·성장 현황 관리</p><div style="margin-top:4px;font-size:9px;color:#6f7b96;font-weight:800;letter-spacing:.08em">VERSION 0.12</div></div></div><div class="nav"><button class="active">캐릭터 관리</button></div><div class="section"><div class="section-title">데이터</div><button class="btn" onclick="exportCSV()">현재 목록 CSV 저장</button><button class="btn" onclick="exportJSON()">백업 JSON 저장</button><button class="btn" onclick="openBlablalinkSyncGuide()">BlablaLink 장비 자동 동기화</button><div class="blsync-box"><b>기업장비 현황 자동 반영</b><br>BlablaLink 로그인 세션에서 장비의 기업 타입을 읽어 현재 사이트 데이터에 반영합니다.</div><button class="btn danger" onclick="resetAll()">원본 데이터로 초기화</button></div><div class="section" style="font-size:11px;color:#6f7b96;line-height:1.6">수정사항은 브라우저 내부 저장소에 자동 저장됩니다.<br>캐릭터를 클릭하면 상세정보를 수정할 수 있습니다.</div></aside>
 <main class="main"><div class="topbar"><div><div class="eyebrow">NIKKE / INVENTORY</div><h2>캐릭터 장비 현황</h2></div><div class="actions"><button type="button" class="btn" id="excludeCharacterBtn" onclick="openExcludeCharacterModal()">캐릭터 제외하기</button><button class="btn" id="completionFilterBtn" onclick="toggleCompletionFilter(event)">완료 캐릭터 숨기기</button><button class="btn" onclick="clearFilters()">필터 초기화</button><button class="btn" onclick="resetColumnOrder()">열 순서 초기화</button><button class="btn primary" onclick="document.getElementById('search').focus()">캐릭터 검색</button></div></div><div class="kpis" id="kpis"></div>
-<section class="panel"><div class="panel-head"><div><h3>전체 캐릭터</h3><small id="countText"></small></div><div class="panel-head-right"><button type="button" class="unused-view-btn" id="unusedViewBtn" onclick="toggleUnusedVisibility()">미사용 캐릭터 보기</button><div class="searchbar"><input id="search" placeholder="캐릭터 / 무기 / 스킬 검색…"></div></div></div><select id="powerSort" hidden><option value="desc" selected>전투력 높은 순</option><option value="asc">전투력 낮은 순</option><option value="none">기본 순</option></select>
+<section class="panel"><div class="panel-head"><div><h3>전체 캐릭터</h3><small id="countText"></small></div><div class="panel-head-right"><button type="button" class="unused-view-btn" id="unusedViewBtn" onclick="toggleUnusedVisibility()">미사용 캐릭터 보기</button><button type="button" class="detail-column-btn" id="detailColumnBtn" onclick="toggleDetailColumns()">상세 항목 표시</button><div class="searchbar"><input id="search" placeholder="캐릭터 / 무기 / 스킬 검색…"></div></div></div><select id="powerSort" hidden><option value="desc" selected>전투력 높은 순</option><option value="asc">전투력 낮은 순</option><option value="none">기본 순</option></select>
 <div class="table-wrap"><table><thead><tr id="tableHeadRow"></tr></thead><tbody id="tbody"></tbody></table></div></section></main></div>
 
 <div class="exclude-modal-backdrop" id="excludeModal" hidden><div class="exclude-modal" role="dialog" aria-modal="true" aria-labelledby="excludeModalTitle"><div class="exclude-modal-head"><div><h3 id="excludeModalTitle">캐릭터 제외하기</h3><small>숨길 캐릭터를 한 번에 선택하세요.</small></div><button class="btn" type="button" onclick="closeExcludeCharacterModal()">닫기</button></div><div class="exclude-toolbar"><input id="excludeSearch" placeholder="캐릭터 이름 검색…" oninput="renderExcludeCharacterList()"><button class="btn" type="button" onclick="setVisibleExclude(true)">현재 목록 전체 선택</button><button class="btn" type="button" onclick="setVisibleExclude(false)">현재 목록 전체 해제</button></div><div class="exclude-list" id="excludeList"></div><div class="exclude-modal-foot"><div class="exclude-count" id="excludeCount"></div><div class="exclude-foot-actions"><button class="btn" type="button" onclick="clearAllExcludedCharacters()">전체 제외 해제</button><button class="btn primary" type="button" onclick="applyExcludeCharacters()">적용</button></div></div></div></div><div class="drawer" id="drawer"><div class="drawer-card"><div class="drawer-head"><div class="char-title"><div class="avatar" id="dAvatar">N</div><div><h3 id="dName">-</h3><p id="dMeta">-</p></div></div><button class="btn close-btn" onclick="closeDrawer()">닫기</button></div><div class="drawer-body" id="drawerBody"></div></div></div><div class="toast" id="toast"></div>
@@ -335,7 +339,7 @@ function renderTable(){
       옵션:`${opts}개`,
       큐브:r['큐브']?esc(r['큐브'])+' '+esc(r['큐브_레벨']??''): '<span class="muted">없음</span>'
     };
-    return `<tr>${columnOrder.map(k=>`<td class="${gearParts.includes(k)?'gear-single-cell':''}">${cells[k]??''}</td>`).join('')}</tr>`;
+    return `<tr>${visibleColumnOrder().map(k=>`<td class="${gearParts.includes(k)?'gear-single-cell':''}">${cells[k]??''}</td>`).join('')}</tr>`;
   }).join('');
   updateFilterUI();
   const selectAll=document.querySelector('.row-select-all');
@@ -348,6 +352,34 @@ const COLUMN_DEFS={
 };
 const DEFAULT_COLUMN_ORDER=['이름','선택','머리','몸통','장갑','다리','전투력','기업','속성','버스트','클래스','돌파','코강','스킬','옵션','큐브'];
 const COLUMN_ORDER_STORAGE='nikke_column_order_v2';
+const COLUMN_VISIBILITY_STORAGE='nikke_column_visibility_v1';
+const DETAIL_COLUMNS=['전투력','버스트','속성','코강'];
+let hiddenColumns=(()=>{try{
+  const v=JSON.parse(localStorage.getItem(COLUMN_VISIBILITY_STORAGE)||'null');
+  if(Array.isArray(v)) return new Set(v.filter(k=>DETAIL_COLUMNS.includes(k)));
+}catch(e){}
+return new Set(DETAIL_COLUMNS);
+})();
+function saveColumnVisibility(){try{localStorage.setItem(COLUMN_VISIBILITY_STORAGE,JSON.stringify([...hiddenColumns]));}catch(e){}}
+function visibleColumnOrder(){return columnOrder.filter(k=>!hiddenColumns.has(k));}
+function updateDetailColumnButton(){
+  const b=document.getElementById('detailColumnBtn');
+  if(!b)return;
+  const hidden=hiddenColumns.size>0;
+  b.classList.toggle('active',hidden);
+  b.textContent=hidden?'상세 항목 표시':'상세 항목 숨기기';
+  b.setAttribute('aria-pressed',hidden?'false':'true');
+  b.title='전투력 · 버스트 · 속성 · 코강 항목을 표시/숨김';
+}
+function toggleDetailColumns(){
+  if(hiddenColumns.size) hiddenColumns.clear();
+  else DETAIL_COLUMNS.forEach(k=>hiddenColumns.add(k));
+  saveColumnVisibility();
+  updateDetailColumnButton();
+  closeHeaderFilter();
+  renderHeader();
+  renderTable();
+}
 const CHARACTER_SELECTION_STORAGE='nikke_character_selection_v1';
 const UNUSED_STORAGE='nikke_unused_characters_v3';
 let selectedCharacters=(()=>{try{const v=JSON.parse(localStorage.getItem(CHARACTER_SELECTION_STORAGE)||'[]');return new Set(Array.isArray(v)?v.map(Number).filter(Number.isInteger):[])}catch(e){return new Set()}})();
@@ -400,10 +432,10 @@ let columnOrder=(()=>{try{
   }
 }catch(e){}return [...DEFAULT_COLUMN_ORDER]})();
 function saveColumnOrder(){localStorage.setItem(COLUMN_ORDER_STORAGE,JSON.stringify(columnOrder));}
-function resetColumnOrder(){columnOrder=[...DEFAULT_COLUMN_ORDER];saveColumnOrder();renderHeader();renderTable();toast('열 순서를 초기화했습니다');}
+function resetColumnOrder(){columnOrder=[...DEFAULT_COLUMN_ORDER];saveColumnOrder();renderHeader();renderTable();updateDetailColumnButton();toast('열 순서를 초기화했습니다');}
 function renderHeader(){
  const row=document.getElementById('tableHeadRow');if(!row)return;row.innerHTML='';
- columnOrder.forEach(key=>{const th=document.createElement('th');th.draggable=true;th.dataset.columnKey=key;th.className='column-drag-handle';
+ visibleColumnOrder().forEach(key=>{const th=document.createElement('th');th.draggable=true;th.dataset.columnKey=key;th.className='column-drag-handle';
    if(key==='선택'){th.draggable=false; const visible=getFiltered(); const allVisible=visible.length>0&&visible.every(({i})=>selectedCharacters.has(i)); th.innerHTML=`<input type="checkbox" class="row-select-all" ${allVisible?'checked':''} aria-label="현재 목록 전체 선택">`; setTimeout(()=>{th.querySelector('.row-select-all')?.addEventListener('click',e=>{e.stopPropagation();toggleVisibleSelection(e.target.checked)})},0)}
    else if(COLUMN_DEFS[key].filter){th.classList.add('filter-th');th.innerHTML=`<button class="th-btn" data-filter-key="${key}"><span>${COLUMN_DEFS[key].label}</span><span class="th-dot"></span><span class="th-arrow">▼</span></button>`}
    else th.innerHTML=`<span class="th-label">${COLUMN_DEFS[key].label}</span>`;
@@ -501,10 +533,10 @@ function outsideCompletionOnce(e){if(!completionPopover)return;if(completionPopo
 function updateCompletionFilterUI(){const b=document.getElementById('completionFilterBtn');if(b)b.classList.toggle('active',completionFilters.hideUnused||completionFilters.hideFullOverload||completionFilters.hideFullCompany);updateHideTargetButtons();}
 function updateHideTargetButtons(){const map={unused:'hideUnused',overload:'hideFullOverload',company:'hideFullCompany'};document.querySelectorAll('.hide-toggle').forEach(btn=>btn.classList.toggle('active',!!completionFilters[map[btn.dataset.hideTarget]]));}
 function toggleHideTarget(kind){const map={unused:'hideUnused',overload:'hideFullOverload',company:'hideFullCompany'};completionFilters[map[kind]]=!completionFilters[map[kind]];updateHideTargetButtons();renderTable();}
-function clearFilters(){filters.기업.clear();filters.속성.clear();filters.클래스.clear();filters.무기.clear();filters.버스트.clear();filters.큐브.clear();gearParts.forEach(p=>filters.장비부위별[p].clear());completionFilters.hideUnused=false;completionFilters.hideFullOverload=false;completionFilters.hideFullCompany=false;document.getElementById('powerSort').value='desc';closeHeaderFilter();closeCompletionFilter();updateCompletionFilterUI();updateUnusedViewButton();renderHeader();renderTable();toast('필터를 초기화했습니다');}
+function clearFilters(){filters.기업.clear();filters.속성.clear();filters.클래스.clear();filters.무기.clear();filters.버스트.clear();filters.큐브.clear();gearParts.forEach(p=>filters.장비부위별[p].clear());completionFilters.hideUnused=false;completionFilters.hideFullOverload=false;completionFilters.hideFullCompany=false;document.getElementById('powerSort').value='desc';closeHeaderFilter();closeCompletionFilter();updateCompletionFilterUI();updateUnusedViewButton();updateDetailColumnButton();renderHeader();renderTable();toast('필터를 초기화했습니다');}
 function resetAll(){if(confirm('원본 CSV 데이터와 캐릭터 선택을 초기화할까요?')){data=structuredClone(RAW);selectedCharacters.clear();unusedCharacters.clear();saveSelectedCharacters();saveUnusedCharacters();save();clearFilters();toast('초기화되었습니다')}}
 
-document.getElementById('search').addEventListener('input',renderTable);document.getElementById('drawer').addEventListener('click',e=>{if(e.target.id==='drawer')closeDrawer()});renderHeader();renderTable();updateHideTargetButtons();updateUnusedViewButton();
+document.getElementById('search').addEventListener('input',renderTable);document.getElementById('drawer').addEventListener('click',e=>{if(e.target.id==='drawer')closeDrawer()});renderHeader();renderTable();updateHideTargetButtons();updateUnusedViewButton();updateDetailColumnButton();
 
 
 function openExcludeCharacterModal(){const m=document.getElementById('excludeModal');if(!m)return;m.hidden=false;const q=document.getElementById('excludeSearch');if(q){q.value='';setTimeout(()=>q.focus(),0)}renderExcludeCharacterList();}
