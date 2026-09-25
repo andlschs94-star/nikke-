@@ -102,10 +102,15 @@ th,td{padding:8px 8px}
 /* v0.14 always-visible version */
 .site-version{margin-left:auto;margin-right:4px;color:#7784a0;font-size:9px;font-weight:900;letter-spacing:.08em;white-space:nowrap;align-self:center}
 @media(max-width:650px){.site-version{position:absolute;right:12px;top:6px;font-size:8px}.topbar{position:relative}.topbar .actions{padding-top:16px}}
+/* v0.15 separate unused column */
+.unused-column-cell{min-width:82px;text-align:center}
+.unused-column-head{text-align:center!important}
+.unused-column-control{display:inline-flex;align-items:center;justify-content:center;gap:5px;white-space:nowrap;color:#ff9aae;font-size:9px;font-weight:900}
+.unused-column-control input{margin:0}
 </style></head><body>
 <button type="button" class="sidebar-toggle" id="sidebarToggle" aria-label="메뉴 열기" title="메뉴" onclick="const s=document.getElementById('sidebar'),b=document.getElementById('sidebarBackdrop'),o=s.classList.toggle('open');b.classList.toggle('open',o);this.classList.toggle('open',o);this.textContent=o?'×':'☰';this.setAttribute('aria-label',o?'메뉴 닫기':'메뉴 열기')">☰</button>
 <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
-<div class="app"><aside class="sidebar" id="sidebar"><div class="brand"><div class="logo">N</div><div><h1>NIKKE Gear Manager</h1><p>장비·성장 현황 관리</p><div style="margin-top:4px;font-size:9px;color:#6f7b96;font-weight:800;letter-spacing:.08em">VERSION 0.14</div></div></div><div class="nav"><button class="active">캐릭터 관리</button></div><div class="section"><div class="section-title">데이터</div><button class="btn" onclick="exportCSV()">현재 목록 CSV 저장</button><button class="btn" onclick="exportJSON()">백업 JSON 저장</button><button class="btn" onclick="openBlablalinkSyncGuide()">BlablaLink 장비 자동 동기화</button><div class="blsync-box"><b>기업장비 현황 자동 반영</b><br>BlablaLink 로그인 세션에서 장비의 기업 타입을 읽어 현재 사이트 데이터에 반영합니다.</div><button class="btn danger" onclick="resetAll()">원본 데이터로 초기화</button></div><div class="section" style="font-size:11px;color:#6f7b96;line-height:1.6">수정사항은 브라우저 내부 저장소에 자동 저장됩니다.<br>캐릭터를 클릭하면 상세정보를 수정할 수 있습니다.</div></aside>
+<div class="app"><aside class="sidebar" id="sidebar"><div class="brand"><div class="logo">N</div><div><h1>NIKKE Gear Manager</h1><p>장비·성장 현황 관리</p><div style="margin-top:4px;font-size:9px;color:#6f7b96;font-weight:800;letter-spacing:.08em">VERSION 0.15</div></div></div><div class="nav"><button class="active">캐릭터 관리</button></div><div class="section"><div class="section-title">데이터</div><button class="btn" onclick="exportCSV()">현재 목록 CSV 저장</button><button class="btn" onclick="exportJSON()">백업 JSON 저장</button><button class="btn" onclick="openBlablalinkSyncGuide()">BlablaLink 장비 자동 동기화</button><div class="blsync-box"><b>기업장비 현황 자동 반영</b><br>BlablaLink 로그인 세션에서 장비의 기업 타입을 읽어 현재 사이트 데이터에 반영합니다.</div><button class="btn danger" onclick="resetAll()">원본 데이터로 초기화</button></div><div class="section" style="font-size:11px;color:#6f7b96;line-height:1.6">수정사항은 브라우저 내부 저장소에 자동 저장됩니다.<br>캐릭터를 클릭하면 상세정보를 수정할 수 있습니다.</div></aside>
 <main class="main"><div class="topbar"><div><div class="eyebrow">NIKKE / INVENTORY</div><h2>캐릭터 장비 현황</h2></div><div class="site-version">VERSION 0.14</div><div class="actions"><div class="actions"><button type="button" class="btn" id="excludeCharacterBtn" onclick="openExcludeCharacterModal()">캐릭터 제외하기</button><button class="btn" id="completionFilterBtn" onclick="toggleCompletionFilter(event)">완료 캐릭터 숨기기</button><button class="btn" onclick="clearFilters()">필터 초기화</button><button class="btn" onclick="resetColumnOrder()">열 순서 초기화</button><button class="btn primary" onclick="document.getElementById('search').focus()">캐릭터 검색</button></div></div><div class="kpis" id="kpis"></div>
 <section class="panel"><div class="panel-head"><div><h3>전체 캐릭터</h3><small id="countText"></small></div><div class="panel-head-right"><button type="button" class="unused-view-btn" id="unusedViewBtn" onclick="toggleUnusedVisibility()">미사용 캐릭터 보기</button><button type="button" class="detail-column-btn" id="detailColumnBtn" onclick="toggleDetailColumns()">상세 항목 표시</button><div class="searchbar"><input id="search" placeholder="캐릭터 / 무기 / 스킬 검색…"></div></div></div><select id="powerSort" hidden><option value="desc" selected>전투력 높은 순</option><option value="asc">전투력 낮은 순</option><option value="none">기본 순</option></select>
 <div class="table-wrap"><table><thead><tr id="tableHeadRow"></tr></thead><tbody id="tbody"></tbody></table></div></section></main></div>
@@ -329,7 +334,8 @@ function renderTable(){
     g.parts.forEach((x,idx)=>{const part=gearParts[idx];gearCells[part]=`<button type="button" class="gear-part ${x.type}" title="${part} · ${x.label} · 클릭하여 변경" onclick="event.stopPropagation();openQuickGearEditor(${i},'${part}')"><span class="part-name">${part}</span><span class="part-state">${x.label}</span></button>`});
     const cells={
       선택:`<input type="checkbox" class="row-select" ${selectedCharacters.has(i)?'checked':''} onclick="event.stopPropagation();toggleCharacterSelection(${i},this.checked)" aria-label="${esc(r['이름'])} 선택">`,
-      이름:`<div class="name-cell-inner"><label class="unused-inline-control" title="이 캐릭터를 미사용으로 지정하여 목록에서 숨깁니다"><input type="checkbox" class="unused-row-check" ${isUnusedCharacter(i,r)?'checked':''} onclick="event.stopPropagation();toggleUnusedCharacter(${i},this.checked)" aria-label="${esc(r['이름'])} 미사용 처리"><span class="unused-inline-label">미사용</span></label><button class="name-btn" onclick="openDrawer(${i})">${esc(r['이름'])}</button></div>`,
+      이름:`<button class="name-btn" onclick="openDrawer(${i})">${esc(r['이름'])}</button>`,
+      미사용:`<label class="unused-column-control" title="이 캐릭터를 미사용으로 지정하여 목록에서 숨깁니다"><input type="checkbox" class="unused-row-check" ${isUnusedCharacter(i,r)?'checked':''} onclick="event.stopPropagation();toggleUnusedCharacter(${i},this.checked)" aria-label="${esc(r['이름'])} 미사용 처리"><span>미사용</span></label>`,
       머리:gearCells['머리'], 몸통:gearCells['몸통'], 장갑:gearCells['장갑'], 다리:gearCells['다리'],
       전투력:num(r['전투력']).toLocaleString(),
       기업:`<span class="tag">${esc(r['기업'])}</span>`,
@@ -349,11 +355,11 @@ function renderTable(){
   if(selectAll){const vis=arr.length>0 && arr.every(({i})=>selectedCharacters.has(i)); selectAll.checked=vis; selectAll.indeterminate=!vis && arr.some(({i})=>selectedCharacters.has(i));}
 }
 const COLUMN_DEFS={
-  선택:{label:'선택'}, 이름:{label:'캐릭터',filter:true}, 머리:{label:'머리',filter:true}, 몸통:{label:'몸통',filter:true}, 장갑:{label:'장갑',filter:true}, 다리:{label:'다리',filter:true},
+  선택:{label:'선택'}, 이름:{label:'캐릭터',filter:true}, 미사용:{label:'미사용'}, 머리:{label:'머리',filter:true}, 몸통:{label:'몸통',filter:true}, 장갑:{label:'장갑',filter:true}, 다리:{label:'다리',filter:true},
   전투력:{label:'전투력',filter:true}, 기업:{label:'기업',filter:true}, 속성:{label:'속성',filter:true}, 버스트:{label:'버스트',filter:true}, 클래스:{label:'클래스',filter:true},
   돌파:{label:'돌파'}, 코강:{label:'코강'}, 스킬:{label:'스킬'}, 옵션:{label:'옵션'}, 큐브:{label:'큐브',filter:true}
 };
-const DEFAULT_COLUMN_ORDER=['이름','선택','머리','몸통','장갑','다리','전투력','기업','속성','버스트','클래스','돌파','코강','스킬','옵션','큐브'];
+const DEFAULT_COLUMN_ORDER=['선택','이름','머리','몸통','장갑','다리','전투력','기업','속성','버스트','클래스','돌파','코강','스킬','옵션','큐브','미사용'];
 const COLUMN_ORDER_STORAGE='nikke_column_order_v2';
 const COLUMN_VISIBILITY_STORAGE='nikke_column_visibility_v1';
 const DETAIL_COLUMNS=['전투력','버스트','속성','돌파','코강','옵션','큐브'];
@@ -428,10 +434,9 @@ function toggleCharacterSelection(i,checked){if(checked)selectedCharacters.add(i
 function toggleVisibleSelection(checked){getFiltered().forEach(({i})=>checked?selectedCharacters.add(i):selectedCharacters.delete(i));saveSelectedCharacters();renderTable();}
 let columnOrder=(()=>{try{
   const v=JSON.parse(localStorage.getItem(COLUMN_ORDER_STORAGE)||'null');
-  if(Array.isArray(v)&&v.length===DEFAULT_COLUMN_ORDER.length&&v.every(k=>COLUMN_DEFS[k])){
-    const oldDefault=['선택','이름','머리','몸통','장갑','다리','전투력','기업','속성','버스트','클래스','돌파','코강','스킬','옵션','큐브'];
-    if(JSON.stringify(v)===JSON.stringify(oldDefault)){v[0]='이름';v[1]='선택';localStorage.setItem(COLUMN_ORDER_STORAGE,JSON.stringify(v));}
-    return v;
+  if(Array.isArray(v)&&v.every(k=>COLUMN_DEFS[k])){
+    const next=v.filter(k=>k!=='선택'&&k!=='미사용');
+    return ['선택',...next,'미사용'].filter((k,i,a)=>a.indexOf(k)===i&&COLUMN_DEFS[k]);
   }
 }catch(e){}return [...DEFAULT_COLUMN_ORDER]})();
 function saveColumnOrder(){localStorage.setItem(COLUMN_ORDER_STORAGE,JSON.stringify(columnOrder));}
