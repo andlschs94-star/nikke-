@@ -233,6 +233,8 @@ const BL_SYNC_SITE_ORIGIN=location.origin;
 let blSyncPopup=null;
 let blSyncToken='';
 let blSyncTimer=null;
+let blSyncAccount='';
+let blSyncAccountStartedAt='';
 function normalizeSyncCorp(v){
   if(typeof v==='number'&&Number.isFinite(v)) return ({1:'ELYSION',2:'MISSILIS',3:'TETRA',4:'PILGRIM',7:'ABNORMAL'})[v]||null;
   const s=String(v??'').trim().toUpperCase();
@@ -244,6 +246,9 @@ function openBlablalinkSyncGuide(){const m=document.getElementById('blsyncModal'
 function closeBlablalinkSyncGuide(){const m=document.getElementById('blsyncModal');if(m)m.hidden=true}
 function setBlSyncStatus(t){const el=document.getElementById('blsyncStatus');if(el)el.textContent=t||''}
 function startBlablalinkSync(){
+  // 동기화를 시작한 계정을 고정해 다른 계정 데이터와 섞이지 않도록 합니다.
+  blSyncAccount=activeAccount;
+  blSyncAccountStartedAt=new Date().toISOString();
   blSyncToken=(crypto.randomUUID?crypto.randomUUID():String(Date.now())+'-'+Math.random().toString(36).slice(2));
   blSyncPopup=window.open('https://www.blablalink.com/','nikkeBlablalinkSync','width=520,height=760,resizable=yes,scrollbars=yes');
   if(!blSyncPopup){setBlSyncStatus('팝업이 차단되었습니다. 브라우저에서 팝업을 허용한 뒤 다시 시도하세요.');return}
@@ -273,13 +278,16 @@ window.addEventListener('message',e=>{
   if(blSyncTimer){clearInterval(blSyncTimer);blSyncTimer=null}
   const p=d.payload||{};
   if(!p.ok){setBlSyncStatus('동기화 실패: '+String(p.error||'알 수 없는 오류'));return}
-  const byName=new Map(data.map((r,i)=>[String(r?.['이름']??'').trim(),i]));
+  // 동기화를 시작한 계정에만 결과를 적용합니다.
+  const syncAccount=ACCOUNTS.includes(blSyncAccount)?blSyncAccount:activeAccount;
+  const targetData=syncAccount===activeAccount?data:readAccountData(syncAccount);
+  const byName=new Map(targetData.map((r,i)=>[String(r?.['이름']??'').trim(),i]));
   let matched=0,changed=0;
   for(const u of Array.isArray(p.updates)?p.updates:[]){
     const idx=byName.get(String(u?.name??'').trim());
     if(idx==null)continue;
     matched++;
-    const r=data[idx];
+    const r=targetData[idx];
         for(const part of gearParts){
       const rawCorp=normalizeSyncCorp(u?.parts?.[part]);
       const key=part+'_기업장비';
@@ -287,8 +295,15 @@ window.addEventListener('message',e=>{
       if(String(r[key]??'')!==next){r[key]=next;changed++}
     }
   }
-  save();
-  try{localStorage.setItem('nikkeBlSyncMeta',JSON.stringify({at:new Date().toISOString(),nickname:p.nickname||'',areaId:p.areaId||null,detailCount:p.detailCount||0,matched,changed,unresolved:(p.unresolved||[]).length}))}catch(_){}
+  try{
+    localStorage.setItem(accountStorageKey(ACCOUNT_STORAGE_PREFIX,syncAccount),JSON.stringify(targetData));
+  }catch(e){console.warn('계정별 동기화 저장 실패',e)}
+  try{
+    localStorage.setItem('nikkeBlSyncMeta_'+encodeURIComponent(syncAccount),JSON.stringify({
+      at:new Date().toISOString(),account:syncAccount,nickname:p.nickname||'',areaId:p.areaId||null,
+      detailCount:p.detailCount||0,matched,changed,unresolved:(p.unresolved||[]).length
+    }));
+  }catch(_){}
   renderTable();
   renderKpis();
   renderDropRatePanel();
