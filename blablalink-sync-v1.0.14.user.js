@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         NIKKE Gear Manager - BlablaLink 자동 장비 동기화
 // @namespace    https://andlschs94-star.github.io/nikke-/
-// @version      1.0.14
+// @version      1.0.15
 // @updateURL    https://raw.githubusercontent.com/andlschs94-star/nikke-/main/blablalink-sync-v1.0.14.user.js
 // @downloadURL  https://raw.githubusercontent.com/andlschs94-star/nikke-/main/blablalink-sync-v1.0.14.user.js
 // @match        https://*.blablalink.com/*
@@ -18,7 +18,14 @@ const API={
  details:'https://api.blablalink.com/api/game/proxy/Game/GetUserCharacterDetails'
 };
 const corp={1:'ELYSION',2:'MISSILIS',3:'TETRA',4:'PILGRIM',5:'ABNORMAL',7:'ABNORMAL'};
-let busy=false;
+let info={openId:'',areaId:null,nickname:''},busy=false;
+(function capture(){
+ const s=document.createElement('script');
+ s.textContent="(()=>{if(window.__NIKKE_GM_CAP)return;window.__NIKKE_GM_CAP=1;const f=window.fetch;window.fetch=async function(...a){try{const u=String(a[0]?.url||a[0]||''),b=a[1]?.body;if(b&&/GetUserGamePlayerInfo|GetUserProfileBasicInfo|GetUserCharacterDetails/.test(u)){const q=JSON.parse(b),id=q.intl_open_id||q.intl_openid;if(id)window.postMessage({type:'NIKKE_GM_CAP',id:String(id)},'*')}}catch(e){}return f.apply(this,a)}})();";
+ (document.documentElement||document.head||document.body).appendChild(s);s.remove();
+})();
+window.addEventListener('message',e=>{if(e.data?.type!=='NIKKE_GM_CAP')return;const id=String(e.data.id||'');if(id)info.openId=id.includes('-')?id.split('-').pop():id;});
+
 async function post(url,body){
  const r=await fetch(url,{method:'POST',credentials:'include',headers:{'Content-Type':'application/json;charset=UTF-8'},body:JSON.stringify(body)});
  if(!r.ok) throw Error('HTTP '+r.status);
