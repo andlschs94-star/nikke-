@@ -317,28 +317,6 @@
     runSync(state.pendingToken, e.source);
   });
 
-  // 관리 사이트에서 팝업을 열지 않고 BlablaLink를 직접 방문한 경우를 위한 보조 버튼
-  function addStandaloneButton(){
-    if(document.getElementById('nikke-gm-standalone-sync')) return;
-    if(!document.body) return;
-    const b=document.createElement('button');
-    b.id='nikke-gm-standalone-sync';
-    b.textContent='NIKKE 장비 동기화';
-    b.title='NIKKE Gear Manager로 기업장비 정보를 전송합니다.';
-    b.style.cssText='position:fixed;right:18px;bottom:18px;z-index:2147483647;border:0;border-radius:10px;padding:11px 15px;background:#6c5ce7;color:#fff;font:800 13px Arial,sans-serif;box-shadow:0 6px 22px rgba(0,0,0,.35);';
-    b.onclick=()=>{
-      const w=window.open(TARGET_ORIGIN+'/nikke-/','_blank');
-      if(!w){ alert('새 창이 차단되었습니다. 팝업을 허용한 뒤 다시 눌러 주세요.'); return; }
-      const token=String(Date.now())+'-'+Math.random().toString(36).slice(2);
-      // 새 창이 로드되면 ready 메시지를 보내기 위해 짧게 대기합니다.
-      const timer=setInterval(()=>{
-        try{ w.postMessage({type:'NIKKE_GM_STANDALONE_READY,token}, TARGET_ORIGIN); }catch(_){}
-      },500);
-      setTimeout(()=>clearInterval(timer),8000);
-    };
-    document.body.appendChild(b);
-  }
-
   const boot = () => {
     // 관리 사이트 팝업과의 연결은 READY/HELLO 핸드셰이크로 처리합니다.
     setTimeout(()=>addStandaloneButton(), 1200);
