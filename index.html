@@ -392,7 +392,7 @@ function getFiltered(){
       const matched=activeGearParts.every(p=>{
         const set=filters.장비부위별[p];
         const idx=gearParts.indexOf(p);
-        return set.has(g.parts[idx].category);
+        return [...set].some(filterValue=>filterValue.startsWith('company:') ? (g.parts[idx].category==='company' && g.parts[idx].corporation===filterValue.slice(8)) : filterValue===g.parts[idx].category);
       });
       if(!matched) return false;
     }
@@ -563,8 +563,8 @@ function renderHeaderOptions(key,container,btn){
   }
   if(gearKey){
     const part=key;
-    const intro=document.createElement('div');intro.className='gear-filter-intro';intro.textContent='이 부위의 장비 상태를 선택하세요.';container.appendChild(intro);
-    const statusItems=[['overload','오버로드'],['company','기업장비'],['normal','일반장비'],['missing','미착용']];
+    const intro=document.createElement('div');intro.className='gear-filter-intro';intro.textContent='이 부위의 장비 상태 또는 기업장비 종류를 선택하세요. 여러 개 선택하면 OR 조건으로 적용됩니다.';container.appendChild(intro);
+    const statusItems=[['overload','오버로드'],['company','기업장비 전체'],['normal','일반장비'],['missing','미착용'],['company:엘리시온','엘리시온'],['company:미실리스','미실리스'],['company:테트라','테트라'],['company:필그림','필그림'],['company:어브노멀','어브노멀']];
     const opts=document.createElement('div');opts.className='column-filter-options';
     const set=filters.장비부위별[part];
     statusItems.forEach(([v,l])=>{const b=document.createElement('button');b.className='column-filter-option '+(set.has(v)?'active':'');b.innerHTML=`<span>${l}</span><span class="check">✓</span>`;b.onclick=()=>{set.has(v)?set.delete(v):set.add(v);renderHeaderOptions(key,container,btn);renderTable()};opts.appendChild(b)});
