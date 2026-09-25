@@ -332,7 +332,7 @@ function openDropStageMenu(part,anchor){
   dropStagePopover.className='drop-stage-popover';
   dropStagePopover.innerHTML=Object.entries(DROP_RATES).map(([st,rt])=>{
     const active=Number(st)===stage?'active':'';
-    return '<button type="button" class="drop-stage-option '+active+'" onclick="setDropRateStage(\\''+part+'\\','+Number(st)+')"><span>'+st+'단계</span><span class="drop-stage-rate">'+rt+'%</span></button>';
+    return '<button type="button" class="drop-stage-option '+active+'" data-part="'+part+'" data-stage="'+st+'" onclick="setDropRateStage(this.dataset.part,Number(this.dataset.stage))"><span>'+st+'단계</span><span class="drop-stage-rate">'+rt+'%</span></button>';
   }).join('');
   document.body.appendChild(dropStagePopover);
   const r=anchor.getBoundingClientRect();
