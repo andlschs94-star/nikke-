@@ -352,18 +352,30 @@ window.addEventListener('message',e=>{
       .filter(Boolean)
       .filter(name=>!syncedNames.has(name))
   );
-  // 동기화 결과에 없는 캐릭터는 미사용 처리와 함께 4부위 장비를 모두 일반장비(9T)로 초기화합니다.
-  // 다음 동기화에서 해당 캐릭터가 다시 확인되면 실제 장비 정보로 덮어씁니다.
+  // 동기화 결과에 없는 캐릭터는 미사용 처리하고, 보유 정보는 모두 최저 상태로 초기화합니다.
+  // 다음 동기화에서 해당 캐릭터가 다시 확인되면 실제 정보로 덮어씁니다.
   for(const name of nextUnused){
     const idx=byName.get(name);
     if(idx==null)continue;
     const row=targetData[idx];
+
+    // 장비: 일반장비 9T / 레벨 0 / 기업장비 없음
     for(const part of gearParts){
       const tierKey=part+'_티어', levelKey=part+'_레벨', corpKey=part+'_기업장비';
       if(num(row[tierKey])!==9){row[tierKey]=9;changed++}
       if(num(row[levelKey])!==0){row[levelKey]=0;changed++}
       if(String(row[corpKey]??'')!==''){row[corpKey]='';changed++}
+      for(const key of [part+'_옵1',part+'_옵1값',part+'_옵2',part+'_옵2값',part+'_옵3',part+'_옵3값']){
+        if(row[key]!==null && row[key]!==''){row[key]=null;changed++}
+      }
     }
+
+    // 장비 외 숫자형 육성 수치: 모두 최저값 0으로 초기화
+    for(const key of ['전투력','호감도','돌파','코강','스킬1','스킬2','버스트스킬','큐브_레벨']){
+      if(num(row[key])!==0){row[key]=0;changed++}
+    }
+    // 큐브 및 기타 장비/강화 정보도 보유하지 않은 상태로 초기화
+    if(row['큐브']!==null && row['큐브']!==''){row['큐브']=null;changed++}
   }
   try{
     localStorage.setItem(accountStorageKey(ACCOUNT_STORAGE_PREFIX,syncAccount),JSON.stringify(targetData));
