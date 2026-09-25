@@ -188,9 +188,12 @@ function num(v){const n=Number(v);return Number.isFinite(n)?n:0}
 function gearCompanyType(r,p){const v=r[p+'_기업장비'];if(v===true||v===1||String(v).toLowerCase()==='true'||v==='기업장비'||v==='맞음')return 'company';if(typeof v==='string'&&['ELYSION','MISSILIS','TETRA','PILGRIM','ABNORMAL'].includes(v.toUpperCase()))return 'company';if(v===false||v===0||String(v).toLowerCase()==='false'||v==='타기업장비'||v==='기업 불일치'||v==='아님')return 'other';return 'unknown';}
 function gearCompanyName(v){return ({ELYSION:'엘리시온',MISSILIS:'미실리스',TETRA:'테트라',PILGRIM:'필그림',ABNORMAL:'어브노멀'})[String(v||'').toUpperCase()]||'';}
 function gearClassName(v){const s=String(v??'').trim();return ({'공격형':'공격형','방어형':'방어형','지원형':'지원형','ATTACKER':'공격형','DEFENDER':'방어형','SUPPORTER':'지원형'})[s.toUpperCase()]||s;}
-function gearMatchesCharacterClass(r,p){const gearClass=gearClassName(r[p+'_기업장비_클래스']);const charClass=gearClassName(r['클래스']);return !gearClass||!charClass||gearClass===charClass;}
+/* 기업장비는 다른 기업 장비를 장착할 수 있지만, 다른 클래스 장비는 장착할 수 없습니다.
+   따라서 실제로 기업장비를 착용 중인 경우 그 장비의 클래스는 별도 데이터가 없어도
+   항상 해당 캐릭터의 클래스로 간주합니다. */
+function gearMatchesCharacterClass(r,p){return Boolean(gearClassName(r['클래스']));}
 function gearMatchesCharacterCompany(r,p){const corp=gearCompanyName(r[p+'_기업장비']);return Boolean(corp&&corp===String(r['기업']??'').trim())&&gearMatchesCharacterClass(r,p);}
-function gearEquipmentClass(r,p){const key=p+'_기업장비_클래스';const stored=gearClassName(r[key]);return stored||String(r['클래스']??'').trim();}
+function gearEquipmentClass(r,p){return gearClassName(r['클래스']);}
 function gearCompanyLabel(v){return ({company:'기업장비',other:'일반장비',unknown:'일반장비'})[v]||'일반장비';}
 function gearPartCategory(r,p){const tier=num(r[p+'_티어']);const companyType=gearCompanyType(r,p);if(tier<=0)return 'missing';if(tier>=10)return 'overload';if(companyType==='company')return 'company';return 'normal';}
 function gearNeedsCorporate(r,p){const cat=gearPartCategory(r,p);return cat==='normal'||(cat==='company'&&!gearMatchesCharacterCompany(r,p));}
