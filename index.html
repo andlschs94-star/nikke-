@@ -139,7 +139,7 @@ th,td{padding:8px 8px}
 .corp-owned-standalone{margin:0 0 12px;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:#0a1220}
 .corp-owned-standalone .corp-owned-title{background:#0f192b}
 </style></head><body>
-<div class="site-version-corner">VERSION 0.70</div><button type="button" class="sidebar-toggle" id="sidebarToggle" aria-label="메뉴 열기" title="메뉴" onclick="closeSettingsMenu();const s=document.getElementById('sidebar'),b=document.getElementById('sidebarBackdrop'),o=s.classList.toggle('open');b.classList.toggle('open',o);this.classList.toggle('open',o);this.textContent=o?'×':'☰';this.setAttribute('aria-label',o?'메뉴 닫기':'메뉴 열기')">☰</button>
+<div class="site-version-corner">VERSION 0.71</div><button type="button" class="sidebar-toggle" id="sidebarToggle" aria-label="메뉴 열기" title="메뉴" onclick="closeSettingsMenu();const s=document.getElementById('sidebar'),b=document.getElementById('sidebarBackdrop'),o=s.classList.toggle('open');b.classList.toggle('open',o);this.classList.toggle('open',o);this.textContent=o?'×':'☰';this.setAttribute('aria-label',o?'메뉴 닫기':'메뉴 열기')">☰</button>
 <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
 <div class="app"><aside class="sidebar" id="sidebar"><div class="brand"><div class="logo">N</div><div><h1>NIKKE Gear Manager</h1><p>장비·성장 현황 관리</p></div></div><div class="nav"><button class="active">캐릭터 관리</button></div><div class="section" style="font-size:11px;color:#6f7b96;line-height:1.6">현재는 캐릭터 관리 기능을 제공합니다.<br>다른 관리 기능은 오른쪽 위 ⚙ 설정에서 사용할 수 있습니다.</div></aside>
 <main class="main"><div class="topbar"><div><div class="eyebrow">NIKKE / INVENTORY</div><h2>캐릭터 장비 현황</h2></div><div class="actions account-switcher"><button type="button" class="btn account-switch-btn active" data-account="제닐스" onclick="switchAccount('제닐스')">제닐스</button><button type="button" class="btn account-switch-btn" data-account="대상혁" onclick="switchAccount('대상혁')">대상혁</button><div class="settings-wrap"><button type="button" class="settings-btn" id="settingsBtn" aria-label="설정" title="설정" onclick="toggleSettingsMenu(event)">⚙</button></div></div></div><div class="settings-popover" id="settingsPopover" hidden>
@@ -164,7 +164,8 @@ const RAW = [{"이름":"신데렐라","전투력":497244,"협투력":55209,"속�
 const STORAGE='nikkeGearManagerV6';
 const LEGACY_STORAGE='nikkeGearManagerV5';
 const ACCOUNT_STORAGE_PREFIX='nikkeGearManagerV6_account_';
-const ACCOUNT_SELECTION_PREFIX='nikke_character_selection_v1_';
+const ACCOUNT_SELECTION_PREFIX='nikke_character_selection_v2_';
+const LEGACY_ACCOUNT_SELECTION_PREFIX='nikke_character_selection_v1_';
 const ACCOUNT_UNUSED_PREFIX='nikke_unused_characters_v3_';
 const ACCOUNT_UNOWNED_PREFIX='nikke_unowned_characters_v1_';
 const ACCOUNT_STATE_STORAGE='nikke_active_account_v1';
@@ -318,6 +319,13 @@ window.addEventListener('message',e=>{
   // 동기화를 시작한 계정에만 결과를 적용합니다.
   const syncAccount=ACCOUNTS.includes(blSyncAccount)?blSyncAccount:activeAccount;
   const targetData=syncAccount===activeAccount?data:readAccountData(syncAccount);
+  const preservedSelectedNames=new Set(
+    (syncAccount===activeAccount ? selectedCharacters : loadAccountSelection(syncAccount))
+      ? [...(syncAccount===activeAccount ? selectedCharacters : loadAccountSelection(syncAccount))]
+          .map(i=>characterName(i,(syncAccount===activeAccount?data:targetData)[i]))
+          .filter(Boolean)
+      : []
+  );
   const nextUnowned=new Set();
   const byName=new Map(targetData.map((r,i)=>[String(r?.['이름']??'').trim(),i]));
   let matched=0,changed=0;
@@ -399,6 +407,10 @@ window.addEventListener('message',e=>{
   }catch(e){console.warn('계정별 동기화 저장 실패',e)}
   if(syncAccount===activeAccount){
     data=targetData;
+    selectedCharacters=new Set(
+      targetData.map((r,i)=>preservedSelectedNames.has(String(r?.['이름']??'').trim())?i:-1).filter(i=>i>=0)
+    );
+    saveSelectedCharacters();
     unusedCharacters=nextUnused;
     unownedCharacters=nextUnowned;
   }
@@ -690,20 +702,41 @@ function loadAccountSelection(account){
     const saved=localStorage.getItem(key);
     if(saved!==null){
       const v=JSON.parse(saved);
-      return new Set(Array.isArray(v)?v.map(Number).filter(Number.isInteger):[]);
+      if(Array.isArray(v)){
+        const names=new Set(v.map(x=>String(x).trim()).filter(Boolean));
+        const indices=new Set();
+        data.forEach((r,i)=>{if(names.has(characterName(i,r)))indices.add(i);});
+        return indices;
+      }
+    }
+    // 기존 v1 인덱스 저장값을 캐릭터 이름 기반 v2로 1회 변환합니다.
+    const legacyKey=accountStorageKey(LEGACY_ACCOUNT_SELECTION_PREFIX,account);
+    const legacySaved=localStorage.getItem(legacyKey);
+    if(legacySaved!==null){
+      const legacy=JSON.parse(legacySaved);
+      if(Array.isArray(legacy)){
+        const names=[...new Set(legacy.map(Number).filter(Number.isInteger).map(i=>characterName(i,data[i])).filter(Boolean))];
+        localStorage.setItem(key,JSON.stringify(names));
+        return new Set(names.map(name=>data.findIndex(r=>characterName(data.indexOf(r),r)===name)).filter(i=>i>=0));
+      }
     }
     if(account==='제닐스'){
       const legacy=JSON.parse(localStorage.getItem(CHARACTER_SELECTION_STORAGE)||'[]');
       if(Array.isArray(legacy)){
-        const set=new Set(legacy.map(Number).filter(Number.isInteger));
-        localStorage.setItem(key,JSON.stringify([...set]));
-        return set;
+        const names=[...new Set(legacy.map(Number).filter(Number.isInteger).map(i=>characterName(i,data[i])).filter(Boolean))];
+        localStorage.setItem(key,JSON.stringify(names));
+        return new Set(names.map(name=>data.findIndex(r=>String(r?.['이름']??'').trim()===name)).filter(i=>i>=0));
       }
     }
   }catch(e){}
   return new Set();
 }
-function saveSelectedCharacters(){try{localStorage.setItem(accountStorageKey(ACCOUNT_SELECTION_PREFIX,activeAccount),JSON.stringify([...selectedCharacters]));}catch(e){}}
+function saveSelectedCharacters(){
+  try{
+    const names=[...selectedCharacters].map(i=>characterName(i,data[i])).filter(Boolean);
+    localStorage.setItem(accountStorageKey(ACCOUNT_SELECTION_PREFIX,activeAccount),JSON.stringify([...new Set(names)]));
+  }catch(e){}
+}
 function characterName(i,r){return String((r||data[i]||{})['이름']??'').trim();}
 function loadAccountUnowned(account){
   try{
