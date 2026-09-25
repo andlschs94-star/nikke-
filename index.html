@@ -139,7 +139,7 @@ th,td{padding:8px 8px}
 .corp-owned-standalone{margin:0 0 12px;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:#0a1220}
 .corp-owned-standalone .corp-owned-title{background:#0f192b}
 </style></head><body>
-<div class="site-version-corner">VERSION 0.72</div><button type="button" class="sidebar-toggle" id="sidebarToggle" aria-label="메뉴 열기" title="메뉴" onclick="closeSettingsMenu();const s=document.getElementById('sidebar'),b=document.getElementById('sidebarBackdrop'),o=s.classList.toggle('open');b.classList.toggle('open',o);this.classList.toggle('open',o);this.textContent=o?'×':'☰';this.setAttribute('aria-label',o?'메뉴 닫기':'메뉴 열기')">☰</button>
+<div class="site-version-corner">VERSION 0.73</div><button type="button" class="sidebar-toggle" id="sidebarToggle" aria-label="메뉴 열기" title="메뉴" onclick="closeSettingsMenu();const s=document.getElementById('sidebar'),b=document.getElementById('sidebarBackdrop'),o=s.classList.toggle('open');b.classList.toggle('open',o);this.classList.toggle('open',o);this.textContent=o?'×':'☰';this.setAttribute('aria-label',o?'메뉴 닫기':'메뉴 열기')">☰</button>
 <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
 <div class="app"><aside class="sidebar" id="sidebar"><div class="brand"><div class="logo">N</div><div><h1>NIKKE Gear Manager</h1><p>장비·성장 현황 관리</p></div></div><div class="nav"><button class="active">캐릭터 관리</button></div><div class="section" style="font-size:11px;color:#6f7b96;line-height:1.6">현재는 캐릭터 관리 기능을 제공합니다.<br>다른 관리 기능은 오른쪽 위 ⚙ 설정에서 사용할 수 있습니다.</div></aside>
 <main class="main"><div class="topbar"><div><div class="eyebrow">NIKKE / INVENTORY</div><h2>캐릭터 장비 현황</h2></div><div class="actions account-switcher"><button type="button" class="btn account-switch-btn active" data-account="제닐스" onclick="switchAccount('제닐스')">제닐스</button><button type="button" class="btn account-switch-btn" data-account="대상혁" onclick="switchAccount('대상혁')">대상혁</button><div class="settings-wrap"><button type="button" class="settings-btn" id="settingsBtn" aria-label="설정" title="설정" onclick="toggleSettingsMenu(event)">⚙</button></div></div></div><div class="settings-popover" id="settingsPopover" hidden>
@@ -1009,6 +1009,22 @@ function field(label,key,val){return `<div class="field"><label>${label}</label>
 function pieceHTML(p,r){const st=gearPartState(r,p);const company=gearCompanyType(r,p);return `<div class="piece"><div style="display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:8px"><h4 style="margin:0">${p}</h4><span class="piece-status ${st.type}">${st.label}</span></div><div class="edit-grid"><div class="field"><label>티어</label><input data-key="${p}_티어" value="${esc(r[p+'_티어']??'')}" /></div><div class="field"><label>레벨</label><input data-key="${p}_레벨" value="${esc(r[p+'_레벨']??'')}" /></div><div class="field"><label>기업장비 여부</label><select data-key="${p}_기업장비"><option value="">미지정</option><option value="company" ${company==='company'?'selected':''}>기업장비</option><option value="other" ${company==='other'?'selected':''}>기업 불일치</option></select></div>${[1,2,3].map(n=>`<div class="field"><label>옵션${n}</label><input data-key="${p}_옵${n}" value="${esc(r[p+'_옵'+n]??'')}" /></div><div class="field"><label>옵션${n} 값</label><input data-key="${p}_옵${n}값" value="${esc(r[p+'_옵'+n+'값']??'')}" /></div>`).join('')}</div></div>`}
 function saveDrawer(){document.querySelectorAll('#drawerBody [data-key]').forEach(el=>data[editIndex][el.dataset.key]=el.value===''?null:el.value);const u=document.getElementById('unusedCharacterToggle');if(u){const name=characterName(editIndex,data[editIndex]);if(name){if(u.checked)unusedCharacters.add(name);else unusedCharacters.delete(name);saveUnusedCharacters();}}save();renderTable();closeDrawer();toast('저장되었습니다')}
 function closeDrawer(){document.getElementById('drawer').classList.remove('open');editIndex=-1}
+function closeSidebar(){
+  const s=document.getElementById('sidebar'),b=document.getElementById('sidebarBackdrop'),t=document.getElementById('sidebarToggle');
+  if(!s)return;
+  s.classList.remove('open');b?.classList.remove('open');t?.classList.remove('open');
+  if(t){t.textContent='☰';t.setAttribute('aria-label','메뉴 열기');}
+}
+function initSidebarOutsideClick(){
+  const s=document.getElementById('sidebar'),t=document.getElementById('sidebarToggle'),b=document.getElementById('sidebarBackdrop');
+  if(!s)return;
+  b?.addEventListener('click',closeSidebar);
+  document.addEventListener('click',e=>{
+    if(!s.classList.contains('open'))return;
+    if(s.contains(e.target)||t?.contains(e.target))return;
+    closeSidebar();
+  });
+}
 function download(name,text,type){const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([text],{type}));a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000)}
 function exportJSON(){download('nikke_gear_backup.json',JSON.stringify(data,null,2),'application/json')}
 function csvCell(v){const s=String(v??'');return /[",\n]/.test(s)?'"'+s.replace(/"/g,'""')+'"':s}
@@ -1052,7 +1068,7 @@ function outsideSettingsOnce(e){
 }
 window.addEventListener('resize',closeSettingsMenu);
 window.addEventListener('scroll',closeSettingsMenu,true);
-initPanelHeadDrag();function updateAccountButtons(){
+initPanelHeadDrag();initSidebarOutsideClick();function updateAccountButtons(){
   document.querySelectorAll('.account-switch-btn').forEach(b=>b.classList.toggle('active',b.dataset.account===activeAccount));
 }
 function switchAccount(account){
