@@ -139,7 +139,7 @@ th,td{padding:8px 8px}
 .corp-owned-standalone{margin:0 0 12px;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:#0a1220}
 .corp-owned-standalone .corp-owned-title{background:#0f192b}
 </style></head><body>
-<div class="site-version-corner">VERSION 0.089</div><button type="button" class="sidebar-toggle" id="sidebarToggle" aria-label="메뉴 열기" title="메뉴" onclick="closeSettingsMenu();const s=document.getElementById('sidebar'),b=document.getElementById('sidebarBackdrop'),o=s.classList.toggle('open');b.classList.toggle('open',o);this.classList.toggle('open',o);this.textContent=o?'×':'☰';this.setAttribute('aria-label',o?'메뉴 닫기':'메뉴 열기')">☰</button>
+<div class="site-version-corner">VERSION 0.090</div><button type="button" class="sidebar-toggle" id="sidebarToggle" aria-label="메뉴 열기" title="메뉴" onclick="closeSettingsMenu();const s=document.getElementById('sidebar'),b=document.getElementById('sidebarBackdrop'),o=s.classList.toggle('open');b.classList.toggle('open',o);this.classList.toggle('open',o);this.textContent=o?'×':'☰';this.setAttribute('aria-label',o?'메뉴 닫기':'메뉴 열기')">☰</button>
 <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
 <div class="app"><aside class="sidebar" id="sidebar"><div class="brand"><div class="logo">N</div><div><h1>NIKKE Gear Manager</h1><p>장비·성장 현황 관리</p></div></div><div class="nav"><button class="active">캐릭터 관리</button></div><div class="section" style="font-size:11px;color:#6f7b96;line-height:1.6">현재는 캐릭터 관리 기능을 제공합니다.<br>다른 관리 기능은 오른쪽 위 ⚙ 설정에서 사용할 수 있습니다.</div></aside>
 <main class="main"><div class="topbar"><div><div class="eyebrow">NIKKE / INVENTORY</div><h2>캐릭터 장비 현황</h2></div><div class="actions account-switcher"><button type="button" class="btn account-switch-btn active" data-account="제닐스" onclick="switchAccount('제닐스')">제닐스</button><button type="button" class="btn account-switch-btn" data-account="대상혁" onclick="switchAccount('대상혁')">대상혁</button><div class="settings-wrap"><button type="button" class="settings-btn" id="settingsBtn" aria-label="설정" title="설정" onclick="toggleSettingsMenu(event)">⚙</button></div></div></div><div class="settings-popover" id="settingsPopover" hidden>
@@ -261,14 +261,21 @@ const gearParts=['머리','몸통','장갑','다리'];
 function esc(s){return String(s??'').replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]));}
 function num(v){const n=Number(v);return Number.isFinite(n)?n:0}
 function gearCompanyType(r,p){const v=r[p+'_기업장비'];if(v===true||v===1||String(v).toLowerCase()==='true'||v==='기업장비'||v==='맞음')return 'company';if(typeof v==='string'&&['ELYSION','MISSILIS','TETRA','PILGRIM','ABNORMAL'].includes(v.toUpperCase()))return 'company';if(v===false||v===0||String(v).toLowerCase()==='false'||v==='타기업장비'||v==='기업 불일치'||v==='아님')return 'other';return 'unknown';}
+function canonicalCharacterField(r,key){
+  const name=String(r?.['이름']??'').trim();
+  const base=RAW.find(x=>String(x?.['이름']??'').trim()===name);
+  return base&&Object.prototype.hasOwnProperty.call(base,key)?base[key]:r?.[key];
+}
+function canonicalCharacterCompany(r){return String(canonicalCharacterField(r,'기업')??'').trim();}
+function canonicalCharacterClass(r){return gearClassName(canonicalCharacterField(r,'클래스'));}
 function gearCompanyName(v){return ({ELYSION:'엘리시온',MISSILIS:'미실리스',TETRA:'테트라',PILGRIM:'필그림',ABNORMAL:'어브노멀'})[String(v||'').toUpperCase()]||'';}
 function gearClassName(v){const s=String(v??'').trim();return ({'공격형':'공격형','방어형':'방어형','지원형':'지원형','ATTACKER':'공격형','DEFENDER':'방어형','SUPPORTER':'지원형'})[s.toUpperCase()]||s;}
 /* 기업장비는 다른 기업 장비를 장착할 수 있지만, 다른 클래스 장비는 장착할 수 없습니다.
    따라서 실제로 기업장비를 착용 중인 경우 그 장비의 클래스는 별도 데이터가 없어도
    항상 해당 캐릭터의 클래스로 간주합니다. */
-function gearMatchesCharacterClass(r,p){return Boolean(gearClassName(r['클래스']));}
-function gearMatchesCharacterCompany(r,p){const corp=gearCompanyName(r[p+'_기업장비']);return Boolean(corp&&corp===String(r['기업']??'').trim())&&gearMatchesCharacterClass(r,p);}
-function gearEquipmentClass(r,p){return gearClassName(r['클래스']);}
+function gearMatchesCharacterClass(r,p){return Boolean(canonicalCharacterClass(r));}
+function gearMatchesCharacterCompany(r,p){const corp=gearCompanyName(r[p+'_기업장비']);return Boolean(corp&&corp===canonicalCharacterCompany(r))&&gearMatchesCharacterClass(r,p);}
+function gearEquipmentClass(r,p){return canonicalCharacterClass(r);}
 function gearCompanyLabel(v){return ({company:'기업장비',other:'일반장비',unknown:'일반장비'})[v]||'일반장비';}
 function gearPartCategory(r,p){const tier=num(r[p+'_티어']);const companyType=gearCompanyType(r,p);if(tier<=0)return 'missing';if(tier>=10)return 'overload';if(companyType==='company')return 'company';return 'normal';}
 function gearNeedsCorporate(r,p){const cat=gearPartCategory(r,p);return cat==='missing'||cat==='normal'||(cat==='company'&&!gearMatchesCharacterCompany(r,p));}
@@ -576,8 +583,8 @@ function getUnusedGearTransferSuggestions(){
   const suggestions=[];
   data.forEach((source,i)=>{
     if(!isUnusedCharacter(i,source))return;
-    const sourceCompany=String(source['기업']??'').trim();
-    const sourceClass=gearClassName(source['클래스']);
+    const sourceCompany=canonicalCharacterCompany(source);
+    const sourceClass=canonicalCharacterClass(source);
     if(!sourceCompany||!sourceClass)return;
     gearParts.forEach(part=>{
       const state=gearPartState(source,part);
@@ -591,7 +598,7 @@ function getUnusedGearTransferSuggestions(){
         const targetState=gearPartState(target,part);
         if(targetState.category==='overload')return false;
         if(targetState.category==='company' && !targetState.mismatch)return false;
-        return String(target['기업']??'').trim()===gearCompany && gearClassName(target['클래스'])===sourceClass;
+        return canonicalCharacterCompany(target)===gearCompany && canonicalCharacterClass(target)===sourceClass;
       });
       if(targets.length){
         suggestions.push({source,sourceIndex:i,part,state,targetNames:targets.map(x=>String(x.target['이름']??'').trim()).filter(Boolean)});
@@ -611,7 +618,7 @@ function renderUnusedGearTransferPanel(){
     const merged=[];
     const map=new Map();
     raw.forEach(x=>{
-      const company=String(x.source['기업']??'').trim();
+      const company=canonicalCharacterCompany(x.source);
       const key=company+'|'+part+'|'+String(x.state.label??'');
       if(!map.has(key)){
         const item={...x,sourceNames:[],targetNames:[...new Set(x.targetNames)]};
@@ -623,8 +630,8 @@ function renderUnusedGearTransferPanel(){
       x.targetNames.forEach(name=>{if(name&&!item.targetNames.includes(name))item.targetNames.push(name);});
     });
     merged.sort((a,b)=>{
-      const ac=companyOrder.indexOf(String(a.source['기업']??'').trim());
-      const bc=companyOrder.indexOf(String(b.source['기업']??'').trim());
+      const ac=companyOrder.indexOf(canonicalCharacterCompany(a.source));
+      const bc=companyOrder.indexOf(canonicalCharacterCompany(b.source));
       return (ac<0?999:ac)-(bc<0?999:bc);
     });
     return {part,items:merged};
@@ -756,10 +763,10 @@ function renderTable(){
       미사용:`<button type="button" class="unused-status-toggle ${isUnusedCharacter(i,r)?'active':''}" onclick="event.stopPropagation();toggleUnusedCharacter(${i},${!isUnusedCharacter(i,r)})" aria-label="${esc(r['이름'])} 미사용 여부">${unownedCharacters.has(characterName(i,r))?'미보유':'미사용'}</button>`,
       머리:gearCells['머리'], 몸통:gearCells['몸통'], 장갑:gearCells['장갑'], 다리:gearCells['다리'],
       전투력:num(r['전투력']).toLocaleString(),
-      기업:`<span class="tag">${esc(r['기업'])}</span>`,
+      기업:`<span class="tag">${esc(canonicalCharacterCompany(r))}</span>`,
       속성:esc(r['속성']),
       버스트:esc(r['버스트']),
-      클래스:esc(r['클래스']),
+      클래스:esc(canonicalCharacterClass(r)),
       돌파:esc(r['돌파']??0),
       코강:esc(r['코강']??0),
       스킬:`${esc(r['스킬1']??0)} / ${esc(r['스킬2']??0)} / ${esc(r['버스트스킬']??0)}`,
