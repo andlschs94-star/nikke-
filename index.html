@@ -139,7 +139,7 @@ th,td{padding:8px 8px}
 .corp-owned-standalone{margin:0 0 12px;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:#0a1220}
 .corp-owned-standalone .corp-owned-title{background:#0f192b}
 </style></head><body>
-<div class="site-version-corner">VERSION 0.097</div><button type="button" class="sidebar-toggle" id="sidebarToggle" aria-label="메뉴 열기" title="메뉴" onclick="closeSettingsMenu();const s=document.getElementById('sidebar'),b=document.getElementById('sidebarBackdrop'),o=s.classList.toggle('open');b.classList.toggle('open',o);this.classList.toggle('open',o);this.textContent=o?'×':'☰';this.setAttribute('aria-label',o?'메뉴 닫기':'메뉴 열기')">☰</button>
+<div class="site-version-corner">VERSION 0.098</div><button type="button" class="sidebar-toggle" id="sidebarToggle" aria-label="메뉴 열기" title="메뉴" onclick="closeSettingsMenu();const s=document.getElementById('sidebar'),b=document.getElementById('sidebarBackdrop'),o=s.classList.toggle('open');b.classList.toggle('open',o);this.classList.toggle('open',o);this.textContent=o?'×':'☰';this.setAttribute('aria-label',o?'메뉴 닫기':'메뉴 열기')">☰</button>
 <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
 <div class="app"><aside class="sidebar" id="sidebar"><div class="brand"><div class="logo">N</div><div><h1>NIKKE Gear Manager</h1><p>장비·성장 현황 관리</p></div></div><div class="nav"><button class="active">캐릭터 관리</button></div><div class="section" style="font-size:11px;color:#6f7b96;line-height:1.6">현재는 캐릭터 관리 기능을 제공합니다.<br>다른 관리 기능은 오른쪽 위 ⚙ 설정에서 사용할 수 있습니다.</div></aside>
 <main class="main"><div class="topbar"><div><div class="eyebrow">NIKKE / INVENTORY</div><h2>캐릭터 장비 현황</h2></div><div class="actions account-switcher"><button type="button" class="btn account-switch-btn active" data-account="제닐스" onclick="switchAccount('제닐스')">제닐스</button><button type="button" class="btn account-switch-btn" data-account="대상혁" onclick="switchAccount('대상혁')">대상혁</button><div class="settings-wrap"><button type="button" class="settings-btn" id="settingsBtn" aria-label="설정" title="설정" onclick="toggleSettingsMenu(event)">⚙</button></div></div></div><div class="settings-popover" id="settingsPopover" hidden>
@@ -155,7 +155,7 @@ th,td{padding:8px 8px}
 <section class="panel"><div class="panel-head" id="characterPanelHead">
 <div class="panel-head-title panel-head-draggable" data-head-part="title" draggable="true"><h3>전체 캐릭터</h3><small id="countText"></small></div>
 <div class="panel-head-left-tools panel-management-tools panel-head-draggable" data-head-part="left" draggable="true"><div class="searchbar"><input id="search" placeholder="캐릭터 / 무기 / 스킬 검색…"></div><button type="button" class="manage-btn" id="completionFilterBtn" onclick="toggleCompletionFilter(event)">완료 캐릭터 숨기기</button><button type="button" class="unused-view-btn" id="unusedViewBtn" onclick="toggleUnusedVisibility()">미사용 캐릭터 보이기</button></div>
-<div class="panel-head-right panel-management-tools panel-head-draggable" data-head-part="right" draggable="true"><button type="button" class="manage-btn" onclick="clearFilters()">필터 초기화</button><button type="button" class="manage-btn" onclick="resetColumnOrder()">열 순서 초기화</button><button type="button" class="detail-column-btn" id="detailColumnBtn" onclick="toggleDetailColumns()">상세 항목 표시</button></div></div><div class="quick-filter-bar" id="quickFilterBar"></div><select id="powerSort" hidden><option value="desc" selected>전투력 높은 순</option><option value="asc">전투력 낮은 순</option><option value="none">기본 순</option></select>
+<div class="panel-head-right panel-management-tools panel-head-draggable" data-head-part="right" draggable="true"><button type="button" class="manage-btn" onclick="clearFilters()">필터 초기화</button><button type="button" class="manage-btn" onclick="resetColumnOrder()">열 순서 초기화</button><button type="button" class="detail-column-btn" id="detailColumnBtn" onclick="toggleDetailColumns()">상세 항목 표시</button></div></div><div class="quick-filter-bar" id="quickFilterBar"></div><select id="powerSort" hidden><option value="power_desc" selected>전투력 높은 순</option><option value="power_asc">전투력 낮은 순</option><option value="burst_asc">버스트 1 → 2 → 3</option><option value="none">기본 순</option></select>
 <div class="table-wrap"><table><thead><tr id="tableHeadRow"></tr></thead><tbody id="tbody"></tbody></table></div></section></main></div>
 
 <div class="exclude-modal-backdrop" id="excludeModal" hidden><div class="exclude-modal" role="dialog" aria-modal="true" aria-labelledby="excludeModalTitle"><div class="exclude-modal-head"><div><h3 id="excludeModalTitle">캐릭터 제외하기</h3><small>숨길 캐릭터를 한 번에 선택하세요.</small></div><button class="btn" type="button" onclick="closeExcludeCharacterModal()">닫기</button></div><div class="exclude-toolbar"><input id="excludeSearch" placeholder="캐릭터 이름 검색…" oninput="renderExcludeCharacterList()"><button class="btn" type="button" onclick="setVisibleExclude(true)">현재 목록 전체 선택</button><button class="btn" type="button" onclick="setVisibleExclude(false)">현재 목록 전체 해제</button></div><div class="exclude-list" id="excludeList"></div><div class="exclude-modal-foot"><div class="exclude-count" id="excludeCount"></div><div class="exclude-foot-actions"><button class="btn" type="button" onclick="clearAllExcludedCharacters()">전체 제외 해제</button><button class="btn primary" type="button" onclick="applyExcludeCharacters()">적용</button></div></div></div></div><div class="drawer" id="drawer"><div class="drawer-card"><div class="drawer-head"><div class="char-title"><div class="avatar" id="dAvatar">N</div><div><h3 id="dName">-</h3><p id="dMeta">-</p></div></div><button class="btn close-btn" onclick="closeDrawer()">닫기</button></div><div class="drawer-body" id="drawerBody"></div></div></div><div class="toast" id="toast"></div>
@@ -764,7 +764,12 @@ function getFiltered(){
     return true;
   });
   const sort=document.getElementById('powerSort')?.value||'none';
-  if(sort!=='none') arr.sort((a,b)=>sort==='desc'?num(b.r['전투력'])-num(a.r['전투력']):num(a.r['전투력'])-num(b.r['전투력']));
+  if(sort==='power_desc') arr.sort((a,b)=>num(b.r['전투력'])-num(a.r['전투력']));
+  else if(sort==='power_asc') arr.sort((a,b)=>num(a.r['전투력'])-num(b.r['전투력']));
+  else if(sort==='burst_asc'){
+    const burstOrder=v=>{const m=String(v??'').match(/(\\d+)/);return m?Number(m[1]):999;};
+    arr.sort((a,b)=>burstOrder(a.r['버스트'])-burstOrder(b.r['버스트']) || num(b.r['전투력'])-num(a.r['전투력']));
+  }
   return arr;
 }
 function renderTable(){
@@ -1078,13 +1083,13 @@ function setMultiFilter(key,value){
 }
 function normalizedFilterValue(v){return String(v??'').trim();}
 function renderHeaderOptions(key,container,btn){
-  const titleMap={선택:'유효',기업:'기업',속성:'속성',버스트:'버스트',클래스:'클래스',무기:'무기',큐브:'큐브',전투력:'정렬 / 전투력'};
+  const titleMap={선택:'유효',기업:'기업',속성:'버스트 / 필터',버스트:'버스트',클래스:'클래스',무기:'무기',큐브:'큐브',전투력:'정렬'};
   const gearKey=gearParts.includes(key);
   container.innerHTML='';
   const h=document.createElement('h4');h.textContent=gearKey?`${key} 장비`: (titleMap[key]||key);container.appendChild(h);
   if(key==='전투력'){
     const wrap=document.createElement('div');wrap.className='column-filter-sort';
-    [['desc','높은 전투력'],['asc','낮은 전투력'],['none','기본 순']].forEach(([v,l])=>{const b=document.createElement('button');b.className='column-filter-option '+(document.getElementById('powerSort').value===v?'active':'');b.textContent=l;b.onclick=()=>{document.getElementById('powerSort').value=v;closeHeaderFilter();renderTable()};wrap.appendChild(b)});
+    [['power_desc','높은 전투력'],['power_asc','낮은 전투력'],['burst_asc','버스트 1 → 2 → 3'],['none','기본 순']].forEach(([v,l])=>{const b=document.createElement('button');b.className='column-filter-option '+(document.getElementById('powerSort').value===v?'active':'');b.textContent=l;b.onclick=()=>{document.getElementById('powerSort').value=v;closeHeaderFilter();renderTable()};wrap.appendChild(b)});
     container.appendChild(wrap);return;
   }
   if(gearKey){
@@ -1125,7 +1130,7 @@ function openDrawer(i){editIndex=i;const r=data[i];document.getElementById('dAva
 
 function filterHasValue(key){
   if(key==='선택') return filters.선택.size>0;
-  if(key==='전투력') return document.getElementById('powerSort').value!=='desc';
+  if(key==='전투력') return document.getElementById('powerSort').value!=='power_desc';
   if(gearParts.includes(key)) return (filters.장비부위별[key]||new Set()).size>0;
   if(key==='버스트') return filters.버스트.size>0;
   if(key==='선택'||key==='기업'||key==='속성'||key==='클래스'||key==='무기') return filters[key].size>0;
@@ -1219,7 +1224,7 @@ function outsideCompletionOnce(e){if(!completionPopover)return;if(completionPopo
 function updateCompletionFilterUI(){const b=document.getElementById('completionFilterBtn');if(b)b.classList.toggle('active',completionFilters.hideUnused||completionFilters.hideFullOverload||completionFilters.hideFullCompany);updateHideTargetButtons();}
 function updateHideTargetButtons(){const map={unused:'hideUnused',overload:'hideFullOverload',company:'hideFullCompany'};document.querySelectorAll('.hide-toggle').forEach(btn=>btn.classList.toggle('active',!!completionFilters[map[btn.dataset.hideTarget]]));}
 function toggleHideTarget(kind){const map={unused:'hideUnused',overload:'hideFullOverload',company:'hideFullCompany'};completionFilters[map[kind]]=!completionFilters[map[kind]];try{localStorage.setItem(COMPLETION_FILTER_STORAGE,JSON.stringify(completionFilters));localStorage.setItem('nikke_hide_unused_filter',completionFilters.hideUnused?'1':'0')}catch(_){}updateHideTargetButtons();renderTable();}
-function clearFilters(){filters.선택.clear();filters.기업.clear();filters.속성.clear();filters.클래스.clear();filters.무기.clear();filters.버스트.clear();filters.큐브.clear();gearParts.forEach(p=>filters.장비부위별[p].clear());completionFilters.hideUnused=false;completionFilters.hideFullOverload=false;completionFilters.hideFullCompany=false;try{localStorage.setItem(COMPLETION_FILTER_STORAGE,JSON.stringify(completionFilters));localStorage.setItem('nikke_hide_unused_filter','0')}catch(_){}document.getElementById('powerSort').value='desc';closeHeaderFilter();closeCompletionFilter();updateCompletionFilterUI();updateUnusedViewButton();updateDetailColumnButton();renderHeader();renderTable();toast('필터를 초기화했습니다');}
+function clearFilters(){filters.선택.clear();filters.기업.clear();filters.속성.clear();filters.클래스.clear();filters.무기.clear();filters.버스트.clear();filters.큐브.clear();gearParts.forEach(p=>filters.장비부위별[p].clear());completionFilters.hideUnused=false;completionFilters.hideFullOverload=false;completionFilters.hideFullCompany=false;try{localStorage.setItem(COMPLETION_FILTER_STORAGE,JSON.stringify(completionFilters));localStorage.setItem('nikke_hide_unused_filter','0')}catch(_){}document.getElementById('powerSort').value='power_desc';closeHeaderFilter();closeCompletionFilter();updateCompletionFilterUI();updateUnusedViewButton();updateDetailColumnButton();renderHeader();renderTable();toast('필터를 초기화했습니다');}
 function resetAll(){if(confirm('원본 CSV 데이터와 캐릭터 선택을 초기화할까요?')){data=structuredClone(RAW);selectedCharacters.clear();unusedCharacters.clear();saveSelectedCharacters();saveUnusedCharacters();save();clearFilters();toast('초기화되었습니다')}}
 
 let settingsPopoverOpen=false;
