@@ -48,7 +48,7 @@ body.outpost-view #outpostPanel{display:block}
 .outpost-progress-bar{height:7px;background:#4d5563;border-radius:2px}
 .outpost-progress-bar.active{background:#7097bd}
 .outpost-level-help{margin-top:7px;font-size:9px;color:#8d9db2}
-.outpost-core-breakpoint-list{margin-top:9px;border-top:1px solid #33455f;max-height:360px;overflow:auto}.outpost-core-breakpoint-row{display:grid;grid-template-columns:minmax(110px,1.5fr) 110px 80px 90px;align-items:center;gap:8px;padding:8px 4px;border-bottom:1px solid #27374f;font-size:10px;color:#aebbd0}.outpost-core-breakpoint-row:last-child{border-bottom:0}.outpost-core-breakpoint-stage{font-weight:900;color:#eef4ff}.outpost-core-breakpoint-needed{color:#8fa5bf}.outpost-core-breakpoint-level{color:#9fb5d0}.outpost-core-breakpoint-row strong{color:#c8dcff;text-align:right}@media(max-width:650px){.outpost-core-breakpoint-row{grid-template-columns:1fr 90px 58px 76px;font-size:9px}.outpost-core-breakpoint-list{max-height:300px}}.outpost-core-hint{margin-top:14px;border:1px solid #4a6383;border-radius:8px;background:rgba(24,38,57,.72);padding:12px 14px}.outpost-core-hint-title{font-size:9px;font-weight:900;color:#8fc8ff;letter-spacing:.08em;text-transform:uppercase}.outpost-core-hint-main{margin-top:5px;font-size:14px;font-weight:900;color:#fff}.outpost-core-hint-sub{margin-top:4px;font-size:10px;color:#9fb0c7;line-height:1.5}.outpost-core-hint strong{color:#b9d9ff}
+.outpost-core-sort{display:flex;align-items:center;gap:5px;margin-top:8px}.outpost-core-sort-label{font-size:9px;color:#74809b;margin-right:2px}.outpost-core-sort-btn{border:1px solid #2d3953;background:#0d1527;color:#9eabc1;border-radius:6px;padding:5px 9px;font-size:9px;font-weight:900;cursor:pointer}.outpost-core-sort-btn:hover{border-color:#596986;color:#e7ecf8}.outpost-core-sort-btn.active{background:#211d3b;border-color:#927dff;color:#fff}.outpost-core-breakpoint-list{margin-top:9px;border-top:1px solid #33455f;max-height:360px;overflow:auto}.outpost-core-breakpoint-row{display:grid;grid-template-columns:minmax(0,1fr) 80px 90px;align-items:center;gap:8px;padding:8px 4px;border-bottom:1px solid #27374f;font-size:10px;color:#aebbd0}.outpost-core-breakpoint-row:last-child{border-bottom:0}.outpost-core-breakpoint-stage{font-weight:900;color:#eef4ff}.outpost-core-breakpoint-level{color:#9fb5d0}.outpost-core-breakpoint-row strong{color:#c8dcff;text-align:right}@media(max-width:650px){.outpost-core-breakpoint-row{grid-template-columns:minmax(0,1fr) 58px 76px;font-size:9px}.outpost-core-breakpoint-list{max-height:300px}}.outpost-core-hint{margin-top:14px;border:1px solid #4a6383;border-radius:8px;background:rgba(24,38,57,.72);padding:12px 14px}.outpost-core-hint-title{font-size:9px;font-weight:900;color:#8fc8ff;letter-spacing:.08em;text-transform:uppercase}.outpost-core-hint-main{margin-top:5px;font-size:14px;font-weight:900;color:#fff}.outpost-core-hint-sub{margin-top:4px;font-size:10px;color:#9fb0c7;line-height:1.5}.outpost-core-hint strong{color:#b9d9ff}
 
 @media(max-width:650px){.outpost-calc{margin-left:12px;margin-right:12px}.outpost-calc-grid{grid-template-columns:1fr}.outpost-level-main{grid-template-columns:1fr}.outpost-level-number{font-size:38px}}
 @media(max-width:650px){#outpostPanel{margin-left:12px;margin-right:12px}.outpost-head{display:block}.outpost-table-wrap{max-height:calc(100vh - 170px)}.outpost-production-collapse{margin-left:12px;margin-right:12px}}
@@ -207,6 +207,7 @@ th,td{padding:8px 8px}
   <div class="outpost-core-hint-title">다음 코어 더스트 상승</div>
   <div class="outpost-core-hint-main" id="outpostCoreHintMain">일반 스테이지를 선택하면 계산합니다.</div>
   <div class="outpost-core-hint-sub" id="outpostCoreHintSub"></div>
+  <div class="outpost-core-sort"><span class="outpost-core-sort-label">정렬</span><button type="button" class="outpost-core-sort-btn active" data-sort="asc" onclick="setOutpostCoreSort('asc')">오름차순</button><button type="button" class="outpost-core-sort-btn" data-sort="desc" onclick="setOutpostCoreSort('desc')">내림차순</button></div>
   <div class="outpost-core-breakpoint-list" id="outpostCoreHintList"></div>
 </div></div></div><div class="outpost-head"><div><h3>전초기지 레벨별 생산 재화량</h3><div class="outpost-note">레벨 31~800 · 코어더스트/H가 1단위 증가하는 행 전체를 강조</div></div></div><div class="outpost-production-collapse" id="outpostProductionCollapse">
   <button type="button" class="outpost-production-toggle" id="outpostProductionToggle" aria-expanded="false" onclick="toggleOutpostProduction()">
@@ -1375,6 +1376,19 @@ function updateOutpostCalculator(){
     helpEl.textContent=level>=800?'전초기지 최대 레벨에 도달했습니다.':('일반 '+normalText+' · 하드 '+hardText+' · 다음 전초기지 레벨까지 '+next+'스테이지 남았습니다.');
   }
 }
+let outpostCoreSort='asc';
+function setOutpostCoreSort(dir){
+  outpostCoreSort=dir==='desc'?'desc':'asc';
+  document.querySelectorAll('.outpost-core-sort-btn').forEach(btn=>btn.classList.toggle('active',btn.dataset.sort===outpostCoreSort));
+  const list=document.getElementById('outpostCoreHintList');
+  if(!list)return;
+  [...list.querySelectorAll('.outpost-core-breakpoint-row')]
+    .sort((a,b)=>{
+      const av=Number(a.dataset.level||0),bv=Number(b.dataset.level||0);
+      return outpostCoreSort==='asc'?av-bv:bv-av;
+    })
+    .forEach(row=>list.appendChild(row));
+}
 function updateOutpostCoreDustHint(normalCount,currentLevel){
   const main=document.getElementById('outpostCoreHintMain'),sub=document.getElementById('outpostCoreHintSub'),list=document.getElementById('outpostCoreHintList');
   if(!main||!sub||!list)return;
@@ -1415,7 +1429,8 @@ function updateOutpostCoreDustHint(normalCount,currentLevel){
   }
   main.innerHTML='<strong>하드 캠페인 코어 더스트 상승 구간</strong>';
   sub.textContent='현재 일반 진행 이후부터 하드 최종 스테이지까지, 코어 더스트가 실제로 증가하는 지점을 모두 표시합니다.';
-  list.innerHTML=items.map(item=>'<div class="outpost-core-breakpoint-row"><span class="outpost-core-breakpoint-stage">'+esc(item.stage)+'</span><span class="outpost-core-breakpoint-needed">하드 '+item.needed+'스테이지</span><span class="outpost-core-breakpoint-level">Lv.'+item.level+'</span><strong>'+item.dust.toFixed(2)+'/H</strong></div>').join('');
+  list.innerHTML=items.map(item=>'<div class="outpost-core-breakpoint-row" data-level="'+item.level+'"><span class="outpost-core-breakpoint-stage">'+esc(item.stage)+'</span><span class="outpost-core-breakpoint-level">Lv.'+item.level+'</span><strong>'+item.dust.toFixed(2)+'/H</strong></div>').join('');
+  setOutpostCoreSort(outpostCoreSort);
 }
 function toggleOutpostProduction(){
   const body=document.getElementById('outpostProductionBody'),btn=document.getElementById('outpostProductionToggle');
