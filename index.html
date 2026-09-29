@@ -139,7 +139,7 @@ th,td{padding:8px 8px}
 .corp-owned-standalone{margin:0 0 12px;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:#0a1220}
 .corp-owned-standalone .corp-owned-title{background:#0f192b}
 </style></head><body>
-<div class="site-version-corner">VERSION 0.095</div><button type="button" class="sidebar-toggle" id="sidebarToggle" aria-label="메뉴 열기" title="메뉴" onclick="closeSettingsMenu();const s=document.getElementById('sidebar'),b=document.getElementById('sidebarBackdrop'),o=s.classList.toggle('open');b.classList.toggle('open',o);this.classList.toggle('open',o);this.textContent=o?'×':'☰';this.setAttribute('aria-label',o?'메뉴 닫기':'메뉴 열기')">☰</button>
+<div class="site-version-corner">VERSION 0.096</div><button type="button" class="sidebar-toggle" id="sidebarToggle" aria-label="메뉴 열기" title="메뉴" onclick="closeSettingsMenu();const s=document.getElementById('sidebar'),b=document.getElementById('sidebarBackdrop'),o=s.classList.toggle('open');b.classList.toggle('open',o);this.classList.toggle('open',o);this.textContent=o?'×':'☰';this.setAttribute('aria-label',o?'메뉴 닫기':'메뉴 열기')">☰</button>
 <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
 <div class="app"><aside class="sidebar" id="sidebar"><div class="brand"><div class="logo">N</div><div><h1>NIKKE Gear Manager</h1><p>장비·성장 현황 관리</p></div></div><div class="nav"><button class="active">캐릭터 관리</button></div><div class="section" style="font-size:11px;color:#6f7b96;line-height:1.6">현재는 캐릭터 관리 기능을 제공합니다.<br>다른 관리 기능은 오른쪽 위 ⚙ 설정에서 사용할 수 있습니다.</div></aside>
 <main class="main"><div class="topbar"><div><div class="eyebrow">NIKKE / INVENTORY</div><h2>캐릭터 장비 현황</h2></div><div class="actions account-switcher"><button type="button" class="btn account-switch-btn active" data-account="제닐스" onclick="switchAccount('제닐스')">제닐스</button><button type="button" class="btn account-switch-btn" data-account="대상혁" onclick="switchAccount('대상혁')">대상혁</button><div class="settings-wrap"><button type="button" class="settings-btn" id="settingsBtn" aria-label="설정" title="설정" onclick="toggleSettingsMenu(event)">⚙</button></div></div></div><div class="settings-popover" id="settingsPopover" hidden>
@@ -611,54 +611,37 @@ function renderUnusedGearTransferPanel(){
   const box=document.getElementById('unusedGearTransferPanel');if(!box)return;
   const suggestions=getUnusedGearTransferSuggestions();
   if(!suggestions.length){box.innerHTML='';return;}
-  const partOrder=['머리','몸통','장갑','다리'];
   const companyOrder=['엘리시온','미실리스','테트라','필그림','어브노멀'];
-  const map=new Map();
+  const partOrder=['머리','몸통','장갑','다리'];
   const transferNameKey=v=>String(v??'').normalize('NFC').replace(/\s+/g,' ').trim();
   const transferDisplayName=v=>{
     const key=transferNameKey(v);
     const base=RAW.find(r=>transferNameKey(r?.['이름'])===key);
     return String(base?.['이름']??key).trim();
   };
-
-  // 같은 미사용 캐릭터는 이름의 공백 차이가 있어도 하나로 합치고,
-  // 여러 부위의 이동 가능한 장비를 한 줄에 모읍니다.
-  suggestions.forEach(x=>{
-    const rawName=String(x.source['이름']??'');
-    const key=transferNameKey(rawName);
-    if(!key)return;
-    if(!map.has(key)){
-      map.set(key,{
-        name:transferDisplayName(rawName),
-        company:canonicalCharacterCompany(x.source),
-        cls:canonicalCharacterClass(x.source),
-        parts:[],
-        targets:[]
-      });
-    }
-    const item=map.get(key);
-    if(!item.parts.includes(x.part))item.parts.push(x.part);
+  // 미사용 캐릭터는 합치지 않고 각 부위별 장비를 한 줄씩 표시합니다.
+  // 옮겨 낄 수 있는 대상 캐릭터만 해당 장비의 한 셀에 모읍니다.
+  const rows=[...suggestions].sort((a,b)=>{
+    const ac=companyOrder.indexOf(canonicalCharacterCompany(a.source));
+    const bc=companyOrder.indexOf(canonicalCharacterCompany(b.source));
+    return (ac<0?999:ac)-(bc<0?999:bc)
+      || String(a.source['이름']??'').localeCompare(String(b.source['이름']??''),'ko')
+      || partOrder.indexOf(a.part)-partOrder.indexOf(b.part);
+  }).map(x=>{
+    const sourceName=transferDisplayName(x.source['이름']);
+    const company=canonicalCharacterCompany(x.source);
+    const cls=canonicalCharacterClass(x.source);
+    const gearLabel=(company&&cls)?company+' · '+cls:(company||cls||'-');
+    const targets=[];
     x.targetNames.forEach(target=>{
-      const targetKey=transferNameKey(target);
-      if(!targetKey)return;
-      const displayTarget=transferDisplayName(target);
-      if(!item.targets.some(existing=>transferNameKey(existing)===targetKey))item.targets.push(displayTarget);
+      const key=transferNameKey(target);
+      if(!key||targets.some(existing=>transferNameKey(existing)===key))return;
+      targets.push(transferDisplayName(target));
     });
-  });
-
-  const rows=[...map.values()].sort((a,b)=>{
-    const ac=companyOrder.indexOf(a.company),bc=companyOrder.indexOf(b.company);
-    return (ac<0?999:ac)-(bc<0?999:bc) || a.name.localeCompare(b.name,'ko');
-  }).map(item=>{
-    const parts=partOrder.filter(part=>item.parts.includes(part)).join(' · ');
-    const gearLabel=(item.company&&item.cls)
-      ? item.company+' · '+item.cls
-      :(item.company||item.cls||'-');
-    const targets=item.targets.map(name=>'<div class="unused-gear-transfer-target-row">'+esc(name)+'</div>').join('');
-    return '<tr><td class="source">'+esc(item.name)+'</td><td><div>'+esc(parts)+'</div><div style="font-size:10px;color:#8490aa;margin-top:3px">'+esc(gearLabel)+'</div></td><td class="target">'+targets+'</td></tr>';
+    const targetHtml=targets.map(name=>'<div class="unused-gear-transfer-target-row">'+esc(name)+'</div>').join('');
+    return '<tr><td class="source">'+esc(sourceName)+'</td><td><div>'+esc(x.part)+'</div><div style="font-size:10px;color:#8490aa;margin-top:3px">'+esc(gearLabel)+'</div></td><td class="target">'+targetHtml+'</td></tr>';
   }).join('');
-
-  box.innerHTML='<div class="unused-gear-transfer-wrap"><button type="button" class="unused-gear-transfer-title" onclick="toggleUnusedGearTransferPanel()" aria-expanded="true"><span>미사용 캐릭터 장비 이동 안내 <span style="font-size:10px;color:#72d99a">· '+suggestions.length+'건</span></span><span id="unusedGearTransferIcon">−</span></button><div id="unusedGearTransferBody"><div class="unused-gear-transfer-note">미사용으로 체크한 캐릭터가 착용 중인 <b>맞는 기업장비</b> 중, 미사용이 아닌 같은 기업·클래스 캐릭터가 있어 옮겨 낄 수 있는 장비를 표시합니다. 같은 미사용 캐릭터의 여러 부위 장비는 한 줄로 합쳐 표시합니다. 이 기능은 안내만 하며 장비를 자동으로 이동시키지 않습니다.</div><table class="unused-gear-transfer-table"><thead><tr><th>미사용 캐릭터</th><th>장비</th><th>옮겨 낄 수 있는 캐릭터</th></tr></thead><tbody>'+rows+'</tbody></table></div></div>';
+  box.innerHTML='<div class="unused-gear-transfer-wrap"><button type="button" class="unused-gear-transfer-title" onclick="toggleUnusedGearTransferPanel()" aria-expanded="true"><span>미사용 캐릭터 장비 이동 안내 <span style="font-size:10px;color:#72d99a">· '+suggestions.length+'건</span></span><span id="unusedGearTransferIcon">−</span></button><div id="unusedGearTransferBody"><div class="unused-gear-transfer-note">미사용 캐릭터는 합치지 않고 장비 부위별로 각각 표시합니다. 각 장비를 옮겨 낄 수 있는 <b>같은 기업·클래스 캐릭터</b>는 한 칸에 합쳐 표시합니다. 이 기능은 안내만 하며 장비를 자동으로 이동시키지 않습니다.</div><table class="unused-gear-transfer-table"><thead><tr><th>미사용 캐릭터</th><th>장비</th><th>옮겨 낄 수 있는 캐릭터</th></tr></thead><tbody>'+rows+'</tbody></table></div></div>';
 }
 function toggleUnusedGearTransferPanel(){
   const body=document.getElementById('unusedGearTransferBody'),icon=document.getElementById('unusedGearTransferIcon'),btn=body?.previousElementSibling;
