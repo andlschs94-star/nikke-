@@ -184,7 +184,7 @@ th,td{padding:8px 8px}
 .corp-owned-standalone{margin:0 0 12px;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:#0a1220}
 .corp-owned-standalone .corp-owned-title{background:#0f192b}
 </style></head><body>
-<div class="site-version-corner">VERSION 0.140</div><button type="button" class="sidebar-toggle" id="sidebarToggle" aria-label="메뉴 열기" title="메뉴" onclick="closeSettingsMenu();const s=document.getElementById('sidebar'),b=document.getElementById('sidebarBackdrop'),o=s.classList.toggle('open');b.classList.toggle('open',o);this.classList.toggle('open',o);this.textContent=o?'×':'☰';this.setAttribute('aria-label',o?'메뉴 닫기':'메뉴 열기')">☰</button>
+<div class="site-version-corner">VERSION 0.150</div><button type="button" class="sidebar-toggle" id="sidebarToggle" aria-label="메뉴 열기" title="메뉴" onclick="closeSettingsMenu();const s=document.getElementById('sidebar'),b=document.getElementById('sidebarBackdrop'),o=s.classList.toggle('open');b.classList.toggle('open',o);this.classList.toggle('open',o);this.textContent=o?'×':'☰';this.setAttribute('aria-label',o?'메뉴 닫기':'메뉴 열기')">☰</button>
 <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
 <div class="app"><aside class="sidebar" id="sidebar"><div class="brand"><div class="logo">N</div><div><h1>NIKKE Gear Manager</h1><p>장비·성장 현황 관리</p></div></div><div class="nav"><button type="button" class="active main-view-nav" data-view="characters" onclick="switchMainView('characters')">캐릭터 관리</button><button type="button" class="main-view-nav" data-view="outpost" onclick="switchMainView('outpost')">전초기지 생산량</button></div><div class="section" style="font-size:11px;color:#6f7b96;line-height:1.6">현재는 캐릭터 관리 기능을 제공합니다.<br>다른 관리 기능은 오른쪽 위 ⚙ 설정에서 사용할 수 있습니다.</div></aside>
 <main class="main"><div class="topbar"><div><div class="eyebrow">NIKKE / INVENTORY</div><h2 id="pageTitle">캐릭터 장비 현황</h2></div><div class="actions account-switcher"><button type="button" class="btn account-switch-btn active" data-account="제닐스" onclick="switchAccount('제닐스')">제닐스</button><button type="button" class="btn account-switch-btn" data-account="대상혁" onclick="switchAccount('대상혁')">대상혁</button><div class="settings-wrap"><button type="button" class="settings-btn" id="settingsBtn" aria-label="설정" title="설정" onclick="toggleSettingsMenu(event)">⚙</button></div></div></div><div class="settings-popover" id="settingsPopover" hidden>
@@ -1345,7 +1345,8 @@ function updateOutpostCalculator(){
   const hardCount=hardStage?outpostStageToCount(hardChapter,hardStage):0;
   const selectedCount=normalCount+hardCount;
   const baseId=19;
-  const totalDiff=Math.max(0,selectedCount-baseId);
+  // 2-12 BOSS(총 19스테이지) 클리어 시 전초기지 레벨이 2로 올라가도록 경계 조정
+  const totalDiff=Math.max(0,selectedCount-(baseId-1));
   const level=Math.min(800,1+Math.floor(totalDiff/5));
   const progress=Math.min(4,totalDiff%5);
   const next=level>=800?0:5-progress;
