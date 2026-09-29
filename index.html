@@ -613,77 +613,41 @@ function renderUnusedGearTransferPanel(){
   if(!suggestions.length){box.innerHTML='';return;}
   const partOrder=['머리','몸통','장갑','다리'];
   const companyOrder=['엘리시온','미실리스','테트라','필그림','어브노멀'];
-  const groups=partOrder.map(part=>{
-    const raw=suggestions.filter(x=>x.part===part);
-    const merged=[];
-    const map=new Map();
-    raw.forEach(x=>{
-      const company=canonicalCharacterCompany(x.source);
-      const cls=canonicalCharacterClass(x.source);
-      const key=company+'|'+cls+'|'+part+'|'+String(x.state.label??'');
-      if(!map.has(key)){
-        const item={...x,sourceNames:[],targetNames:[...new Set(x.targetNames)]};
-        map.set(key,item);merged.push(item);
-      }
-      const item=map.get(key);
-      const name=String(x.source['이름']??'').trim();
-      if(name&&!item.sourceNames.includes(name))item.sourceNames.push(name);
-      x.targetNames.forEach(name=>{if(name&&!item.targetNames.includes(name))item.targetNames.push(name);});
-    });
-    merged.sort((a,b)=>{
-      const ac=companyOrder.indexOf(canonicalCharacterCompany(a.source));
-      const bc=companyOrder.indexOf(canonicalCharacterCompany(b.source));
-      return (ac<0?999:ac)-(bc<0?999:bc);
-    });
-    return {part,items:merged};
-  }).filter(g=>g.items.length);
-  const sections=partOrder.map(part=>{
-    const partItems=suggestions.filter(x=>x.part===part);
-    if(!partItems.length)return '';
-    const companyRank=company=>{const n=companyOrder.indexOf(company);return n<0?999:n;};
-    const targetMap=new Map();
-    partItems.forEach(x=>{
-      const sourceCompany=canonicalCharacterCompany(x.source);
-      const sourceClass=canonicalCharacterClass(x.source);
-      const gearLabel=(sourceCompany&&sourceClass)
-        ? sourceCompany+' · '+sourceClass
-        :(sourceCompany||sourceClass||'-');
-      x.targetNames.forEach(name=>{
-        if(!targetMap.has(name))targetMap.set(name,{name,items:[]});
-        const row=targetMap.get(name);
-        const key=String(x.source['이름']??'').trim()+'|'+gearLabel;
-        if(!row.items.some(item=>item.key===key)){
-          row.items.push({
-            key,
-            sourceNames:x.sourceNames||[String(x.source['이름']??'').trim()],
-            gearLabel,
-            companyRank:companyRank(sourceCompany)
-          });
-        }
+  const map=new Map();
+
+  // 같은 미사용 캐릭터가 여러 부위의 이동 가능한 장비를 가지고 있으면 한 줄로 합칩니다.
+  suggestions.forEach(x=>{
+    const name=String(x.source['이름']??'').trim();
+    if(!name)return;
+    if(!map.has(name)){
+      map.set(name,{
+        name,
+        company:canonicalCharacterCompany(x.source),
+        cls:canonicalCharacterClass(x.source),
+        parts:[],
+        targets:[]
       });
+    }
+    const item=map.get(name);
+    if(!item.parts.includes(x.part))item.parts.push(x.part);
+    x.targetNames.forEach(target=>{
+      if(target&&!item.targets.includes(target))item.targets.push(target);
     });
-    const targetRows=[...targetMap.values()];
-    targetRows.forEach(row=>{
-      row.items.sort((a,b)=>a.companyRank-b.companyRank||a.gearLabel.localeCompare(b.gearLabel,'ko'));
-    });
-    targetRows.sort((a,b)=>{
-      const ar=a.items[0]?.companyRank??999;
-      const br=b.items[0]?.companyRank??999;
-      return ar-br||a.name.localeCompare(b.name,'ko');
-    });
-    const rows=targetRows.map(row=>{
-      const cells=row.items.map((item,idx)=>{
-        const source=item.sourceNames.map(esc).join(', ');
-        const target=idx===0
-          ? '<td class="target" rowspan="'+row.items.length+'">'+esc(row.name)+'</td>'
-          : '';
-        return '<tr><td class="source">'+source+'</td><td>'+esc(item.gearLabel)+'</td>'+target+'</tr>';
-      }).join('');
-      return cells;
-    }).join('');
-    return '<div class="unused-gear-transfer-section"><div class="unused-gear-transfer-section-title">'+esc(part)+' <span>· '+targetRows.length+'명 / '+partItems.length+'건</span></div><table class="unused-gear-transfer-table"><thead><tr><th>미사용 캐릭터</th><th>장비</th><th>옮겨 낄 수 있는 캐릭터</th></tr></thead><tbody>'+rows+'</tbody></table></div>';
-  }).filter(Boolean).join('');
-  box.innerHTML='<div class="unused-gear-transfer-wrap"><button type="button" class="unused-gear-transfer-title" onclick="toggleUnusedGearTransferPanel()" aria-expanded="true"><span>미사용 캐릭터 장비 이동 안내 <span style="font-size:10px;color:#72d99a">· '+suggestions.length+'건</span></span><span id="unusedGearTransferIcon">−</span></button><div id="unusedGearTransferBody"><div class="unused-gear-transfer-note">미사용으로 체크한 캐릭터가 착용 중인 <b>맞는 기업장비</b> 중, 미사용이 아닌 같은 기업·클래스 캐릭터가 있어 옮겨 낄 수 있는 장비를 표시합니다. 이 기능은 안내만 하며 장비를 자동으로 이동시키지 않습니다.</div>'+sections+'</div></div>';
+  });
+
+  const rows=[...map.values()].sort((a,b)=>{
+    const ac=companyOrder.indexOf(a.company),bc=companyOrder.indexOf(b.company);
+    return (ac<0?999:ac)-(bc<0?999:bc) || a.name.localeCompare(b.name,'ko');
+  }).map(item=>{
+    const parts=partOrder.filter(part=>item.parts.includes(part)).join(' · ');
+    const gearLabel=(item.company&&item.cls)
+      ? item.company+' · '+item.cls
+      :(item.company||item.cls||'-');
+    const targets=item.targets.map(name=>'<div class="unused-gear-transfer-target-row">'+esc(name)+'</div>').join('');
+    return '<tr><td class="source">'+esc(item.name)+'</td><td><div>'+esc(parts)+'</div><div style="font-size:10px;color:#8490aa;margin-top:3px">'+esc(gearLabel)+'</div></td><td class="target">'+targets+'</td></tr>';
+  }).join('');
+
+  box.innerHTML='<div class="unused-gear-transfer-wrap"><button type="button" class="unused-gear-transfer-title" onclick="toggleUnusedGearTransferPanel()" aria-expanded="true"><span>미사용 캐릭터 장비 이동 안내 <span style="font-size:10px;color:#72d99a">· '+suggestions.length+'건</span></span><span id="unusedGearTransferIcon">−</span></button><div id="unusedGearTransferBody"><div class="unused-gear-transfer-note">미사용으로 체크한 캐릭터가 착용 중인 <b>맞는 기업장비</b> 중, 미사용이 아닌 같은 기업·클래스 캐릭터가 있어 옮겨 낄 수 있는 장비를 표시합니다. 같은 미사용 캐릭터의 여러 부위 장비는 한 줄로 합쳐 표시합니다. 이 기능은 안내만 하며 장비를 자동으로 이동시키지 않습니다.</div><table class="unused-gear-transfer-table"><thead><tr><th>미사용 캐릭터</th><th>장비</th><th>옮겨 낄 수 있는 캐릭터</th></tr></thead><tbody>'+rows+'</tbody></table></div></div>';
 }
 function toggleUnusedGearTransferPanel(){
   const body=document.getElementById('unusedGearTransferBody'),icon=document.getElementById('unusedGearTransferIcon'),btn=body?.previousElementSibling;
