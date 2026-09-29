@@ -1138,7 +1138,7 @@ function collectBackupStorage(){
   return out;
 }
 function createBackupCode(){
-  const payload={v:1,app:'NIKKE Gear Manager',siteVersion:'0.74',createdAt:new Date().toISOString(),storage:collectBackupStorage()};
+  const payload={v:1,app:'NIKKE Gear Manager',siteVersion:'0.87',createdAt:new Date().toISOString(),storage:collectBackupStorage()};
   return 'NIKKE-GM-1:'+backupCodeEncode(JSON.stringify(payload));
 }
 let backupCodeMode='export';
