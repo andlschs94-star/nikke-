@@ -139,7 +139,7 @@ th,td{padding:8px 8px}
 .corp-owned-standalone{margin:0 0 12px;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:#0a1220}
 .corp-owned-standalone .corp-owned-title{background:#0f192b}
 </style></head><body>
-<div class="site-version-corner">VERSION 0.101</div><button type="button" class="sidebar-toggle" id="sidebarToggle" aria-label="메뉴 열기" title="메뉴" onclick="closeSettingsMenu();const s=document.getElementById('sidebar'),b=document.getElementById('sidebarBackdrop'),o=s.classList.toggle('open');b.classList.toggle('open',o);this.classList.toggle('open',o);this.textContent=o?'×':'☰';this.setAttribute('aria-label',o?'메뉴 닫기':'메뉴 열기')">☰</button>
+<div class="site-version-corner">VERSION 0.102</div><button type="button" class="sidebar-toggle" id="sidebarToggle" aria-label="메뉴 열기" title="메뉴" onclick="closeSettingsMenu();const s=document.getElementById('sidebar'),b=document.getElementById('sidebarBackdrop'),o=s.classList.toggle('open');b.classList.toggle('open',o);this.classList.toggle('open',o);this.textContent=o?'×':'☰';this.setAttribute('aria-label',o?'메뉴 닫기':'메뉴 열기')">☰</button>
 <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
 <div class="app"><aside class="sidebar" id="sidebar"><div class="brand"><div class="logo">N</div><div><h1>NIKKE Gear Manager</h1><p>장비·성장 현황 관리</p></div></div><div class="nav"><button class="active">캐릭터 관리</button></div><div class="section" style="font-size:11px;color:#6f7b96;line-height:1.6">현재는 캐릭터 관리 기능을 제공합니다.<br>다른 관리 기능은 오른쪽 위 ⚙ 설정에서 사용할 수 있습니다.</div></aside>
 <main class="main"><div class="topbar"><div><div class="eyebrow">NIKKE / INVENTORY</div><h2>캐릭터 장비 현황</h2></div><div class="actions account-switcher"><button type="button" class="btn account-switch-btn active" data-account="제닐스" onclick="switchAccount('제닐스')">제닐스</button><button type="button" class="btn account-switch-btn" data-account="대상혁" onclick="switchAccount('대상혁')">대상혁</button><div class="settings-wrap"><button type="button" class="settings-btn" id="settingsBtn" aria-label="설정" title="설정" onclick="toggleSettingsMenu(event)">⚙</button></div></div></div><div class="settings-popover" id="settingsPopover" hidden>
@@ -402,7 +402,16 @@ window.addEventListener('message',e=>{
     .filter(Boolean)
     .filter(name=>!syncedNames.has(name))
     .forEach(name=>nextUnused.add(name));
-  nextUnused.forEach(name=>nextUnowned.add(name));
+
+  // 사용자가 직접 "미사용"으로 체크한 캐릭터는 동기화에서 "미보유"로 승격되지 않습니다.
+  // "미보유"는 동기화 결과에 없으면서 수동 미사용으로 지정되지 않은 캐릭터에만 적용합니다.
+  const nextUnowned=new Set();
+  targetData
+    .map(r=>String(r?.['이름']??'').trim())
+    .filter(Boolean)
+    .filter(name=>!syncedNames.has(name))
+    .filter(name=>!preservedUnusedNames.has(name))
+    .forEach(name=>nextUnowned.add(name));
   // 동기화 결과에 없는 캐릭터는 미사용 처리하고, 보유 정보는 모두 최저 상태로 초기화합니다.
   // 다음 동기화에서 해당 캐릭터가 다시 확인되면 실제 정보로 덮어씁니다.
   for(const name of nextUnused){
@@ -959,8 +968,15 @@ function toggleUnusedVisibility(){
 function toggleUnusedCharacter(i,checked){
   const name=characterName(i,data[i]);
   if(!name)return;
-  if(checked)unusedCharacters.add(name); else unusedCharacters.delete(name);
+  if(checked){
+    unusedCharacters.add(name);
+    // 수동으로 미사용 처리한 캐릭터는 "미보유"가 아니라 "미사용"으로 표시합니다.
+    unownedCharacters.delete(name);
+  }else{
+    unusedCharacters.delete(name);
+  }
   saveUnusedCharacters();
+  try{localStorage.setItem(accountStorageKey(ACCOUNT_UNOWNED_PREFIX,activeAccount),JSON.stringify([...unownedCharacters]));}catch(e){}
   updateUnusedViewButton();
   renderHeader();
   renderTable();
