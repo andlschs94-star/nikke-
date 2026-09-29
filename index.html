@@ -183,7 +183,16 @@ function normalizeAccountData(saved){
   base.forEach(r=>{
     const name=String(r?.['이름']??'').trim();
     const old=byName.get(name);
-    if(old&&typeof old==='object'){\n      Object.assign(r,old);\n      // 캐릭터 기본 정보는 RAW를 기준으로 유지합니다. 저장된 구버전 데이터가 기업장비 동기화 과정에서 기업/클래스를 덮어쓰지 않도록 합니다.\n      r['이름']=String(r['이름']??'').trim();\n      r['기업']=String(r['기업']??'').trim();\n      r['클래스']=String(r['클래스']??'').trim();\n    }
+    if(old&&typeof old==='object'){
+      const canonicalName=String(r['이름']??'').trim();
+      const canonicalCompany=String(r['기업']??'').trim();
+      const canonicalClass=String(r['클래스']??'').trim();
+      Object.assign(r,old);
+      // 캐릭터 기본 정보는 RAW를 기준으로 유지합니다. 저장 데이터의 기업/클래스 값이 기본 정보를 덮어쓰지 않도록 합니다.
+      r['이름']=canonicalName;
+      r['기업']=canonicalCompany;
+      r['클래스']=canonicalClass;
+    }
   });
   return base;
 }
