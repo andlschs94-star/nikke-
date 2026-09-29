@@ -48,7 +48,7 @@ body.outpost-view #outpostPanel{display:block}
 .outpost-progress-bar{height:7px;background:#4d5563;border-radius:2px}
 .outpost-progress-bar.active{background:#7097bd}
 .outpost-level-help{margin-top:7px;font-size:9px;color:#8d9db2}
-.outpost-core-hint{margin-top:14px;border:1px solid #4a6383;border-radius:8px;background:rgba(24,38,57,.72);padding:12px 14px}.outpost-core-hint-title{font-size:9px;font-weight:900;color:#8fc8ff;letter-spacing:.08em;text-transform:uppercase}.outpost-core-hint-main{margin-top:5px;font-size:14px;font-weight:900;color:#fff}.outpost-core-hint-sub{margin-top:4px;font-size:10px;color:#9fb0c7;line-height:1.5}.outpost-core-hint strong{color:#b9d9ff}
+.outpost-core-breakpoint-list{margin-top:9px;border-top:1px solid #33455f;max-height:360px;overflow:auto}.outpost-core-breakpoint-row{display:grid;grid-template-columns:minmax(110px,1.5fr) 110px 80px 90px;align-items:center;gap:8px;padding:8px 4px;border-bottom:1px solid #27374f;font-size:10px;color:#aebbd0}.outpost-core-breakpoint-row:last-child{border-bottom:0}.outpost-core-breakpoint-stage{font-weight:900;color:#eef4ff}.outpost-core-breakpoint-needed{color:#8fa5bf}.outpost-core-breakpoint-level{color:#9fb5d0}.outpost-core-breakpoint-row strong{color:#c8dcff;text-align:right}@media(max-width:650px){.outpost-core-breakpoint-row{grid-template-columns:1fr 90px 58px 76px;font-size:9px}.outpost-core-breakpoint-list{max-height:300px}}.outpost-core-hint{margin-top:14px;border:1px solid #4a6383;border-radius:8px;background:rgba(24,38,57,.72);padding:12px 14px}.outpost-core-hint-title{font-size:9px;font-weight:900;color:#8fc8ff;letter-spacing:.08em;text-transform:uppercase}.outpost-core-hint-main{margin-top:5px;font-size:14px;font-weight:900;color:#fff}.outpost-core-hint-sub{margin-top:4px;font-size:10px;color:#9fb0c7;line-height:1.5}.outpost-core-hint strong{color:#b9d9ff}
 
 @media(max-width:650px){.outpost-calc{margin-left:12px;margin-right:12px}.outpost-calc-grid{grid-template-columns:1fr}.outpost-level-main{grid-template-columns:1fr}.outpost-level-number{font-size:38px}}
 @media(max-width:650px){#outpostPanel{margin-left:12px;margin-right:12px}.outpost-head{display:block}.outpost-table-wrap{max-height:calc(100vh - 170px)}.outpost-production-collapse{margin-left:12px;margin-right:12px}}
@@ -185,7 +185,7 @@ th,td{padding:8px 8px}
 .corp-owned-standalone{margin:0 0 12px;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:#0a1220}
 .corp-owned-standalone .corp-owned-title{background:#0f192b}
 </style></head><body>
-<div class="site-version-corner">VERSION 0.181</div><div class="sidebar-hitarea" id="sidebarHitarea" aria-label="메뉴 열기" title="왼쪽 메뉴 열기"></div>
+<div class="site-version-corner">VERSION 0.182</div><div class="sidebar-hitarea" id="sidebarHitarea" aria-label="메뉴 열기" title="왼쪽 메뉴 열기"></div>
 <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
 <div class="app"><aside class="sidebar" id="sidebar"><div class="brand"><div class="logo">N</div><div><h1>NIKKE Gear Manager</h1><p>장비·성장 현황 관리</p></div></div><div class="nav"><button type="button" class="active main-view-nav" data-view="characters" onclick="switchMainView('characters')">캐릭터 관리</button><button type="button" class="main-view-nav" data-view="outpost" onclick="switchMainView('outpost')">전초기지 생산량</button></div><div class="section" style="font-size:11px;color:#6f7b96;line-height:1.6">현재는 캐릭터 관리 기능을 제공합니다.<br>다른 관리 기능은 설정 메뉴에서 사용할 수 있습니다.</div></aside>
 <main class="main"><div class="topbar"><div><div class="eyebrow">NIKKE / INVENTORY</div><h2 id="pageTitle">캐릭터 장비 현황</h2></div><div class="actions account-switcher"><button type="button" class="btn account-switch-btn active" data-account="제닐스" onclick="switchAccount('제닐스')">제닐스</button><button type="button" class="btn account-switch-btn" data-account="대상혁" onclick="switchAccount('대상혁')">대상혁</button><div class="settings-wrap"><button type="button" class="settings-btn" id="settingsBtn" aria-label="설정" title="설정" onclick="toggleSettingsMenu(event)">⚙</button></div></div></div><div class="settings-popover" id="settingsPopover" hidden>
@@ -207,6 +207,7 @@ th,td{padding:8px 8px}
   <div class="outpost-core-hint-title">다음 코어 더스트 상승</div>
   <div class="outpost-core-hint-main" id="outpostCoreHintMain">일반 스테이지를 선택하면 계산합니다.</div>
   <div class="outpost-core-hint-sub" id="outpostCoreHintSub"></div>
+  <div class="outpost-core-breakpoint-list" id="outpostCoreHintList"></div>
 </div></div></div><div class="outpost-head"><div><h3>전초기지 레벨별 생산 재화량</h3><div class="outpost-note">레벨 31~800 · 코어더스트/H가 1단위 증가하는 행 전체를 강조</div></div></div><div class="outpost-production-collapse" id="outpostProductionCollapse">
   <button type="button" class="outpost-production-toggle" id="outpostProductionToggle" aria-expanded="false" onclick="toggleOutpostProduction()">
     <span>전초기지 레벨별 생산 재화량</span><span class="outpost-production-chevron">＋</span>
@@ -1375,46 +1376,46 @@ function updateOutpostCalculator(){
   }
 }
 function updateOutpostCoreDustHint(normalCount,currentLevel){
-  const main=document.getElementById('outpostCoreHintMain'),sub=document.getElementById('outpostCoreHintSub');
-  if(!main||!sub)return;
-  if(!normalCount){main.textContent='일반 스테이지를 선택하면 계산합니다.';sub.textContent='';return;}
+  const main=document.getElementById('outpostCoreHintMain'),sub=document.getElementById('outpostCoreHintSub'),list=document.getElementById('outpostCoreHintList');
+  if(!main||!sub||!list)return;
+  if(!normalCount){main.textContent='일반 스테이지를 선택하면 계산합니다.';sub.textContent='';list.innerHTML='';return;}
   const rows=OUTPOST_PRODUCTION_MD.split(/\r?\n/).map(s=>s.trim()).filter(s=>s.startsWith('|')).map(s=>s.replace(/^\||\|$/g,'').split('|').map(x=>x.trim())).filter(c=>/^\d+$/.test(c[0])&&c.length===7);
-  let targetLevel=null,targetDust=null;
-  let prevBucket=null;
+  const breakpoints=[];let prevBucket=null;
   for(const r of rows){
     const lv=Number(r[0]),dust=Number(String(r[6]).replace(/,/g,''));
     if(!Number.isFinite(lv)||!Number.isFinite(dust))continue;
     const bucket=Math.floor(dust*2+1e-9);
-    if(prevBucket!==null&&bucket>prevBucket&&lv>currentLevel){targetLevel=lv;targetDust=dust;break;}
+    if(prevBucket!==null&&bucket>prevBucket)breakpoints.push({level:lv,dust});
     prevBucket=bucket;
   }
-  if(targetLevel===null){main.textContent='현재 확인 가능한 코어 더스트 상승 구간이 없습니다.';sub.textContent='';return;}
-  let targetTotal=null;
-  for(let total=0;total<=5000;total++){
-    const diff=Math.max(0,total-18);
-    const lv=Math.min(800,1+Math.floor(diff/5));
-    if(lv>=targetLevel){targetTotal=total;break;}
+  const hardTotal=OUTPOST_HARD_CHAPTER_STAGES.reduce((sum,stages)=>sum+(stages||[]).length,0);
+  const items=[];
+  for(const bp of breakpoints){
+    let targetTotal=null;
+    for(let total=0;total<=5000;total++){
+      const diff=Math.max(0,total-18),lv=Math.min(800,1+Math.floor(diff/5));
+      if(lv>=bp.level){targetTotal=total;break;}
+    }
+    if(targetTotal===null)continue;
+    const needed=targetTotal-normalCount;
+    if(needed<=0)continue;
+    if(needed>hardTotal)break;
+    let remaining=needed,hardStage='';
+    outer:for(let ch=0;ch<OUTPOST_HARD_CHAPTER_STAGES.length;ch++){
+      const stages=OUTPOST_HARD_CHAPTER_STAGES[ch]||[];
+      if(remaining<=stages.length){hardStage=stages[remaining-1]||'';break outer;}
+      remaining-=stages.length;
+    }
+    if(hardStage)items.push({stage:hardStage,level:bp.level,dust:bp.dust,needed});
   }
-  if(targetTotal===null){main.textContent='다음 코어 더스트 상승 지점을 계산할 수 없습니다.';sub.textContent='';return;}
-  const needed=Math.max(0,targetTotal-normalCount);
-  if(needed===0){
-    main.innerHTML='<strong>현재 일반 진행으로 다음 코어 더스트 상승 지점에 도달했습니다.</strong>';
-    sub.textContent='하드 진행을 추가하지 않아도 됩니다.';
-    return;
+  if(!items.length){
+    main.innerHTML='<strong>현재 일반 진행 이후 하드 캠페인에서 추가로 상승하는 코어 더스트 구간이 없습니다.</strong>';
+    sub.textContent='하드 최종 스테이지까지 현재 코어 더스트 생산량을 유지합니다.';
+    list.innerHTML='';return;
   }
-  let hardStage='',remaining=needed;
-  outer: for(let ch=0;ch<OUTPOST_HARD_CHAPTER_STAGES.length;ch++){
-    const stages=OUTPOST_HARD_CHAPTER_STAGES[ch]||[];
-    if(remaining<=stages.length){hardStage=stages[remaining-1]||'';break outer;}
-    remaining-=stages.length;
-  }
-  if(!hardStage){
-    main.textContent='다음 코어 더스트 상승 지점이 현재 하드 스테이지 목록 범위를 벗어났습니다.';
-    sub.textContent='하드 캠페인 데이터가 추가되면 자동으로 계산됩니다.';
-    return;
-  }
-  main.innerHTML='<strong>'+esc(hardStage)+'</strong> 클리어 시 코어 더스트가 <strong>'+targetDust.toFixed(2)+'</strong>/H 구간으로 상승';
-  sub.textContent='현재 일반 진행에서 하드 스테이지 '+needed+'개 추가 필요 · 도달 전초기지 Lv.'+targetLevel;
+  main.innerHTML='<strong>하드 캠페인 코어 더스트 상승 구간</strong>';
+  sub.textContent='현재 일반 진행 이후부터 하드 최종 스테이지까지, 코어 더스트가 실제로 증가하는 지점을 모두 표시합니다.';
+  list.innerHTML=items.map(item=>'<div class="outpost-core-breakpoint-row"><span class="outpost-core-breakpoint-stage">'+esc(item.stage)+'</span><span class="outpost-core-breakpoint-needed">하드 '+item.needed+'스테이지</span><span class="outpost-core-breakpoint-level">Lv.'+item.level+'</span><strong>'+item.dust.toFixed(2)+'/H</strong></div>').join('');
 }
 function toggleOutpostProduction(){
   const body=document.getElementById('outpostProductionBody'),btn=document.getElementById('outpostProductionToggle');
