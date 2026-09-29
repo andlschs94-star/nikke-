@@ -629,13 +629,33 @@ function renderUnusedGearTransferPanel(){
     return {part,items:merged};
   }).filter(g=>g.items.length);
   const sections=groups.map(g=>{
-    const rows=g.items.map(x=>{
-      const gearCompany=String(x.source['기업']??'').trim();
-      const gearClass=gearClassName(x.source['클래스']);
-      const gearLabel=(gearCompany&&gearClass)?gearCompany+' · '+gearClass:(gearCompany||gearClass||'-');
-      const targets=x.targetNames.map(name=>'<div class="unused-gear-transfer-target-row">'+esc(name)+'</div>').join('');
-      return '<tr><td class="source">'+x.sourceNames.map(esc).join(', ')+'</td><td>'+esc(gearLabel)+'</td><td class="target">'+targets+'</td></tr>';
-    }).join('');
+    const rows=(()=>{
+      // 같은 캐릭터가 여러 장비를 옮겨 낄 수 있는 경우, 대상 캐릭터 이름은 한 번만 표시합니다.
+      const targetRows=[];
+      const targetMap=new Map();
+      g.items.forEach(x=>{
+        const gearCompany=String(x.source['기업']??'').trim();
+        const gearClass=gearClassName(x.source['클래스']);
+        const gearLabel=(gearCompany&&gearClass)?gearCompany+' · '+gearClass:(gearCompany||gearClass||'-');
+        x.targetNames.forEach(name=>{
+          if(!targetMap.has(name)){
+            const row={name,items:[]};
+            targetMap.set(name,row);
+            targetRows.push(row);
+          }
+          targetMap.get(name).items.push({x,gearLabel});
+        });
+      });
+      return targetRows.map(row=>{
+        const cells=row.items.map((item,idx)=>{
+          const source=item.x.sourceNames.map(esc).join(', ');
+          const gear=esc(item.gearLabel);
+          const rowspan=idx===0?'<td class="target" rowspan="'+row.items.length+'">'+esc(row.name)+'</td>':'';
+          return '<tr><td class="source">'+source+'</td><td>'+gear+'</td>'+rowspan+'</tr>';
+        }).join('');
+        return cells;
+      }).join('');
+    })();
     return '<div class="unused-gear-transfer-section"><div class="unused-gear-transfer-section-title">'+esc(g.part)+' <span>· '+g.items.length+'건</span></div><table class="unused-gear-transfer-table"><thead><tr><th>미사용 캐릭터</th><th>장비</th><th>옮겨 낄 수 있는 캐릭터</th></tr></thead><tbody>'+rows+'</tbody></table></div>';
   }).join('');
   box.innerHTML='<div class="unused-gear-transfer-wrap"><button type="button" class="unused-gear-transfer-title" onclick="toggleUnusedGearTransferPanel()" aria-expanded="true"><span>미사용 캐릭터 장비 이동 안내 <span style="font-size:10px;color:#72d99a">· '+suggestions.length+'건</span></span><span id="unusedGearTransferIcon">−</span></button><div id="unusedGearTransferBody"><div class="unused-gear-transfer-note">미사용으로 체크한 캐릭터가 착용 중인 <b>맞는 기업장비</b> 중, 미사용이 아닌 같은 기업·클래스 캐릭터가 있어 옮겨 낄 수 있는 장비를 표시합니다. 이 기능은 안내만 하며 장비를 자동으로 이동시키지 않습니다.</div>'+sections+'</div></div>';
