@@ -183,7 +183,7 @@ function normalizeAccountData(saved){
   base.forEach(r=>{
     const name=String(r?.['이름']??'').trim();
     const old=byName.get(name);
-    if(old&&typeof old==='object') Object.assign(r,old);
+    if(old&&typeof old==='object'){\n      Object.assign(r,old);\n      // 캐릭터 기본 정보는 RAW를 기준으로 유지합니다. 저장된 구버전 데이터가 기업장비 동기화 과정에서 기업/클래스를 덮어쓰지 않도록 합니다.\n      r['이름']=String(r['이름']??'').trim();\n      r['기업']=String(r['기업']??'').trim();\n      r['클래스']=String(r['클래스']??'').trim();\n    }
   });
   return base;
 }
