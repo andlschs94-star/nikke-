@@ -78,9 +78,7 @@ body.drop-rate-view .drop-rate-accordion{margin-bottom:0}
 .app{display:block;min-height:100vh}
 .sidebar{position:fixed;left:0;top:0;bottom:0;width:228px;height:100vh;z-index:100;transform:translateX(-105%);transition:transform .22s ease;box-shadow:18px 0 45px rgba(0,0,0,.35);overflow:auto}
 .sidebar.open{transform:translateX(0)}
-.site-version-corner{position:fixed;left:58px;top:7px;z-index:121;color:#6f7b96;font-size:8px;font-weight:800;letter-spacing:.06em;white-space:nowrap;pointer-events:none}.settings-wrap{position:relative;display:flex;align-items:center}.settings-btn{width:40px!important;height:40px;padding:0!important;margin:0!important;border:1px solid #3a4663!important;border-radius:10px!important;background:#0d1527!important;color:#cbd5e9!important;display:grid;place-items:center;font-size:19px;line-height:1;transition:.15s}.settings-btn:hover,.settings-btn.active{border-color:var(--accent)!important;background:#211d3b!important;color:#fff!important}.settings-popover{position:fixed;z-index:1600;width:min(330px,calc(100vw - 24px));background:#0e1629;border:1px solid #35415f;border-radius:14px;box-shadow:0 20px 55px rgba(0,0,0,.5);padding:10px}.settings-popover h4{margin:2px 4px 9px;font-size:12px;color:#eef3ff}.settings-popover .settings-section-title{padding:5px 4px 7px;color:#75829c;font-size:10px;font-weight:900;letter-spacing:.08em}.settings-popover .settings-action{width:100%;margin:0 0 6px;border:1px solid #2d3953;background:#0d1527;color:#c5cfe1;border-radius:9px;padding:10px 11px;text-align:left;font-size:11px;font-weight:800}.settings-popover .settings-action:hover{border-color:#596986;color:#fff;background:#121c31}.settings-popover .settings-action.danger{border-color:#633040;background:#25131a;color:#ff9caf}.settings-popover .settings-action.danger:hover{border-color:#8b4156;background:#30151f}.settings-popover .settings-info{margin:4px 0 8px;padding:9px 10px;background:#0b1323;border:1px solid #27344e;border-radius:9px;color:#7f8ba4;font-size:10px;line-height:1.55}.settings-popover .settings-divider{height:1px;background:#253149;margin:8px 2px}.sidebar-toggle{position:fixed;left:12px;top:14px;width:40px;height:40px;z-index:120;border:1px solid #3a4663;border-radius:10px;background:rgba(13,21,39,.92);backdrop-filter:blur(10px);color:#eef2ff;font-size:18px;font-weight:900;display:grid;place-items:center;box-shadow:0 8px 22px rgba(0,0,0,.25)}
-.sidebar-toggle:hover{border-color:var(--accent);background:#171f35}
-.sidebar-toggle.open{left:240px}
+.site-version-corner{position:fixed;left:62px;top:7px;z-index:121;color:#6f7b96;font-size:8px;font-weight:800;letter-spacing:.06em;white-space:nowrap;pointer-events:none}.settings-wrap{position:relative;display:flex;align-items:center}.settings-btn{width:40px!important;height:40px;padding:0!important;margin:0!important;border:1px solid #3a4663!important;border-radius:10px!important;background:#0d1527!important;color:#cbd5e9!important;display:grid;place-items:center;font-size:19px;line-height:1;transition:.15s}.settings-btn:hover,.settings-btn.active{border-color:var(--accent)!important;background:#211d3b!important;color:#fff!important}.settings-popover{position:fixed;z-index:1600;width:min(330px,calc(100vw - 24px));background:#0e1629;border:1px solid #35415f;border-radius:14px;box-shadow:0 20px 55px rgba(0,0,0,.5);padding:10px}.settings-popover h4{margin:2px 4px 9px;font-size:12px;color:#eef3ff}.settings-popover .settings-section-title{padding:5px 4px 7px;color:#75829c;font-size:10px;font-weight:900;letter-spacing:.08em}.settings-popover .settings-action{width:100%;margin:0 0 6px;border:1px solid #2d3953;background:#0d1527;color:#c5cfe1;border-radius:9px;padding:10px 11px;text-align:left;font-size:11px;font-weight:800}.settings-popover .settings-action:hover{border-color:#596986;color:#fff;background:#121c31}.settings-popover .settings-action.danger{border-color:#633040;background:#25131a;color:#ff9caf}.settings-popover .settings-action.danger:hover{border-color:#8b4156;background:#30151f}.settings-popover .settings-info{margin:4px 0 8px;padding:9px 10px;background:#0b1323;border:1px solid #27344e;border-radius:9px;color:#7f8ba4;font-size:10px;line-height:1.55}.settings-popover .settings-divider{height:1px;background:#253149;margin:8px 2px}.sidebar-hitarea{position:fixed;left:0;top:0;bottom:0;width:58px;z-index:120;cursor:pointer;background:transparent}.sidebar-hitarea:hover{background:rgba(146,125,255,.06)}.sidebar-hitarea.open{width:228px}
 .sidebar-backdrop{position:fixed;inset:0;background:rgba(2,5,14,.42);backdrop-filter:blur(2px);z-index:90;opacity:0;pointer-events:none;transition:opacity .18s ease}
 .sidebar-backdrop.open{opacity:1;pointer-events:auto}
 .main{width:100%;padding-bottom:28px}
@@ -98,7 +96,6 @@ th,td{padding:8px 8px}
 @media(max-width:1000px){
   .sidebar{display:block}
   .sidebar.open{display:block}
-  .sidebar-toggle.open{left:12px}
   .topbar{padding-left:64px}
   .table-wrap{max-height:calc(100vh - 335px)}
 }
@@ -184,9 +181,9 @@ th,td{padding:8px 8px}
 .corp-owned-standalone{margin:0 0 12px;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:#0a1220}
 .corp-owned-standalone .corp-owned-title{background:#0f192b}
 </style></head><body>
-<div class="site-version-corner">VERSION 0.150</div><button type="button" class="sidebar-toggle" id="sidebarToggle" aria-label="메뉴 열기" title="메뉴" onclick="closeSettingsMenu();const s=document.getElementById('sidebar'),b=document.getElementById('sidebarBackdrop'),o=s.classList.toggle('open');b.classList.toggle('open',o);this.classList.toggle('open',o);this.textContent=o?'×':'☰';this.setAttribute('aria-label',o?'메뉴 닫기':'메뉴 열기')">☰</button>
+<div class="site-version-corner">VERSION 0.160</div><div class="sidebar-hitarea" id="sidebarHitarea" aria-label="메뉴 열기" title="왼쪽 메뉴 열기"></div>
 <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
-<div class="app"><aside class="sidebar" id="sidebar"><div class="brand"><div class="logo">N</div><div><h1>NIKKE Gear Manager</h1><p>장비·성장 현황 관리</p></div></div><div class="nav"><button type="button" class="active main-view-nav" data-view="characters" onclick="switchMainView('characters')">캐릭터 관리</button><button type="button" class="main-view-nav" data-view="outpost" onclick="switchMainView('outpost')">전초기지 생산량</button></div><div class="section" style="font-size:11px;color:#6f7b96;line-height:1.6">현재는 캐릭터 관리 기능을 제공합니다.<br>다른 관리 기능은 오른쪽 위 ⚙ 설정에서 사용할 수 있습니다.</div></aside>
+<div class="app"><aside class="sidebar" id="sidebar"><div class="brand"><div class="logo">N</div><div><h1>NIKKE Gear Manager</h1><p>장비·성장 현황 관리</p></div></div><div class="nav"><button type="button" class="active main-view-nav" data-view="characters" onclick="switchMainView('characters')">캐릭터 관리</button><button type="button" class="main-view-nav" data-view="outpost" onclick="switchMainView('outpost')">전초기지 생산량</button></div><div class="section" style="font-size:11px;color:#6f7b96;line-height:1.6">현재는 캐릭터 관리 기능을 제공합니다.<br>다른 관리 기능은 설정 메뉴에서 사용할 수 있습니다.</div></aside>
 <main class="main"><div class="topbar"><div><div class="eyebrow">NIKKE / INVENTORY</div><h2 id="pageTitle">캐릭터 장비 현황</h2></div><div class="actions account-switcher"><button type="button" class="btn account-switch-btn active" data-account="제닐스" onclick="switchAccount('제닐스')">제닐스</button><button type="button" class="btn account-switch-btn" data-account="대상혁" onclick="switchAccount('대상혁')">대상혁</button><div class="settings-wrap"><button type="button" class="settings-btn" id="settingsBtn" aria-label="설정" title="설정" onclick="toggleSettingsMenu(event)">⚙</button></div></div></div><div class="settings-popover" id="settingsPopover" hidden>
   <h4>설정 · 데이터</h4>
   <div class="settings-section-title">데이터 관리</div>
@@ -1391,14 +1388,21 @@ function switchMainView(view){
   closeSidebar();
 }
 function closeSidebar(){
-  const s=document.getElementById('sidebar'),b=document.getElementById('sidebarBackdrop'),t=document.getElementById('sidebarToggle');
+  const s=document.getElementById('sidebar'),b=document.getElementById('sidebarBackdrop'),t=document.getElementById('sidebarHitarea');
   if(!s)return;
   s.classList.remove('open');b?.classList.remove('open');t?.classList.remove('open');
-  if(t){t.textContent='☰';t.setAttribute('aria-label','메뉴 열기');}
 }
 function initSidebarOutsideClick(){
-  const s=document.getElementById('sidebar'),t=document.getElementById('sidebarToggle'),b=document.getElementById('sidebarBackdrop');
+  const s=document.getElementById('sidebar'),t=document.getElementById('sidebarHitarea'),b=document.getElementById('sidebarBackdrop');
   if(!s)return;
+  const toggle=()=>{
+    closeSettingsMenu();
+    const open=!s.classList.contains('open');
+    s.classList.toggle('open',open);
+    b?.classList.toggle('open',open);
+    t?.classList.toggle('open',open);
+  };
+  t?.addEventListener('click',toggle);
   b?.addEventListener('click',closeSidebar);
   document.addEventListener('click',e=>{
     if(!s.classList.contains('open'))return;
