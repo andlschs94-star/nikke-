@@ -139,7 +139,7 @@ th,td{padding:8px 8px}
 .corp-owned-standalone{margin:0 0 12px;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:#0a1220}
 .corp-owned-standalone .corp-owned-title{background:#0f192b}
 </style></head><body>
-<div class="site-version-corner">VERSION 0.112</div><button type="button" class="sidebar-toggle" id="sidebarToggle" aria-label="메뉴 열기" title="메뉴" onclick="closeSettingsMenu();const s=document.getElementById('sidebar'),b=document.getElementById('sidebarBackdrop'),o=s.classList.toggle('open');b.classList.toggle('open',o);this.classList.toggle('open',o);this.textContent=o?'×':'☰';this.setAttribute('aria-label',o?'메뉴 닫기':'메뉴 열기')">☰</button>
+<div class="site-version-corner">VERSION 0.113</div><button type="button" class="sidebar-toggle" id="sidebarToggle" aria-label="메뉴 열기" title="메뉴" onclick="closeSettingsMenu();const s=document.getElementById('sidebar'),b=document.getElementById('sidebarBackdrop'),o=s.classList.toggle('open');b.classList.toggle('open',o);this.classList.toggle('open',o);this.textContent=o?'×':'☰';this.setAttribute('aria-label',o?'메뉴 닫기':'메뉴 열기')">☰</button>
 <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
 <div class="app"><aside class="sidebar" id="sidebar"><div class="brand"><div class="logo">N</div><div><h1>NIKKE Gear Manager</h1><p>장비·성장 현황 관리</p></div></div><div class="nav"><button class="active">캐릭터 관리</button></div><div class="section" style="font-size:11px;color:#6f7b96;line-height:1.6">현재는 캐릭터 관리 기능을 제공합니다.<br>다른 관리 기능은 오른쪽 위 ⚙ 설정에서 사용할 수 있습니다.</div></aside>
 <main class="main"><div class="topbar"><div><div class="eyebrow">NIKKE / INVENTORY</div><h2>캐릭터 장비 현황</h2></div><div class="actions account-switcher"><button type="button" class="btn account-switch-btn active" data-account="제닐스" onclick="switchAccount('제닐스')">제닐스</button><button type="button" class="btn account-switch-btn" data-account="대상혁" onclick="switchAccount('대상혁')">대상혁</button><div class="settings-wrap"><button type="button" class="settings-btn" id="settingsBtn" aria-label="설정" title="설정" onclick="toggleSettingsMenu(event)">⚙</button></div></div></div><div class="settings-popover" id="settingsPopover" hidden>
@@ -520,6 +520,54 @@ function getNeedEquipmentCounts(){
   });
   return totals;
 }
+function getNeedTypeCounts(){
+  const totals={머리:{},몸통:{},장갑:{},다리:{}};
+  data.forEach((r,i)=>{
+    if(!selectedCharacters.has(i))return;
+    const company=String(r['기업']??'').trim();
+    const cls=gearClassName(r['클래스']);
+    if(!company||!cls)return;
+    gearParts.forEach(p=>{
+      if(!gearNeedsCorporate(r,p))return;
+      const key=company+'|'+cls;
+      totals[p][key]=(totals[p][key]||0)+1;
+    });
+  });
+  return totals;
+}
+/* 각 기업+클래스 장비별 필요 수량을 유지하면서,
+   필요한 종류가 하나씩 소진될 때마다 유효장비 확률이 감소하는 전체 완료 기대 클리어 수를 계산합니다. */
+function getExpectedAllGearClears(typeCounts,ratePercent,pool){
+  const counts=Object.values(typeCounts||{}).map(Number).filter(n=>n>0);
+  if(!counts.length)return 0;
+  const perTypeProb=(Number(ratePercent)||0)/Math.max(1,Number(pool)||1)/100;
+  if(perTypeProb<=0)return 0;
+  const max=Math.max(...counts);
+  const start=Array(max+1).fill(0);
+  counts.forEach(n=>{start[n]++;});
+  const memo=new Map();
+  const solve=state=>{
+    const key=state.join(',');
+    const cached=memo.get(key);
+    if(cached!==undefined)return cached;
+    let activeTypes=0;
+    for(let j=1;j<state.length;j++)activeTypes+=state[j]||0;
+    if(activeTypes===0)return 0;
+    let weightedNext=0;
+    for(let j=1;j<state.length;j++){
+      const types=state[j]||0;
+      if(!types)continue;
+      const next=state.slice();
+      next[j]--;
+      next[j-1]++;
+      weightedNext+=types*solve(next);
+    }
+    const result=(1+perTypeProb*weightedNext)/(perTypeProb*activeTypes);
+    memo.set(key,result);
+    return result;
+  };
+  return solve(start);
+}
 function renderDropRatePanel(){
   const box=document.getElementById('dropRatePanel');if(!box)return;
   const need=getNeedTypeTotals();
@@ -527,6 +575,7 @@ function renderDropRatePanel(){
   const pool=Math.max(1,Number(dropRateSettings.pool)||1);
   const fmt=n=>Number(n).toLocaleString('ko-KR');
   const dungeonNames={머리:'울트라(머리)',몸통:'인디빌리아(몸통)',장갑:'미러 컨테이너(장갑)',다리:'하베스터(다리)'};
+  const needCounts=getNeedTypeCounts();
   const cards=gearParts.map(p=>{
     const stage=Number(dropRateSettings[p]||9);
     const rate=DROP_RATES[stage]||0;
@@ -535,14 +584,12 @@ function renderDropRatePanel(){
     const neededCount=getNeedEquipmentCounts()[p]||0;
     // 유효장비 n종 중 어느 하나라도 1개 나올 확률입니다.
     const validRate=Math.min(100,target*n);
-    // 상단은 해당 부위의 실제 필요 장비 수를 기준으로 계산합니다.
-    // target은 퍼센트 값이므로 100으로 나눠 실제 확률로 변환합니다.
-    const perRequiredDropRate=target/100;
-    const allGearClears=perRequiredDropRate>0?Math.ceil(neededCount/perRequiredDropRate):0;
-    const allGearDays=allGearClears>0?Math.ceil(allGearClears/3):0;
+    // 필요한 장비 종류별 수량을 유지하면서, 종류를 전부 채울 때마다 유효확률이 감소하는 효과를 반영합니다.
+    const expectedClears=getExpectedAllGearClears(needCounts[p],rate,pool);
+    const expectedDays=expectedClears>0?Math.ceil(expectedClears/3):0;
     const exp=validRate>0?Math.ceil(100/validRate):0;
     const days=exp>0?Math.ceil(exp/3):0;
-    return `<div class="drop-rate-card"><h4>${dungeonNames[p]||p}</h4><div class="drop-rate-row"><label>파밍 단계</label><button type="button" class="drop-stage-btn" onclick="openDropStageMenu(\\'${p}\\',this)">${stage}단계 ▾</button></div><div class="drop-rate-value">${fmt(neededCount)}개 · ${fmt(allGearDays)}일</div><button type="button" class="drop-rate-details-toggle" onclick="toggleDropRateDetails(this)" aria-expanded="false">상세 내용 보기 ＋</button><div class="drop-rate-details" hidden><div class="drop-rate-sub">이 부위의 유효체크한 캐릭터 필요 기업장비 수 · 모두 획득 이론상 일수</div><div class="drop-rate-result"><div>현재 필요한 장비 종류 <b>${fmt(n)}종</b></div><div>유효장비 ${fmt(n)}종 중 1종 이상 획득 확률 <b>${validRate.toFixed(2)}%</b></div><div>1종 이상 획득을 위한 이론상 클리어 횟수 <b>${fmt(exp)}회</b></div><div>1종 이상 획득까지 이론상 일수(하루 3회 기준) <b>${fmt(days)}일</b></div><div class="drop-rate-secondary">${stage}단계 기업장비 등장확률 <b>${rate}%</b></div></div></div></div>`;
+    return `<div class="drop-rate-card"><h4>${dungeonNames[p]||p}</h4><div class="drop-rate-row"><label>파밍 단계</label><button type="button" class="drop-stage-btn" onclick="openDropStageMenu(\\'${p}\\',this)">${stage}단계 ▾</button></div><div class="drop-rate-value">${fmt(neededCount)}개 · ${fmt(expectedDays)}일</div><button type="button" class="drop-rate-details-toggle" onclick="toggleDropRateDetails(this)" aria-expanded="false">상세 내용 보기 ＋</button><div class="drop-rate-details" hidden><div class="drop-rate-sub">이 부위의 유효체크한 캐릭터 필요 기업장비 수 · 필요 종류별 중복 수량과 유효장비 감소를 반영한 모두 획득 예상 일수</div><div class="drop-rate-result"><div>현재 필요한 장비 종류 <b>${fmt(n)}종</b></div><div>전체 필요 장비 완료 예상 클리어 횟수 <b>${fmt(Math.ceil(expectedClears))}회</b></div><div>유효장비 ${fmt(n)}종 중 1종 이상 획득 확률 <b>${validRate.toFixed(2)}%</b></div><div>1종 이상 획득을 위한 이론상 클리어 횟수 <b>${fmt(exp)}회</b></div><div>1종 이상 획득까지 이론상 일수(하루 3회 기준) <b>${fmt(days)}일</b></div><div class="drop-rate-secondary">${stage}단계 기업장비 등장확률 <b>${rate}%</b></div></div></div></div>`;
   }).join('');
   const ownedTotal=Object.values(ownedCorporate).reduce((a,b)=>a+b,0);
   box.innerHTML=`<div class="drop-rate-wrap"><div class="drop-rate-head"><div><h3>기업장비 획득 확률</h3><div class="drop-rate-note">각 부위 던전은 1~9단계별 기업장비 등장 확률을 사용합니다. 기업장비는 설정한 종류 수 중 무작위로 등장합니다.</div></div><div class="drop-rate-pool"><label>랜덤 기업장비 종류 수</label><input type="number" min="1" max="100" value="${pool}" onchange="setDropRatePool(this.value)"></div></div><div class="drop-rate-grid">${cards}</div><div class="drop-rate-footnote">유효장비 획득 확률은 <b>단계 기업장비 등장확률 × (유효장비 종류 수 ÷ 랜덤 기업장비 종류 수)</b>로 계산합니다. 클리어 횟수는 전체 유효장비를 모으는 횟수가 아니라 <b>유효장비 종류 중 1종 이상 획득하기 위한 기대 횟수</b>입니다.</div></div>`;
