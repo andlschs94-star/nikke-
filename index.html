@@ -212,8 +212,9 @@ function readAccountData(account){
       const saved=localStorage.getItem(STORAGE);
       const parsed=saved?JSON.parse(saved):null;
       if(Array.isArray(parsed)){
-        localStorage.setItem(key,JSON.stringify(parsed));
-        return parsed;
+        const normalized=normalizeAccountData(parsed);
+        localStorage.setItem(key,JSON.stringify(normalized));
+        return normalized;
       }
     }catch(e){}
     try{
