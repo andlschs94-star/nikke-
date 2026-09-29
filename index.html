@@ -19,7 +19,7 @@
 .gear-part.overload{border-color:#8f6fff;background:linear-gradient(180deg,#201b39,#17152b);box-shadow:inset 0 0 0 1px rgba(146,125,255,.12)}.gear-part.overload .part-state{color:#c6b9ff}.gear-part.company{border-color:#3d9b67;background:linear-gradient(180deg,#163326,#0d2217)}.gear-part.company .part-state{color:#72d99a}.gear-part.other{border-color:#a24f5f;background:linear-gradient(180deg,#2a1820,#1a1117)}.gear-part.other .part-state{color:#ff9aaa}.gear-part.unknown .part-state{color:#8794ad}
 .gear-legend{display:flex;flex-wrap:wrap;gap:6px 10px;margin-top:7px;font-size:10px;color:#74809b}.gear-legend span{display:inline-flex;align-items:center;gap:4px}.gear-dot{width:7px;height:7px;border-radius:50%;display:inline-block}.gear-dot.e{background:#8190aa}.gear-dot.m{border:1px dashed #66728b}.gear-dot.o{background:#9b7cff;box-shadow:0 0 7px rgba(155,124,255,.45)}
 .piece-status{font-size:10px;font-weight:900;padding:4px 7px;border-radius:7px;border:1px solid #2a3652;background:#0d1527;color:#8f9bb5}.piece-status.missing{opacity:.65}.piece-status.equipped{color:#b5c1d8}.piece-status.overload{border-color:#8f6fff;background:#201b39;color:#cbbfff}
-.toast{position:fixed;right:22px;bottom:22px;background:#151f35;border:1px solid var(--line);padding:10px 14px;border-radius:9px;opacity:0;transform:translateY(8px);pointer-events:none;transition:.2s}.toast.show{opacity:1;transform:none}
+.backup-code-modal{position:fixed;inset:0;z-index:2400;display:flex;align-items:center;justify-content:center;padding:20px;background:rgba(2,5,14,.72);backdrop-filter:blur(5px)}.backup-code-modal[hidden]{display:none!important}.backup-code-card{width:min(720px,96vw);max-height:90vh;overflow:auto;background:#10182c;border:1px solid var(--line);border-radius:16px;box-shadow:0 24px 80px rgba(0,0,0,.55)}.backup-code-head{padding:18px 20px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;gap:12px}.backup-code-head h3{margin:0;font-size:16px}.backup-code-body{padding:18px 20px}.backup-code-help{font-size:11px;color:#8490aa;line-height:1.55;margin-bottom:12px}.backup-code-textarea{width:100%;min-height:220px;resize:vertical;background:#0a1220;color:#dfe7f7;border:1px solid #34415f;border-radius:10px;padding:12px;font:11px/1.45 ui-monospace,SFMono-Regular,Consolas,monospace;outline:none}.backup-code-actions{display:flex;gap:8px;margin-top:10px}.backup-code-actions .btn{width:auto;margin:0}.backup-code-status{min-height:18px;margin-top:10px;font-size:11px;color:#7fd8c8}.backup-code-status.error{color:#ff9aaa}.toast{position:fixed;right:22px;bottom:22px;background:#151f35;border:1px solid var(--line);padding:10px 14px;border-radius:9px;opacity:0;transform:translateY(8px);pointer-events:none;transition:.2s}.toast.show{opacity:1;transform:none}
 @media(max-width:1000px){.sidebar{display:none}.kpis{grid-template-columns:repeat(2,1fr)}.searchbar input{width:220px}.filter-options,.sort-buttons{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:650px){.topbar,.panel{margin-left:12px;margin-right:12px}.topbar{padding:16px 12px}.kpis{padding:0 12px 12px}.panel-head{flex-direction:column;align-items:stretch}.searchbar input{width:100%}.inline-filters{grid-template-columns:1fr}.edit-grid{grid-template-columns:1fr}}
 .column-drag-handle{cursor:grab;user-select:none}.column-drag-handle:active{cursor:grabbing}.dragging-column{opacity:.45}.drop-target-column{box-shadow:inset 3px 0 0 #8f7cff,inset -3px 0 0 #8f7cff;background:#141d31!important}.column-order-help{font-size:10px;color:#66738d;margin-left:8px}.gear-column-cell{min-width:340px}.gear-single-cell{min-width:108px}.gear-single-cell .gear-part{min-width:96px}
 /* 기업장비 필요 수 요약 */
@@ -139,14 +139,14 @@ th,td{padding:8px 8px}
 .corp-owned-standalone{margin:0 0 12px;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:#0a1220}
 .corp-owned-standalone .corp-owned-title{background:#0f192b}
 </style></head><body>
-<div class="site-version-corner">VERSION 0.73</div><button type="button" class="sidebar-toggle" id="sidebarToggle" aria-label="메뉴 열기" title="메뉴" onclick="closeSettingsMenu();const s=document.getElementById('sidebar'),b=document.getElementById('sidebarBackdrop'),o=s.classList.toggle('open');b.classList.toggle('open',o);this.classList.toggle('open',o);this.textContent=o?'×':'☰';this.setAttribute('aria-label',o?'메뉴 닫기':'메뉴 열기')">☰</button>
+<div class="site-version-corner">VERSION 0.74</div><button type="button" class="sidebar-toggle" id="sidebarToggle" aria-label="메뉴 열기" title="메뉴" onclick="closeSettingsMenu();const s=document.getElementById('sidebar'),b=document.getElementById('sidebarBackdrop'),o=s.classList.toggle('open');b.classList.toggle('open',o);this.classList.toggle('open',o);this.textContent=o?'×':'☰';this.setAttribute('aria-label',o?'메뉴 닫기':'메뉴 열기')">☰</button>
 <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
 <div class="app"><aside class="sidebar" id="sidebar"><div class="brand"><div class="logo">N</div><div><h1>NIKKE Gear Manager</h1><p>장비·성장 현황 관리</p></div></div><div class="nav"><button class="active">캐릭터 관리</button></div><div class="section" style="font-size:11px;color:#6f7b96;line-height:1.6">현재는 캐릭터 관리 기능을 제공합니다.<br>다른 관리 기능은 오른쪽 위 ⚙ 설정에서 사용할 수 있습니다.</div></aside>
 <main class="main"><div class="topbar"><div><div class="eyebrow">NIKKE / INVENTORY</div><h2>캐릭터 장비 현황</h2></div><div class="actions account-switcher"><button type="button" class="btn account-switch-btn active" data-account="제닐스" onclick="switchAccount('제닐스')">제닐스</button><button type="button" class="btn account-switch-btn" data-account="대상혁" onclick="switchAccount('대상혁')">대상혁</button><div class="settings-wrap"><button type="button" class="settings-btn" id="settingsBtn" aria-label="설정" title="설정" onclick="toggleSettingsMenu(event)">⚙</button></div></div></div><div class="settings-popover" id="settingsPopover" hidden>
   <h4>설정 · 데이터</h4>
   <div class="settings-section-title">데이터 관리</div>
   <button type="button" class="settings-action" onclick="closeSettingsMenu();exportCSV()">현재 목록 CSV 저장</button>
-  <button type="button" class="settings-action" onclick="closeSettingsMenu();exportJSON()">백업 JSON 저장</button>
+  <button type="button" class="settings-action" onclick="closeSettingsMenu();exportJSON()">백업 JSON 저장</button><button type="button" class="settings-action" onclick="closeSettingsMenu();openBackupCodeModal('export')">백업 코드 생성</button><button type="button" class="settings-action" onclick="closeSettingsMenu();openBackupCodeModal('import')">백업 코드 복원</button>
   <button type="button" class="settings-action" onclick="closeSettingsMenu();openBlablalinkSyncGuide()">BlablaLink 장비 자동 동기화</button>
   <div class="settings-info"><b>기업장비 현황 자동 반영</b><br>BlablaLink 로그인 세션에서 장비의 기업 타입을 읽어 현재 사이트 데이터에 반영합니다.</div>
   <div class="settings-divider"></div>
@@ -1025,6 +1025,58 @@ function initSidebarOutsideClick(){
     closeSidebar();
   });
 }
+function backupCodeEncode(text){return btoa(unescape(encodeURIComponent(text)));}
+function backupCodeDecode(text){return decodeURIComponent(escape(atob(text.trim())));}
+function collectBackupStorage(){
+  const out={};
+  for(let i=0;i<localStorage.length;i++){
+    const key=localStorage.key(i);
+    if(key&&key.startsWith('nikke')) out[key]=localStorage.getItem(key);
+  }
+  return out;
+}
+function createBackupCode(){
+  const payload={v:1,app:'NIKKE Gear Manager',siteVersion:'0.74',createdAt:new Date().toISOString(),storage:collectBackupStorage()};
+  return 'NIKKE-GM-1:'+backupCodeEncode(JSON.stringify(payload));
+}
+let backupCodeMode='export';
+function openBackupCodeModal(mode){
+  backupCodeMode=mode==='import'?'import':'export';
+  const m=document.getElementById('backupCodeModal'),t=document.getElementById('backupCodeText'),p=document.getElementById('backupCodePrimary'),h=document.getElementById('backupCodeHelp'),s=document.getElementById('backupCodeStatus');
+  if(!m||!t||!p)return;
+  s.textContent='';s.classList.remove('error');
+  if(backupCodeMode==='export'){
+    t.value=createBackupCode();t.readOnly=true;p.textContent='코드 복사';h.innerHTML='현재 브라우저에 저장된 <b>NIKKE Gear Manager 데이터</b>를 백업 코드로 만들었습니다.<br>다른 컴퓨터에서 이 코드를 붙여넣어 복원할 수 있습니다. 코드는 서버나 GitHub에 저장되지 않습니다.';
+  }else{
+    t.value='';t.readOnly=false;p.textContent='코드 복원';h.innerHTML='다른 컴퓨터에서 만든 백업 코드를 아래에 붙여넣으세요.<br><b>복원하면 현재 브라우저의 NIKKE Gear Manager 저장 데이터가 백업 데이터로 교체되고 페이지가 새로고침됩니다.</b>';
+  }
+  m.hidden=false;setTimeout(()=>t.focus(),0);
+}
+function closeBackupCodeModal(){const m=document.getElementById('backupCodeModal');if(m)m.hidden=true;}
+async function handleBackupCodePrimary(){
+  const t=document.getElementById('backupCodeText'),s=document.getElementById('backupCodeStatus');
+  if(!t||!s)return;
+  if(backupCodeMode==='export'){
+    try{await navigator.clipboard.writeText(t.value);s.textContent='백업 코드가 클립보드에 복사되었습니다.';s.classList.remove('error');}
+    catch(_){t.focus();t.select();s.textContent='자동 복사가 차단되었습니다. Ctrl+C로 복사해주세요.';s.classList.remove('error');}
+    return;
+  }
+  const raw=t.value.trim();
+  if(!raw){s.textContent='백업 코드를 입력해주세요.';s.classList.add('error');return;}
+  try{
+    if(!raw.startsWith('NIKKE-GM-1:')) throw new Error('invalid');
+    const payload=JSON.parse(backupCodeDecode(raw.slice('NIKKE-GM-1:'.length)));
+    if(!payload||payload.app!=='NIKKE Gear Manager'||payload.v!==1||!payload.storage||typeof payload.storage!=='object') throw new Error('invalid');
+    const keys=Object.keys(payload.storage);
+    if(!keys.length) throw new Error('empty');
+    if(!confirm('현재 브라우저의 NIKKE Gear Manager 저장 데이터를 백업 코드로 교체할까요?')) return;
+    Object.entries(payload.storage).forEach(([key,value])=>localStorage.setItem(key,value));
+    localStorage.setItem('nikke_backup_code_restored_at',new Date().toISOString());
+    s.textContent='복원되었습니다. 페이지를 새로고침합니다.';
+    setTimeout(()=>location.reload(),350);
+  }catch(_){s.textContent='올바른 NIKKE Gear Manager 백업 코드가 아닙니다.';s.classList.add('error');}
+}
+document.getElementById('backupCodeModal')?.addEventListener('click',e=>{if(e.target.id==='backupCodeModal')closeBackupCodeModal();});
 function download(name,text,type){const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([text],{type}));a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000)}
 function exportJSON(){download('nikke_gear_backup.json',JSON.stringify(data,null,2),'application/json')}
 function csvCell(v){const s=String(v??'');return /[",\n]/.test(s)?'"'+s.replace(/"/g,'""')+'"':s}
@@ -1139,7 +1191,23 @@ function setQuickGearStatus(i,part,status){
   save(); closeQuickGearEditor(); renderTable(); toast(`${part} → ${status==='overload'?'오버로드':status==='company'?'기업장비':status==='normal'?'일반장비':'미착용'} 변경`);
 }
 </script>
-<div class="blsync-modal-backdrop" id="blsyncModal" hidden>
+<div class="backup-code-modal" id="backupCodeModal" hidden>
+  <div class="backup-code-card" role="dialog" aria-modal="true" aria-labelledby="backupCodeTitle">
+    <div class="backup-code-head">
+      <div><h3 id="backupCodeTitle">백업 코드</h3></div>
+      <button class="btn close-btn" type="button" onclick="closeBackupCodeModal()">닫기</button>
+    </div>
+    <div class="backup-code-body">
+      <div class="backup-code-help" id="backupCodeHelp">현재 브라우저에 저장된 NIKKE Gear Manager 데이터를 코드 하나로 만들어 다른 컴퓨터에서 복원할 수 있습니다.<br>데이터는 서버나 GitHub에 저장되지 않고, 이 코드 안에만 포함됩니다.</div>
+      <textarea class="backup-code-textarea" id="backupCodeText" spellcheck="false" placeholder="백업 코드를 붙여넣으세요."></textarea>
+      <div class="backup-code-actions">
+        <button class="btn primary" id="backupCodePrimary" type="button" onclick="handleBackupCodePrimary()">코드 복사</button>
+        <button class="btn" id="backupCodeClear" type="button" onclick="document.getElementById('backupCodeText').value='';document.getElementById('backupCodeStatus').textContent='';document.getElementById('backupCodeStatus').classList.remove('error')">지우기</button>
+      </div>
+      <div class="backup-code-status" id="backupCodeStatus"></div>
+    </div>
+  </div>
+</div><div class="blsync-modal-backdrop" id="blsyncModal" hidden>
   <div class="blsync-modal" role="dialog" aria-modal="true" aria-labelledby="blsyncTitle">
     <div class="blsync-head">
       <div><h3 id="blsyncTitle">BlablaLink 장비 자동 동기화</h3><div style="margin-top:4px;color:#7d89a3;font-size:11px">기업장비 현황을 계정에서 자동으로 가져옵니다.</div></div>
