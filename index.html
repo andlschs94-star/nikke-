@@ -22,8 +22,8 @@ body.outpost-view #outpostPanel{display:block}
 .outpost-table th{position:sticky;top:0;background:#10192c;color:#8f9bb5;font-weight:900;z-index:2}
 .outpost-table td{color:#dbe4f6;font-variant-numeric:tabular-nums}
 .outpost-table td:first-child{font-weight:900;color:#fff}
-.outpost-table tr.outpost-core-threshold td{background:#91bd7d;color:#111;font-weight:900}
-.outpost-table tr.outpost-core-threshold td:first-child{color:#111}
+.outpost-table tr.outpost-core-threshold td{background:rgba(146,125,255,.28);color:#efeaff;font-weight:900;box-shadow:inset 0 1px 0 rgba(181,165,255,.28),inset 0 -1px 0 rgba(181,165,255,.18)}
+.outpost-table tr.outpost-core-threshold td:first-child{color:#fff}
 .outpost-table tr:last-child td{border-bottom:0}
 @media(max-width:650px){#outpostPanel{margin-left:12px;margin-right:12px}.outpost-head{display:block}.outpost-table-wrap{max-height:calc(100vh - 170px)}}
 body.drop-rate-view .drop-rate-accordion{margin-bottom:0}
@@ -162,7 +162,7 @@ th,td{padding:8px 8px}
 .corp-owned-standalone{margin:0 0 12px;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:#0a1220}
 .corp-owned-standalone .corp-owned-title{background:#0f192b}
 </style></head><body>
-<div class="site-version-corner">VERSION 0.122</div><button type="button" class="sidebar-toggle" id="sidebarToggle" aria-label="메뉴 열기" title="메뉴" onclick="closeSettingsMenu();const s=document.getElementById('sidebar'),b=document.getElementById('sidebarBackdrop'),o=s.classList.toggle('open');b.classList.toggle('open',o);this.classList.toggle('open',o);this.textContent=o?'×':'☰';this.setAttribute('aria-label',o?'메뉴 닫기':'메뉴 열기')">☰</button>
+<div class="site-version-corner">VERSION 0.123</div><button type="button" class="sidebar-toggle" id="sidebarToggle" aria-label="메뉴 열기" title="메뉴" onclick="closeSettingsMenu();const s=document.getElementById('sidebar'),b=document.getElementById('sidebarBackdrop'),o=s.classList.toggle('open');b.classList.toggle('open',o);this.classList.toggle('open',o);this.textContent=o?'×':'☰';this.setAttribute('aria-label',o?'메뉴 닫기':'메뉴 열기')">☰</button>
 <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
 <div class="app"><aside class="sidebar" id="sidebar"><div class="brand"><div class="logo">N</div><div><h1>NIKKE Gear Manager</h1><p>장비·성장 현황 관리</p></div></div><div class="nav"><button type="button" class="active main-view-nav" data-view="characters" onclick="switchMainView('characters')">캐릭터 관리</button><button type="button" class="main-view-nav" data-view="outpost" onclick="switchMainView('outpost')">전초기지 생산량</button></div><div class="section" style="font-size:11px;color:#6f7b96;line-height:1.6">현재는 캐릭터 관리 기능을 제공합니다.<br>다른 관리 기능은 오른쪽 위 ⚙ 설정에서 사용할 수 있습니다.</div></aside>
 <main class="main"><div class="topbar"><div><div class="eyebrow">NIKKE / INVENTORY</div><h2 id="pageTitle">캐릭터 장비 현황</h2></div><div class="actions account-switcher"><button type="button" class="btn account-switch-btn active" data-account="제닐스" onclick="switchAccount('제닐스')">제닐스</button><button type="button" class="btn account-switch-btn" data-account="대상혁" onclick="switchAccount('대상혁')">대상혁</button><div class="settings-wrap"><button type="button" class="settings-btn" id="settingsBtn" aria-label="설정" title="설정" onclick="toggleSettingsMenu(event)">⚙</button></div></div></div><div class="settings-popover" id="settingsPopover" hidden>
@@ -175,7 +175,7 @@ th,td{padding:8px 8px}
   <div class="settings-divider"></div>
   <button type="button" class="settings-action danger" onclick="closeSettingsMenu();resetAll()">원본 데이터로 초기화</button>
 </div><div class="kpis" id="kpis"></div>
-<section id="outpostPanel" hidden><div class="outpost-head"><div><h3>전초기지 레벨별 생산 재화량</h3><div class="outpost-note">레벨 1~800 · 코어더스트/H가 1단위 증가하는 행 전체를 강조</div></div></div><div class="outpost-table-wrap"><table class="outpost-table"><thead><tr><th>전초기지 레벨</th><th>크레디트 / M</th><th>크레디트 / H</th><th>배틀데이터셋 / M</th><th>배틀데이터셋 / H</th><th>코어더스트 / M</th><th>코어더스트 / H</th></tr></thead><tbody id="outpostTableBody"></tbody></table></div></section><section class="panel" id="characterPanel"><div class="panel-head" id="characterPanelHead">
+<section id="outpostPanel" hidden><div class="outpost-head"><div><h3>전초기지 레벨별 생산 재화량</h3><div class="outpost-note">레벨 31~800 · 코어더스트/H가 1단위 증가하는 행 전체를 강조</div></div></div><div class="outpost-table-wrap"><table class="outpost-table"><thead><tr><th>전초기지 레벨</th><th>크레디트 / M</th><th>크레디트 / H</th><th>배틀데이터셋 / M</th><th>배틀데이터셋 / H</th><th>코어더스트 / M</th><th>코어더스트 / H</th></tr></thead><tbody id="outpostTableBody"></tbody></table></div></section><section class="panel" id="characterPanel"><div class="panel-head" id="characterPanelHead">
 <div class="panel-head-title panel-head-draggable" data-head-part="title" draggable="true"><h3>전체 캐릭터</h3><small id="countText"></small></div>
 <div class="panel-head-left-tools panel-management-tools panel-head-draggable" data-head-part="left" draggable="true"><div class="searchbar"><input id="search" placeholder="캐릭터 / 무기 / 스킬 검색…"></div><button type="button" class="manage-btn" id="completionFilterBtn" onclick="toggleCompletionFilter(event)">완료 캐릭터 숨기기</button><button type="button" class="unused-view-btn" id="unusedViewBtn" onclick="toggleUnusedVisibility()">미사용 캐릭터 보이기</button></div>
 <div class="panel-head-right panel-management-tools panel-head-draggable" data-head-part="right" draggable="true"><button type="button" class="manage-btn" onclick="clearFilters()">필터 초기화</button><button type="button" class="manage-btn" onclick="resetColumnOrder()">열 순서 초기화</button><button type="button" class="detail-column-btn" id="detailColumnBtn" onclick="toggleDetailColumns()">상세 항목 표시</button></div></div><div class="quick-filter-bar" id="quickFilterBar"></div><select id="powerSort" hidden><option value="power_desc" selected>전투력 높은 순</option><option value="power_asc">전투력 낮은 순</option><option value="burst_asc">버스트 1 → 2 → 3</option><option value="none">기본 순</option></select>
@@ -1275,7 +1275,8 @@ function renderOutpostPanel(){
   body.innerHTML=rows.map((r,idx)=>{
     const core=Number(String(r[6]??'').replace(/,/g,'').trim());
     const currentFloor=Number.isFinite(core)?Math.floor(core):null;
-    const crossed=idx>0 && currentFloor!==null && currentFloor>prevCore;
+    const level=Number(r[0]);
+    const crossed=idx>0 && level>30 && currentFloor!==null && currentFloor>prevCore;
     if(currentFloor!==null) prevCore=currentFloor;
     return '<tr'+(crossed?' class="outpost-core-threshold"':'')+'>'+r.map(v=>'<td>'+esc(v)+'</td>').join('')+'</tr>';
   }).join('');
