@@ -4,7 +4,12 @@
 <style>
 :root{--bg:#080d19;--panel:#0f1729;--panel2:#111c32;--line:#26324b;--text:#edf2ff;--muted:#8490aa;--accent:#927dff;--good:#47d7c7;--danger:#ff6c86}
 *{box-sizing:border-box}html,body{margin:0;background:radial-gradient(circle at 20% 0,#182240 0,#0a0f1d 42%,#070b14 100%);color:var(--text);font-family:Arial,"Noto Sans KR",sans-serif}button,input,select{font:inherit}button{cursor:pointer}
-.app{min-height:100vh;display:flex}.sidebar{width:228px;padding:20px 16px;border-right:1px solid var(--line);background:rgba(7,12,23,.9);position:sticky;top:0;height:100vh}.brand{display:flex;gap:10px;align-items:center;margin-bottom:24px}.logo{width:38px;height:38px;border-radius:11px;background:linear-gradient(135deg,#6c5ce7,#a58fff);display:grid;place-items:center;font-weight:900}.brand h1{font-size:16px;margin:0}.brand p{font-size:10px;color:var(--muted);margin:4px 0 0}.nav button,.btn{width:100%;border:1px solid var(--line);background:#0d1527;color:#b7c2d9;border-radius:9px;padding:9px 10px;margin-bottom:8px;font-weight:700}.nav button.active,.btn.primary{background:#211d3b;border-color:var(--accent);color:#fff}.section{margin-top:22px}.section-title{font-size:10px;color:#6f7b96;text-transform:uppercase;letter-spacing:.12em;margin-bottom:8px}.danger{border-color:#633040;background:#25131a;color:#ff9caf}
+.app{min-height:100vh;display:flex}.sidebar{width:228px;padding:20px 16px;border-right:1px solid var(--line);background:rgba(7,12,23,.9);position:sticky;top:0;height:100vh}.brand{display:flex;gap:10px;align-items:center;margin-bottom:24px}.logo{width:38px;height:38px;border-radius:11px;background:linear-gradient(135deg,#6c5ce7,#a58fff);display:grid;place-items:center;font-weight:900}.brand h1{font-size:16px;margin:0}.brand p{font-size:10px;color:var(--muted);margin:4px 0 0}.nav button,.btn{width:100%;border:1px solid var(--line);background:#0d1527;color:#b7c2d9;border-radius:9px;padding:9px 10px;margin-bottom:8px;font-weight:700}.nav button.active,.btn.primary{background:#211d3b;border-color:var(--accent);color:#fff}
+body.drop-rate-view #characterPanel{display:none}
+body.drop-rate-view #kpis> :not(:first-child){display:none}
+body.drop-rate-view #kpis{padding-top:0}
+body.drop-rate-view .drop-rate-accordion{margin-bottom:0}
+.section{margin-top:22px}.section-title{font-size:10px;color:#6f7b96;text-transform:uppercase;letter-spacing:.12em;margin-bottom:8px}.danger{border-color:#633040;background:#25131a;color:#ff9caf}
 .main{flex:1;min-width:0}.topbar{padding:24px 28px 16px;display:flex;justify-content:space-between;align-items:center;gap:15px}.eyebrow{font-size:10px;letter-spacing:.15em;color:#6f7b96}.topbar h2{font-size:25px;margin:5px 0 0}.actions{display:flex;gap:8px}.actions .btn{width:auto;margin:0}
 .kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;padding:0 28px 16px}.kpi{background:rgba(15,23,41,.82);border:1px solid var(--line);padding:14px 16px;border-radius:13px}.kpi .label{font-size:10px;color:var(--muted)}.kpi .value{font-size:24px;font-weight:900;margin-top:3px}.panel{margin:0 28px 28px;background:rgba(10,16,29,.78);border:1px solid var(--line);border-radius:16px;overflow:hidden}.panel-head{padding:16px;display:flex;align-items:center;gap:12px;border-bottom:1px solid var(--line)}.panel-head h3{margin:0;font-size:16px}.panel-head small{color:var(--muted)}.panel-head-left-tools{display:flex;align-items:center;gap:8px;flex:1;min-width:0}.panel-head-title{display:flex;flex-direction:column;justify-content:center;flex:none;min-width:96px}.panel-head-draggable{cursor:grab;user-select:none}.panel-head-draggable.dragging-head{opacity:.45}.panel-head-draggable.drop-target-head{outline:1px solid #927dff;outline-offset:-1px;background:rgba(146,125,255,.06);border-radius:8px}.panel-head-draggable button,.panel-head-draggable input{cursor:pointer}.panel-head-draggable .searchbar{cursor:default}.panel-head-left-tools.panel-management-tools{justify-content:flex-start!important}.panel-head-right{display:flex;align-items:center;gap:8px;margin-left:auto}.searchbar input{width:280px;background:#0c1424;border:1px solid var(--line);border-radius:9px;padding:10px 12px;color:var(--text);outline:none}
 
@@ -139,10 +144,10 @@ th,td{padding:8px 8px}
 .corp-owned-standalone{margin:0 0 12px;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:#0a1220}
 .corp-owned-standalone .corp-owned-title{background:#0f192b}
 </style></head><body>
-<div class="site-version-corner">VERSION 0.117</div><button type="button" class="sidebar-toggle" id="sidebarToggle" aria-label="메뉴 열기" title="메뉴" onclick="closeSettingsMenu();const s=document.getElementById('sidebar'),b=document.getElementById('sidebarBackdrop'),o=s.classList.toggle('open');b.classList.toggle('open',o);this.classList.toggle('open',o);this.textContent=o?'×':'☰';this.setAttribute('aria-label',o?'메뉴 닫기':'메뉴 열기')">☰</button>
+<div class="site-version-corner">VERSION 0.118</div><button type="button" class="sidebar-toggle" id="sidebarToggle" aria-label="메뉴 열기" title="메뉴" onclick="closeSettingsMenu();const s=document.getElementById('sidebar'),b=document.getElementById('sidebarBackdrop'),o=s.classList.toggle('open');b.classList.toggle('open',o);this.classList.toggle('open',o);this.textContent=o?'×':'☰';this.setAttribute('aria-label',o?'메뉴 닫기':'메뉴 열기')">☰</button>
 <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
-<div class="app"><aside class="sidebar" id="sidebar"><div class="brand"><div class="logo">N</div><div><h1>NIKKE Gear Manager</h1><p>장비·성장 현황 관리</p></div></div><div class="nav"><button class="active">캐릭터 관리</button></div><div class="section" style="font-size:11px;color:#6f7b96;line-height:1.6">현재는 캐릭터 관리 기능을 제공합니다.<br>다른 관리 기능은 오른쪽 위 ⚙ 설정에서 사용할 수 있습니다.</div></aside>
-<main class="main"><div class="topbar"><div><div class="eyebrow">NIKKE / INVENTORY</div><h2>캐릭터 장비 현황</h2></div><div class="actions account-switcher"><button type="button" class="btn account-switch-btn active" data-account="제닐스" onclick="switchAccount('제닐스')">제닐스</button><button type="button" class="btn account-switch-btn" data-account="대상혁" onclick="switchAccount('대상혁')">대상혁</button><div class="settings-wrap"><button type="button" class="settings-btn" id="settingsBtn" aria-label="설정" title="설정" onclick="toggleSettingsMenu(event)">⚙</button></div></div></div><div class="settings-popover" id="settingsPopover" hidden>
+<div class="app"><aside class="sidebar" id="sidebar"><div class="brand"><div class="logo">N</div><div><h1>NIKKE Gear Manager</h1><p>장비·성장 현황 관리</p></div></div><div class="nav"><button type="button" class="active main-view-nav" data-view="characters" onclick="switchMainView('characters')">캐릭터 관리</button><button type="button" class="main-view-nav" data-view="dropRate" onclick="switchMainView('dropRate')">기업장비 획득 확률</button></div><div class="section" style="font-size:11px;color:#6f7b96;line-height:1.6">현재는 캐릭터 관리 기능을 제공합니다.<br>다른 관리 기능은 오른쪽 위 ⚙ 설정에서 사용할 수 있습니다.</div></aside>
+<main class="main"><div class="topbar"><div><div class="eyebrow">NIKKE / INVENTORY</div><h2 id="pageTitle">캐릭터 장비 현황</h2></div><div class="actions account-switcher"><button type="button" class="btn account-switch-btn active" data-account="제닐스" onclick="switchAccount('제닐스')">제닐스</button><button type="button" class="btn account-switch-btn" data-account="대상혁" onclick="switchAccount('대상혁')">대상혁</button><div class="settings-wrap"><button type="button" class="settings-btn" id="settingsBtn" aria-label="설정" title="설정" onclick="toggleSettingsMenu(event)">⚙</button></div></div></div><div class="settings-popover" id="settingsPopover" hidden>
   <h4>설정 · 데이터</h4>
   <div class="settings-section-title">데이터 관리</div>
   <button type="button" class="settings-action" onclick="closeSettingsMenu();exportCSV()">현재 목록 CSV 저장</button>
@@ -152,7 +157,7 @@ th,td{padding:8px 8px}
   <div class="settings-divider"></div>
   <button type="button" class="settings-action danger" onclick="closeSettingsMenu();resetAll()">원본 데이터로 초기화</button>
 </div><div class="kpis" id="kpis"></div>
-<section class="panel"><div class="panel-head" id="characterPanelHead">
+<section class="panel" id="characterPanel"><div class="panel-head" id="characterPanelHead">
 <div class="panel-head-title panel-head-draggable" data-head-part="title" draggable="true"><h3>전체 캐릭터</h3><small id="countText"></small></div>
 <div class="panel-head-left-tools panel-management-tools panel-head-draggable" data-head-part="left" draggable="true"><div class="searchbar"><input id="search" placeholder="캐릭터 / 무기 / 스킬 검색…"></div><button type="button" class="manage-btn" id="completionFilterBtn" onclick="toggleCompletionFilter(event)">완료 캐릭터 숨기기</button><button type="button" class="unused-view-btn" id="unusedViewBtn" onclick="toggleUnusedVisibility()">미사용 캐릭터 보이기</button></div>
 <div class="panel-head-right panel-management-tools panel-head-draggable" data-head-part="right" draggable="true"><button type="button" class="manage-btn" onclick="clearFilters()">필터 초기화</button><button type="button" class="manage-btn" onclick="resetColumnOrder()">열 순서 초기화</button><button type="button" class="detail-column-btn" id="detailColumnBtn" onclick="toggleDetailColumns()">상세 항목 표시</button></div></div><div class="quick-filter-bar" id="quickFilterBar"></div><select id="powerSort" hidden><option value="power_desc" selected>전투력 높은 순</option><option value="power_asc">전투력 낮은 순</option><option value="burst_asc">버스트 1 → 2 → 3</option><option value="none">기본 순</option></select>
@@ -1242,6 +1247,25 @@ function field(label,key,val){return `<div class="field"><label>${label}</label>
 function pieceHTML(p,r){const st=gearPartState(r,p);const company=gearCompanyType(r,p);return `<div class="piece"><div style="display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:8px"><h4 style="margin:0">${p}</h4><span class="piece-status ${st.type}">${st.label}</span></div><div class="edit-grid"><div class="field"><label>티어</label><input data-key="${p}_티어" value="${esc(r[p+'_티어']??'')}" /></div><div class="field"><label>레벨</label><input data-key="${p}_레벨" value="${esc(r[p+'_레벨']??'')}" /></div><div class="field"><label>기업장비 여부</label><select data-key="${p}_기업장비"><option value="">미지정</option><option value="company" ${company==='company'?'selected':''}>기업장비</option><option value="other" ${company==='other'?'selected':''}>기업 불일치</option></select></div>${[1,2,3].map(n=>`<div class="field"><label>옵션${n}</label><input data-key="${p}_옵${n}" value="${esc(r[p+'_옵'+n]??'')}" /></div><div class="field"><label>옵션${n} 값</label><input data-key="${p}_옵${n}값" value="${esc(r[p+'_옵'+n+'값']??'')}" /></div>`).join('')}</div></div>`}
 function saveDrawer(){document.querySelectorAll('#drawerBody [data-key]').forEach(el=>data[editIndex][el.dataset.key]=el.value===''?null:el.value);const u=document.getElementById('unusedCharacterToggle');if(u){const name=characterName(editIndex,data[editIndex]);if(name){if(u.checked)unusedCharacters.add(name);else unusedCharacters.delete(name);saveUnusedCharacters();}}save();renderTable();closeDrawer();toast('저장되었습니다')}
 function closeDrawer(){document.getElementById('drawer').classList.remove('open');editIndex=-1}
+function switchMainView(view){
+  const isDropRate=view==='dropRate';
+  document.body.classList.toggle('drop-rate-view',isDropRate);
+  document.querySelectorAll('.main-view-nav').forEach(btn=>btn.classList.toggle('active',btn.dataset.view===view));
+  const title=document.getElementById('pageTitle');
+  if(title)title.textContent=isDropRate?'기업장비 획득 확률':'캐릭터 장비 현황';
+  if(isDropRate){
+    const panel=document.getElementById('dropRatePanel');
+    const toggle=document.getElementById('dropRateToggle');
+    if(panel&&panel.hidden){
+      panel.hidden=false;
+      if(toggle)toggle.setAttribute('aria-expanded','true');
+      const icon=document.getElementById('dropRateToggleIcon');
+      if(icon)icon.textContent='−';
+      renderDropRatePanel();
+    }
+  }
+  closeSidebar();
+}
 function closeSidebar(){
   const s=document.getElementById('sidebar'),b=document.getElementById('sidebarBackdrop'),t=document.getElementById('sidebarToggle');
   if(!s)return;
