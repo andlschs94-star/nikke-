@@ -11,6 +11,10 @@ body.drop-rate-view #kpis{padding-top:0}
 body.outpost-view #characterPanel{display:none}
 body.outpost-view #kpis{display:none}
 body.outpost-view #outpostPanel{display:block}
+body.sole-view #characterPanel{display:none}
+body.sole-view #kpis{display:none}
+body.sole-view #outpostPanel{display:none}
+body.sole-view .sole-score-panel{display:block}
 #outpostPanel{margin:0 28px 16px;background:transparent;border:0;border-radius:0;overflow:visible}
 #outpostPanel[hidden]{display:none!important}
 .outpost-head{padding:16px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;gap:12px}
@@ -192,10 +196,12 @@ th,td{padding:8px 8px}
 /* v0.20 separate owned equipment panel */
 .corp-owned-standalone{margin:0 0 12px;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:#0a1220}
 .corp-owned-standalone .corp-owned-title{background:#0f192b}
-.outpost-production-title-large{font-size:15.6px;font-weight:900}.outpost-normal-coming-soon{font-size:1.5em;font-weight:900}</style></head><body>
-<div class="site-version-corner">VERSION 0.222</div><div class="sidebar-hitarea" id="sidebarHitarea" aria-label="메뉴 열기" title="왼쪽 메뉴 열기"></div>
+.outpost-production-title-large{font-size:15.6px;font-weight:900}.outpost-normal-coming-soon{font-size:1.5em;font-weight:900}
+.sole-score-panel{display:none;margin:0 28px 28px}.sole-score-panel.active{display:block}.sole-score-intro{margin:0 0 16px;padding:16px 18px;background:rgba(15,23,41,.82);border:1px solid var(--line);border-radius:10px}.sole-score-intro h3{margin:0 0 5px;font-size:18px}.sole-score-intro p{margin:0;color:var(--muted);font-size:11px}.sole-score-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}.sole-score-card{background:rgba(15,23,41,.82);border:1px solid var(--line);border-radius:10px;overflow:hidden}.sole-score-card-head{padding:13px 15px;background:#10192c;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between}.sole-score-card-head strong{font-size:15px}.sole-score-card-head span{font-size:10px;color:var(--muted)}.sole-score-form{padding:12px;display:grid;grid-template-columns:1fr 1.5fr 1fr 1fr auto;gap:7px}.sole-score-form input{width:100%;min-width:0;border:1px solid var(--line);background:#0b1323;color:var(--text);border-radius:7px;padding:8px 7px;font-size:11px}.sole-score-form button{border:1px solid var(--accent);background:#211d3b;color:#fff;border-radius:7px;font-weight:800;padding:0 11px}.sole-score-table-wrap{overflow:auto}.sole-score-table{width:100%;border-collapse:collapse;min-width:570px}.sole-score-table th,.sole-score-table td{padding:9px 10px;border-top:1px solid #1c2940;text-align:center;white-space:nowrap;font-size:11px}.sole-score-table th{background:#0d1728;color:#8996b0;font-weight:800}.sole-score-table td{color:#dbe4f6;font-variant-numeric:tabular-nums}.sole-score-table td.score{font-weight:900}.sole-score-table td.diff{color:#78dfc9;font-weight:900}.sole-score-delete{border:0;background:transparent;color:#71809c;font-size:13px}.sole-score-empty{padding:24px;text-align:center;color:#65728b;font-size:11px}.sole-score-note{padding:9px 12px;color:#68758e;font-size:10px;border-top:1px solid #1c2940}@media(max-width:1000px){.sole-score-grid{grid-template-columns:1fr}.sole-score-form{grid-template-columns:1fr 1fr}.sole-score-form button{min-height:34px}}
+</style></head><body>
+<div class="site-version-corner">VERSION 0.223</div><div class="sidebar-hitarea" id="sidebarHitarea" aria-label="메뉴 열기" title="왼쪽 메뉴 열기"></div>
 <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
-<div class="app"><aside class="sidebar" id="sidebar"><div class="brand"><div class="logo">N</div><div><h1>NIKKE Gear Manager</h1><p>장비·성장 현황 관리</p></div></div><div class="nav"><button type="button" class="active main-view-nav" data-view="characters" onclick="switchMainView('characters')">캐릭터 관리</button><button type="button" class="main-view-nav" data-view="outpost" onclick="switchMainView('outpost')">전초기지 생산량</button></div><div class="section" style="font-size:11px;color:#6f7b96;line-height:1.6">현재는 캐릭터 관리 기능을 제공합니다.<br>다른 관리 기능은 설정 메뉴에서 사용할 수 있습니다.</div></aside>
+<div class="app"><aside class="sidebar" id="sidebar"><div class="brand"><div class="logo">N</div><div><h1>NIKKE Gear Manager</h1><p>장비·성장 현황 관리</p></div></div><div class="nav"><button type="button" class="active main-view-nav" data-view="characters" onclick="switchMainView('characters')">캐릭터 관리</button><button type="button" class="main-view-nav" data-view="outpost" onclick="switchMainView('outpost')">전초기지 생산량</button><button type="button" class="main-view-nav" data-view="sole" onclick="switchMainView('sole')">솔레점수기록</button></div><div class="section" style="font-size:11px;color:#6f7b96;line-height:1.6">현재는 캐릭터 관리 기능을 제공합니다.<br>다른 관리 기능은 설정 메뉴에서 사용할 수 있습니다.</div></aside>
 <main class="main"><div class="topbar"><div><div class="eyebrow">NIKKE / INVENTORY</div><h2 id="pageTitle">캐릭터 장비 현황</h2></div><div class="actions account-switcher"><button type="button" class="btn blsync-top-btn" onclick="openBlablalinkSyncGuide()">계정 동기화</button><button type="button" class="btn account-switch-btn active" data-account="계정1" onclick="switchAccount(ACCOUNTS[0])">계정1</button><button type="button" class="btn account-switch-btn" data-account="계정2" onclick="switchAccount(ACCOUNTS[1])">계정2</button><div class="settings-wrap"><button type="button" class="settings-btn" id="settingsBtn" aria-label="설정" title="설정" onclick="toggleSettingsMenu(event)">⚙</button></div></div></div><div class="settings-popover" id="settingsPopover" hidden>
   <h4>설정 · 데이터</h4>
   <div class="settings-section-title">계정 이름</div>
@@ -212,7 +218,7 @@ th,td{padding:8px 8px}
   <div class="settings-divider"></div>
   <button type="button" class="settings-action danger" onclick="closeSettingsMenu();resetAll()">원본 데이터로 초기화</button>
 </div><div class="kpis" id="kpis"></div>
-<section id="outpostPanel" hidden><div class="outpost-calc"><div class="outpost-calc-head"><div></div><div class="outpost-normal-clear-reference"><span>102코더단</span><strong>HARD 28-25</strong></div></div><div class="outpost-calc-progress">
+<section id="soleScorePanel" class="sole-score-panel"><div class="sole-score-intro"><h3>솔로 레이드 점수 기록</h3><p>3% · 10% · 30% 구간별로 한섭과 일섭 점수를 따로 기록할 수 있습니다. 입력 내용은 현재 브라우저에 자동 저장됩니다.</p></div><div class="sole-score-grid"><div class="sole-score-card"><div class="sole-score-card-head"><strong>3%</strong><span>한섭 · 일섭</span></div><form class="sole-score-form" onsubmit="addSoleScore(event,'3')"><input name="season" placeholder="회차/날짜" required><input name="boss" placeholder="보스" required><input name="kr" type="number" step="any" placeholder="한섭 점수" required><input name="jp" type="number" step="any" placeholder="일섭 점수" required><button type="submit">기록</button></form><div class="sole-score-table-wrap"><table class="sole-score-table"><thead><tr><th>회차/날짜</th><th>보스</th><th>한섭</th><th>일섭</th><th>차이</th><th></th></tr></thead><tbody id="soleScoreBody3"></tbody></table></div><div class="sole-score-note">점수 차이 = 일섭 − 한섭</div></div><div class="sole-score-card"><div class="sole-score-card-head"><strong>10%</strong><span>한섭 · 일섭</span></div><form class="sole-score-form" onsubmit="addSoleScore(event,'10')"><input name="season" placeholder="회차/날짜" required><input name="boss" placeholder="보스" required><input name="kr" type="number" step="any" placeholder="한섭 점수" required><input name="jp" type="number" step="any" placeholder="일섭 점수" required><button type="submit">기록</button></form><div class="sole-score-table-wrap"><table class="sole-score-table"><thead><tr><th>회차/날짜</th><th>보스</th><th>한섭</th><th>일섭</th><th>차이</th><th></th></tr></thead><tbody id="soleScoreBody10"></tbody></table></div><div class="sole-score-note">점수 차이 = 일섭 − 한섭</div></div><div class="sole-score-card"><div class="sole-score-card-head"><strong>30%</strong><span>한섭 · 일섭</span></div><form class="sole-score-form" onsubmit="addSoleScore(event,'30')"><input name="season" placeholder="회차/날짜" required><input name="boss" placeholder="보스" required><input name="kr" type="number" step="any" placeholder="한섭 점수" required><input name="jp" type="number" step="any" placeholder="일섭 점수" required><button type="submit">기록</button></form><div class="sole-score-table-wrap"><table class="sole-score-table"><thead><tr><th>회차/날짜</th><th>보스</th><th>한섭</th><th>일섭</th><th>차이</th><th></th></tr></thead><tbody id="soleScoreBody30"></tbody></table></div><div class="sole-score-note">점수 차이 = 일섭 − 한섭</div></div></div></section><section id="outpostPanel" hidden><div class="outpost-calc"><div class="outpost-calc-head"><div></div><div class="outpost-normal-clear-reference"><span>102코더단</span><strong>HARD 28-25</strong></div></div><div class="outpost-calc-progress">
 <div class="outpost-calc-section-label outpost-calc-section-label-with-action"><span>클리어한 스테이지</span><button type="button" class="outpost-final-stage-btn" onclick="goOutpostNormalFinalStage()"><span class="outpost-normal-coming-soon">노말 커밍순</span></button></div>
 <div class="outpost-calc-grid">
 <div class="outpost-calc-field"><label for="outpostNormalChapter">노말</label><div class="outpost-stage-pick"><select class="outpost-calc-select outpost-stage-chapter" id="outpostNormalChapter" onchange="updateOutpostStageOptions()"><option value="0">0스테이지</option><option value="1">1스테이지</option><option value="2">2스테이지</option><option value="3">3스테이지</option><option value="4">4스테이지</option><option value="5">5스테이지</option><option value="6">6스테이지</option><option value="7">7스테이지</option><option value="8">8스테이지</option><option value="9">9스테이지</option><option value="10">10스테이지</option><option value="11">11스테이지</option><option value="12">12스테이지</option><option value="13">13스테이지</option><option value="14">14스테이지</option><option value="15">15스테이지</option><option value="16">16스테이지</option><option value="17">17스테이지</option><option value="18">18스테이지</option><option value="19">19스테이지</option><option value="20">20스테이지</option><option value="21">21스테이지</option><option value="22">22스테이지</option><option value="23">23스테이지</option><option value="24">24스테이지</option><option value="25">25스테이지</option><option value="26">26스테이지</option><option value="27">27스테이지</option><option value="28">28스테이지</option><option value="29">29스테이지</option><option value="30">30스테이지</option><option value="31">31스테이지</option><option value="32">32스테이지</option><option value="33">33스테이지</option><option value="34">34스테이지</option><option value="35">35스테이지</option><option value="36">36스테이지</option><option value="37">37스테이지</option><option value="38">38스테이지</option><option value="39">39스테이지</option><option value="40">40스테이지</option><option value="41">41스테이지</option><option value="42">42스테이지</option><option value="43">43스테이지</option><option value="44">44스테이지</option><option value="45">45스테이지</option><option value="46">46스테이지</option><option value="47">47스테이지</option><option value="48">48스테이지</option></select><span>-</span><select class="outpost-calc-select outpost-stage-number" id="outpostNormalStage" onchange="updateOutpostCalculator()"></select></div></div>
@@ -1557,15 +1563,17 @@ function renderOutpostPanel(){
   outpostRendered=true;
 }
 function switchMainView(view){
-  const isOutpost=view==='outpost';
+  const isOutpost=view==='outpost', isSole=view==='sole';
   document.body.classList.toggle('outpost-view',isOutpost);
+  document.body.classList.toggle('sole-view',isSole);
   document.body.classList.remove('drop-rate-view');
   document.querySelectorAll('.main-view-nav').forEach(btn=>btn.classList.toggle('active',btn.dataset.view===view));
   const title=document.getElementById('pageTitle');
-  if(title)title.textContent=isOutpost?'전초기지 생산량':'캐릭터 장비 현황';
-  const outpost=document.getElementById('outpostPanel');
-  if(outpost)outpost.hidden=!isOutpost;
+  if(title)title.textContent=isOutpost?'전초기지 생산량':isSole?'솔레점수기록':'캐릭터 장비 현황';
+  const outpost=document.getElementById('outpostPanel');if(outpost)outpost.hidden=!isOutpost;
+  const sole=document.getElementById('soleScorePanel');if(sole)sole.classList.toggle('active',isSole);
   if(isOutpost){renderOutpostPanel();updateOutpostStageOptions();updateOutpostHardStageOptions();}
+  if(isSole)renderSoleScores();
   closeSidebar();
 }
 function closeSidebar(){
@@ -1777,6 +1785,23 @@ function setQuickGearStatus(i,part,status){
   }
   save(); closeQuickGearEditor(); renderTable(); toast(`${part} → ${status==='overload'?'오버로드':status==='company'?'기업장비':status==='normal'?'일반장비':'미착용'} 변경`);
 }
+
+const SOLE_SCORE_KEY='nikke_sole_score_records_v1';
+let soleScoreRecords=JSON.parse(localStorage.getItem(SOLE_SCORE_KEY)||'{}');
+function saveSoleScoreRecords(){localStorage.setItem(SOLE_SCORE_KEY,JSON.stringify(soleScoreRecords));}
+function renderSoleScores(){
+  ['3','10','30'].forEach(function(p){
+    const body=document.getElementById('soleScoreBody'+p);if(!body)return;
+    const rows=soleScoreRecords[p]||[];
+    body.innerHTML=rows.length?rows.map(function(r,i){return '<tr><td>'+esc(r.season)+'</td><td>'+esc(r.boss)+'</td><td class="score">'+esc(r.kr)+'</td><td class="score">'+esc(r.jp)+'</td><td class="diff">'+(Number(r.jp)-Number(r.kr)).toFixed(2)+'</td><td><button class="sole-score-delete" type="button" onclick="deleteSoleScore(\''+p+'\','+i+')">×</button></td></tr>';}).join(''):'<tr><td colspan="6" class="sole-score-empty">아직 기록이 없습니다.</td></tr>';
+  });
+}
+function addSoleScore(e,p){
+  e.preventDefault();const f=e.currentTarget;
+  const r={season:f.season.value.trim(),boss:f.boss.value.trim(),kr:Number(f.kr.value),jp:Number(f.jp.value)};
+  if(!soleScoreRecords[p])soleScoreRecords[p]=[];soleScoreRecords[p].push(r);saveSoleScoreRecords();renderSoleScores();f.reset();f.season.focus();
+}
+function deleteSoleScore(p,i){if(!confirm('이 기록을 삭제할까요?'))return;soleScoreRecords[p].splice(i,1);saveSoleScoreRecords();renderSoleScores();}
 </script>
 <div class="backup-code-modal" id="backupCodeModal" hidden>
   <div class="backup-code-card" role="dialog" aria-modal="true" aria-labelledby="backupCodeTitle">
