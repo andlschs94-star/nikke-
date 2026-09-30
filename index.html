@@ -1735,15 +1735,15 @@ function setQuickGearStatus(i,part,status){
     <div class="blsync-body">
       <div><b>최초 1회만 준비하면 됩니다.</b></div>
       <ol class="blsync-steps">
-        <li>브라우저에 <b>Tampermonkey</b> 같은 사용자 스크립트 확장 기능을 설치합니다.</li>
+        <li><b>Tampermonkey</b>를 먼저 설치합니다. <a class="blsync-link" href="https://www.tampermonkey.net/" target="_blank" rel="noopener">Tampermonkey 설치</a></li>
         <li><a class="blsync-link" href="https://raw.githubusercontent.com/andlschs94-star/nikke-/main/blablalink-sync-v1.0.23.user.js" target="_blank" rel="noopener">NIKKE Gear Manager 동기화 스크립트 설치</a>를 엽니다.</li>
         <li>BlablaLink에 로그인되어 있는지 확인합니다.</li>
         <li>아래에서 <b>동기화할 계정</b>을 직접 선택하면 해당 계정에만 장비를 반영합니다. 현재 화면에서 다른 계정을 보고 있어도 선택한 계정으로 고정됩니다.</li>
       </ol>
       <div class="blsync-note">비밀번호·쿠키·토큰을 이 사이트에 입력하지 않습니다. 로그인 세션은 BlablaLink 쪽에서 사용되고, 동기화 결과에서 기업장비 타입만 받아옵니다.</div>
       <div class="blsync-actions" style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
-        <button class="btn primary" type="button" onclick="startBlablalinkSync('제닐스')">제닐스 동기화</button>
-        <button class="btn primary" type="button" onclick="startBlablalinkSync('대상혁')">대상혁 동기화</button>
+        <button class="btn primary" type="button" onclick="startBlablalinkSync(ACCOUNTS[0])">계정1 동기화</button>
+        <button class="btn primary" type="button" onclick="startBlablalinkSync(ACCOUNTS[1])">계정2 동기화</button>
         <button class="btn" type="button" onclick="closeBlablalinkSyncGuide()" style="grid-column:1/-1">취소</button>
       </div>
       <div class="blsync-status" id="blsyncStatus"></div>
