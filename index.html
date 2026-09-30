@@ -185,7 +185,7 @@ th,td{padding:8px 8px}
 .corp-owned-standalone{margin:0 0 12px;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:#0a1220}
 .corp-owned-standalone .corp-owned-title{background:#0f192b}
 </style></head><body>
-<div class="site-version-corner">VERSION 0.193</div><div class="sidebar-hitarea" id="sidebarHitarea" aria-label="메뉴 열기" title="왼쪽 메뉴 열기"></div>
+<div class="site-version-corner">VERSION 0.194</div><div class="sidebar-hitarea" id="sidebarHitarea" aria-label="메뉴 열기" title="왼쪽 메뉴 열기"></div>
 <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
 <div class="app"><aside class="sidebar" id="sidebar"><div class="brand"><div class="logo">N</div><div><h1>NIKKE Gear Manager</h1><p>장비·성장 현황 관리</p></div></div><div class="nav"><button type="button" class="active main-view-nav" data-view="characters" onclick="switchMainView('characters')">캐릭터 관리</button><button type="button" class="main-view-nav" data-view="outpost" onclick="switchMainView('outpost')">전초기지 생산량</button></div><div class="section" style="font-size:11px;color:#6f7b96;line-height:1.6">현재는 캐릭터 관리 기능을 제공합니다.<br>다른 관리 기능은 설정 메뉴에서 사용할 수 있습니다.</div></aside>
 <main class="main"><div class="topbar"><div><div class="eyebrow">NIKKE / INVENTORY</div><h2 id="pageTitle">캐릭터 장비 현황</h2></div><div class="actions account-switcher"><button type="button" class="btn blsync-top-btn" onclick="openBlablalinkSyncGuide()">계정 동기화</button><button type="button" class="btn account-switch-btn active" data-account="계정1" onclick="switchAccount(ACCOUNTS[0])">계정1</button><button type="button" class="btn account-switch-btn" data-account="계정2" onclick="switchAccount(ACCOUNTS[1])">계정2</button><div class="settings-wrap"><button type="button" class="settings-btn" id="settingsBtn" aria-label="설정" title="설정" onclick="toggleSettingsMenu(event)">⚙</button></div></div></div><div class="settings-popover" id="settingsPopover" hidden>
@@ -1734,10 +1734,11 @@ function setQuickGearStatus(i,part,status){
     <div class="blsync-body">
       <div><b>최초 1회만 준비하면 됩니다.</b></div>
       <ol class="blsync-steps">
-        <li><b>Tampermonkey</b>를 먼저 설치합니다. <a class="blsync-link" href="https://www.tampermonkey.net/" target="_blank" rel="noopener">Tampermonkey 설치</a></li>
-        <li><a class="blsync-link" href="https://raw.githubusercontent.com/andlschs94-star/nikke-/main/blablalink-sync-v1.0.23.user.js" target="_blank" rel="noopener">NIKKE Gear Manager 동기화 스크립트 설치</a>를 엽니다.</li>
-        <li>BlablaLink에 로그인되어 있는지 확인합니다.</li>
-        <li>아래에서 <b>동기화할 계정</b>을 직접 선택하면 해당 계정에만 장비를 반영합니다. 현재 화면에서 다른 계정을 보고 있어도 선택한 계정으로 고정됩니다.</li>
+        <li><a class="blsync-link" href="https://www.tampermonkey.net/" target="_blank" rel="noopener"><b>Tampermonkey 설치</b></a>를 먼저 설치합니다. <b>브라우저 확장프로그램</b></li>
+        <li><a class="blsync-link" href="https://raw.githubusercontent.com/andlschs94-star/nikke-/main/blablalink-sync-v1.0.23.user.js" target="_blank" rel="noopener"><b>NIKKE Gear Manager 동기화 스크립트 설치</b></a></li>
+        <li>원하는 계정 번호 <b>계정 동기화</b> 버튼 클릭</li>
+        <li value="3"><b>3-1.</b> BlablaLink 로그인이 안되어 있다면 로그인 후 다시 동기화 버튼 클릭</li>
+        <li>아래에서 <b>동기화할 계정</b>을 직접 선택하면 해당 계정에만 장비를 반영합니다.</li>
       </ol>
       <div class="blsync-note">비밀번호·쿠키·토큰을 이 사이트에 입력하지 않습니다. 로그인 세션은 BlablaLink 쪽에서 사용되고, 동기화 결과에서 기업장비 타입만 받아옵니다.</div>
       <div class="blsync-actions" style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
