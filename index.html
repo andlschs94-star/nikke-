@@ -198,8 +198,8 @@ th,td{padding:8px 8px}
 .corp-owned-standalone .corp-owned-title{background:#0f192b}
 .outpost-production-title-large{font-size:15.6px;font-weight:900}.outpost-normal-coming-soon{font-size:1.5em;font-weight:900}
 .sole-score-panel{display:none;margin:0 28px 28px}.sole-score-panel.active{display:block}.sole-score-intro{margin:0 0 16px;padding:16px 18px;background:rgba(15,23,41,.82);border:1px solid var(--line);border-radius:10px}.sole-score-intro h3{margin:0 0 5px;font-size:18px}.sole-score-intro p{margin:0;color:var(--muted);font-size:11px}.sole-score-grid{display:grid;grid-template-columns:1fr;gap:14px}.sole-score-card:first-child .sole-score-table{min-width:900px}.sole-score-card{background:rgba(15,23,41,.82);border:1px solid var(--line);border-radius:10px;overflow:hidden}.sole-score-card-head{padding:13px 15px;background:#10192c;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between}.sole-score-card-head strong{font-size:15px}.sole-score-card-head span{font-size:10px;color:var(--muted)}.sole-score-form{padding:12px;display:grid;grid-template-columns:1fr 1.5fr 1fr 1fr auto;gap:7px}.sole-score-form input{width:100%;min-width:0;border:1px solid var(--line);background:#0b1323;color:var(--text);border-radius:7px;padding:8px 7px;font-size:11px}.sole-score-form button{border:1px solid var(--accent);background:#211d3b;color:#fff;border-radius:7px;font-weight:800;padding:0 11px}.sole-score-table-wrap{overflow:auto}.sole-score-table{width:100%;border-collapse:collapse;min-width:570px}.sole-score-table th,.sole-score-table td{padding:9px 10px;border-top:1px solid #1c2940;text-align:center;white-space:nowrap;font-size:11px}.sole-score-table th{background:#0d1728;color:#8996b0;font-weight:800}.sole-score-table td{color:#dbe4f6;font-variant-numeric:tabular-nums}.sole-score-table td.score{font-weight:900}.sole-score-table td.diff{color:#78dfc9;font-weight:900}.sole-score-delete{border:0;background:transparent;color:#71809c;font-size:13px}.sole-score-empty{padding:24px;text-align:center;color:#65728b;font-size:11px}.sole-score-note{padding:9px 12px;color:#68758e;font-size:10px;border-top:1px solid #1c2940}@media(max-width:1000px){.sole-score-grid{grid-template-columns:1fr}.sole-score-form{grid-template-columns:1fr 1fr}.sole-score-form button{min-height:34px}}
-</style></head><body>
-<div class="site-version-corner">VERSION 0.224</div><div class="sidebar-hitarea" id="sidebarHitarea" aria-label="메뉴 열기" title="왼쪽 메뉴 열기"></div>
+.sole-score-edit{width:100%;box-sizing:border-box;border:1px solid transparent;background:transparent;color:inherit;border-radius:4px;padding:4px 5px;text-align:center;font:inherit;font-variant-numeric:tabular-nums}.sole-score-edit:hover,.sole-score-edit:focus{border-color:var(--accent);background:#0b1323;outline:none}.sole-score-table td.editable{padding:5px 6px}.sole-score-table .calculated{font-weight:900;color:#78dfc9}.sole-score-edit.attr{max-width:70px}.sole-score-edit.season{min-width:95px}.sole-score-edit.boss{min-width:110px}.sole-score-edit.num{min-width:70px}</style></head><body>
+<div class="site-version-corner">VERSION 0.225</div><div class="sidebar-hitarea" id="sidebarHitarea" aria-label="메뉴 열기" title="왼쪽 메뉴 열기"></div>
 <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
 <div class="app"><aside class="sidebar" id="sidebar"><div class="brand"><div class="logo">N</div><div><h1>NIKKE Gear Manager</h1><p>장비·성장 현황 관리</p></div></div><div class="nav"><button type="button" class="active main-view-nav" data-view="characters" onclick="switchMainView('characters')">캐릭터 관리</button><button type="button" class="main-view-nav" data-view="outpost" onclick="switchMainView('outpost')">전초기지 생산량</button><button type="button" class="main-view-nav" data-view="sole" onclick="switchMainView('sole')">솔레점수기록</button></div><div class="section" style="font-size:11px;color:#6f7b96;line-height:1.6">현재는 캐릭터 관리 기능을 제공합니다.<br>다른 관리 기능은 설정 메뉴에서 사용할 수 있습니다.</div></aside>
 <main class="main"><div class="topbar"><div><div class="eyebrow">NIKKE / INVENTORY</div><h2 id="pageTitle">캐릭터 장비 현황</h2></div><div class="actions account-switcher"><button type="button" class="btn blsync-top-btn" onclick="openBlablalinkSyncGuide()">계정 동기화</button><button type="button" class="btn account-switch-btn active" data-account="계정1" onclick="switchAccount(ACCOUNTS[0])">계정1</button><button type="button" class="btn account-switch-btn" data-account="계정2" onclick="switchAccount(ACCOUNTS[1])">계정2</button><div class="settings-wrap"><button type="button" class="settings-btn" id="settingsBtn" aria-label="설정" title="설정" onclick="toggleSettingsMenu(event)">⚙</button></div></div></div><div class="settings-popover" id="settingsPopover" hidden>
@@ -1795,13 +1795,36 @@ const defaultSole30=[{"attr":"전격","season":"25년 10월","boss":"차가운�
 if(!Array.isArray(soleScoreRecords['30'])||soleScoreRecords['30'].length===0){soleScoreRecords['30']=defaultSole30;localStorage.setItem(SOLE_SCORE_KEY,JSON.stringify(soleScoreRecords));}
 if(!Array.isArray(soleScoreRecords['10'])||soleScoreRecords['10'].length===0){soleScoreRecords['10']=defaultSole10;localStorage.setItem(SOLE_SCORE_KEY,JSON.stringify(soleScoreRecords));}
 function saveSoleScoreRecords(){localStorage.setItem(SOLE_SCORE_KEY,JSON.stringify(soleScoreRecords));}
+function soleInput(p,i,field,value){
+  const v=String(value??'').trim();
+  if(!soleScoreRecords[p]||!soleScoreRecords[p][i])return;
+  if(field==='attr'||field==='season'||field==='boss')soleScoreRecords[p][i][field]=v;
+  else soleScoreRecords[p][i][field]=Number(v);
+  saveSoleScoreRecords();renderSoleScores();
+}
+function soleEdit(p,i,field,value){
+  soleInput(p,i,field,value);
+}
+function editSoleScore(p,i,field,value){
+  soleInput(p,i,field,value);
+}
+function editable(p,i,field,value,cls){
+  return '<input class="sole-score-edit '+(cls||'')+'" value="'+esc(value??'')+'" onchange="editSoleScore(\\''+p+'\\','+i+',\\''+field+'\\',this.value)" onkeydown="if(event.key===\\'Enter\\'){event.preventDefault();this.blur();}" />';
+}
 function renderSoleScores(){
   ['3','10','30'].forEach(function(p){
     const body=document.getElementById('soleScoreBody'+p);if(!body)return;
     const rows=soleScoreRecords[p]||[];
     body.innerHTML=rows.length?rows.map(function(r,i){
-      if(p==='3') return '<tr><td>'+esc(r.attr||'')+'</td><td>'+esc(r.season)+'</td><td>'+esc(r.boss)+'</td><td class="score">'+esc(r.jp)+'</td><td class="score">'+esc(r.kr)+'</td><td class="diff">'+esc(r.ratio||((Number(r.kr)/Number(r.jp))*100).toFixed(2))+'%</td><td class="diff">'+esc(r.diff!==undefined?r.diff:(Number(r.kr)-Number(r.jp)).toFixed(2))+'</td><td><button class="sole-score-delete" type="button" onclick="deleteSoleScore(\\''+p+'\\','+i+')">×</button></td></tr>';
-      return '<tr><td>'+esc(r.season)+'</td><td>'+esc(r.boss)+'</td><td class="score">'+esc(r.kr)+'</td><td class="score">'+esc(r.jp)+'</td><td class="diff">'+(Number(r.jp)-Number(r.kr)).toFixed(2)+'</td><td><button class="sole-score-delete" type="button" onclick="deleteSoleScore(\\''+p+'\\','+i+')">×</button></td></tr>';
+      if(p==='3'){
+        const jp=Number(r.jp),kr=Number(r.kr);
+        const ratio=jp===0?'#DIV/0!':(kr/jp*100).toFixed(2)+'%';
+        const diff=(kr-jp).toFixed(2);
+        return '<tr><td class="editable">'+editable(p,i,'attr',r.attr,'attr')+'</td><td class="editable">'+editable(p,i,'season',r.season,'season')+'</td><td class="editable">'+editable(p,i,'boss',r.boss,'boss')+'</td><td class="editable">'+editable(p,i,'jp',r.jp,'num')+'</td><td class="editable">'+editable(p,i,'kr',r.kr,'num')+'</td><td class="calculated">'+ratio+'</td><td class="calculated">'+diff+'</td><td><button class="sole-score-delete" type="button" onclick="deleteSoleScore(\\''+p+'\\','+i+')">×</button></td></tr>';
+      }
+      const jp=Number(r.jp),kr=Number(r.kr);
+      const ratio=jp===0?'#DIV/0!':(kr/jp*100).toFixed(2)+'%';
+      return '<tr><td class="editable">'+editable(p,i,'season',r.season,'season')+'</td><td class="editable">'+editable(p,i,'boss',r.boss,'boss')+'</td><td class="editable">'+editable(p,i,'jp',r.jp,'num')+'</td><td class="editable">'+editable(p,i,'kr',r.kr,'num')+'</td><td class="calculated">'+ratio+'</td><td><button class="sole-score-delete" type="button" onclick="deleteSoleScore(\\''+p+'\\','+i+')">×</button></td></tr>';
     }).join(''):'<tr><td colspan="'+(p==='3'?8:6)+'" class="sole-score-empty">아직 기록이 없습니다.</td></tr>';
   });
 }
