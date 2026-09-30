@@ -185,7 +185,7 @@ th,td{padding:8px 8px}
 .corp-owned-standalone{margin:0 0 12px;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:#0a1220}
 .corp-owned-standalone .corp-owned-title{background:#0f192b}
 </style></head><body>
-<div class="site-version-corner">VERSION 0.205</div><div class="sidebar-hitarea" id="sidebarHitarea" aria-label="메뉴 열기" title="왼쪽 메뉴 열기"></div>
+<div class="site-version-corner">VERSION 0.206</div><div class="sidebar-hitarea" id="sidebarHitarea" aria-label="메뉴 열기" title="왼쪽 메뉴 열기"></div>
 <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
 <div class="app"><aside class="sidebar" id="sidebar"><div class="brand"><div class="logo">N</div><div><h1>NIKKE Gear Manager</h1><p>장비·성장 현황 관리</p></div></div><div class="nav"><button type="button" class="active main-view-nav" data-view="characters" onclick="switchMainView('characters')">캐릭터 관리</button><button type="button" class="main-view-nav" data-view="outpost" onclick="switchMainView('outpost')">전초기지 생산량</button></div><div class="section" style="font-size:11px;color:#6f7b96;line-height:1.6">현재는 캐릭터 관리 기능을 제공합니다.<br>다른 관리 기능은 설정 메뉴에서 사용할 수 있습니다.</div></aside>
 <main class="main"><div class="topbar"><div><div class="eyebrow">NIKKE / INVENTORY</div><h2 id="pageTitle">캐릭터 장비 현황</h2></div><div class="actions account-switcher"><button type="button" class="btn blsync-top-btn" onclick="openBlablalinkSyncGuide()">계정 동기화</button><button type="button" class="btn account-switch-btn active" data-account="계정1" onclick="switchAccount(ACCOUNTS[0])">계정1</button><button type="button" class="btn account-switch-btn" data-account="계정2" onclick="switchAccount(ACCOUNTS[1])">계정2</button><div class="settings-wrap"><button type="button" class="settings-btn" id="settingsBtn" aria-label="설정" title="설정" onclick="toggleSettingsMenu(event)">⚙</button></div></div></div><div class="settings-popover" id="settingsPopover" hidden>
@@ -1455,44 +1455,51 @@ function updateOutpostCoreDustHint(normalCount,currentLevel,hardCount=0){
   const main=document.getElementById('outpostCoreHintMain'),sub=document.getElementById('outpostCoreHintSub'),list=document.getElementById('outpostCoreHintList');
   if(!main||!sub||!list)return;
   if(!normalCount){main.textContent='일반 스테이지를 선택하면 계산합니다.';sub.textContent='';list.innerHTML='';return;}
-  const rows=OUTPOST_PRODUCTION_MD.split(/\r?\n/).map(s=>s.trim()).filter(s=>s.startsWith('|')).map(s=>s.replace(/^\||\|$/g,'').split('|').map(x=>x.trim())).filter(c=>/^\d+$/.test(c[0])&&c.length===7);
-  const breakpoints=[];let prevBucket=null;
-  for(const r of rows){
-    const lv=Number(r[0]),dust=Number(String(r[6]).replace(/,/g,''));
-    if(!Number.isFinite(lv)||!Number.isFinite(dust))continue;
-    const bucket=Math.floor(dust*2+1e-9);
-    if(prevBucket!==null&&bucket>prevBucket&& (outpostCoreShowHalf || bucket%2===0))breakpoints.push({level:lv,dust});
-    prevBucket=bucket;
-  }
-  const hardTotal=OUTPOST_HARD_CHAPTER_STAGES.reduce((sum,stages)=>sum+(stages||[]).length,0);
+
+  // 실제 게임 확인 기준: https://nikkeoutpost.netlify.app/
+  // 하드 코어더스트 상승구간은 원본 사이트의 현재 표를 기준으로 한다.
+  // 향후 스테이지가 추가되면 이 배열에 해당 구간만 추가한다.
+  const sourceBreakpoints=[
+    ['2-9',358,73.55],['4-1',362,74.06],['5-3',366,74.55],['6-3',370,75.05],
+    ['6-17',374,75.55],['7-7',378,76.03],['7-23',382,76.52],['8-19',386,77.01],
+    ['9-17',391,77.62],['10-10',395,78.09],['11-3',399,78.57],['11-23',403,79.05],
+    ['12-15A-1',407,79.53],['13-6',411,80.00],['14-4',416,80.59],['14-19',420,81.05],
+    ['15-9',424,81.52],['15-27',429,82.11],['16-14',433,82.57],['17-4',437,83.02],
+    ['17-24',442,83.59],['18-11',446,84.05],['18-27',450,84.51],['19-12',455,85.06],
+    ['19-26',459,85.52],['20-13',464,86.07],['20-29',468,86.53],['21-15A-2',473,87.07],
+    ['22-1',477,87.52],['22-23',482,88.07],['23-3',486,88.50],['23-21B-1',491,89.05],
+    ['24-11',496,89.59],['24-27',500,90.02],['25-12',505,90.56],['25-33',510,91.09],
+    ['26-13',514,91.52],['26-34 BOSS',519,92.05],['27-21',524,92.58],['28-1',528,93.00],
+    ['28-25',533,102.22],['28-38',536,102.51],['29-21B-1',542,103.09],['30-7',547,103.58],
+    ['30-28',552,104.06],['31-15',557,104.53],['31-36 BOSS',562,105.01],
+    ['32-22',568,105.59],['33-10',573,106.06],['33-27',578,106.53],['34-19',584,107.09],
+    ['35-2',589,107.56],['35-23',594,108.02],['36-9',600,108.58],['36-30',605,109.04],
+    ['37-14',610,109.50],['38-4',616,110.05],['38-25',621,110.51],['39-10',627,111.05],
+    ['39-31',632,111.50],['40-22B-1',638,112.04],['41-11',644,112.58],['41-32',649,113.03],
+    ['42-22',655,113.56],['43-3',660,114.01],['43-29',666,114.54],['44-17A-2',672,115.07],
+    ['44-36 BOSS',677,115.50],['45-22',683,116.03],['46-14A-2',689,116.55],
+    ['47-2',695,117.07],['47-23',700,117.50],['48-13',706,118.02],['48-35',712,118.53]
+  ];
+
   const items=[];
-  for(const bp of breakpoints){
-    let targetTotal=null;
-    for(let total=0;total<=5000;total++){
-      const diff=Math.max(0,total-18),lv=Math.min(800,1+Math.floor(diff/5));
-      if(lv>=bp.level){targetTotal=total;break;}
-    }
-    if(targetTotal===null)continue;
-    const needed=targetTotal-normalCount;
-    if(needed<=0)continue;
-    if(hardCount>=needed)continue;
-    if(needed>hardTotal)break;
-    let remaining=needed,hardStage='';
-    outer:for(let ch=0;ch<OUTPOST_HARD_CHAPTER_STAGES.length;ch++){
-      const stages=OUTPOST_HARD_CHAPTER_STAGES[ch]||[];
-      if(remaining<=stages.length){hardStage=stages[remaining-1]||'';break outer;}
-      remaining-=stages.length;
-    }
-    if(hardStage==='9-12'&&bp.level===390){items.push({stage:'9-17',level:391,dust:77.62,needed:needed+5});}
-    else if(hardStage)items.push({stage:hardStage,level:bp.level,dust:bp.dust,needed});
+  for(const [stage,level,dust] of sourceBreakpoints){
+    const chapter=outpostGetChapterFromStage(stage);
+    const targetCount=outpostStageToCount(chapter,stage);
+    if(!targetCount)continue;
+    const needed=targetCount-normalCount;
+    if(needed<=0||hardCount>=needed)continue;
+    items.push({stage,level,dust,needed});
   }
+
   if(!items.length){
     main.innerHTML='<strong>현재 일반 진행 이후 하드 캠페인에서 추가로 상승하는 코어 더스트 구간이 없습니다.</strong>';
     sub.textContent='하드 최종 스테이지까지 현재 코어 더스트 생산량을 유지합니다.';
-    list.innerHTML='';return;
+    list.innerHTML='';
+    return;
   }
+
   main.innerHTML='<strong>하드 캠페인 코어 더스트 상승 구간</strong>';
-  sub.textContent='현재 일반 진행 이후부터 하드 최종 스테이지까지, 코어 더스트가 실제로 증가하는 지점을 모두 표시합니다.';
+  sub.textContent='실제 게임 기준 사이트의 하드 코어더스트 상승 구간을 표시합니다.';
   list.innerHTML=items.map(item=>'<div class="outpost-core-breakpoint-row" data-level="'+item.level+'"><span class="outpost-core-breakpoint-stage">'+esc(item.stage)+'</span><span class="outpost-core-breakpoint-level">Lv.'+item.level+'</span><strong>'+item.dust.toFixed(2)+'/H</strong></div>').join('');
   setOutpostCoreSort(outpostCoreSort);
 }
