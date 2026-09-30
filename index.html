@@ -82,7 +82,7 @@ body.drop-rate-view .drop-rate-accordion{margin-bottom:0}
 .app{display:block;min-height:100vh}
 .sidebar{position:fixed;left:0;top:0;bottom:0;width:228px;height:100vh;z-index:130;transform:translateX(-105%);transition:transform .22s ease;box-shadow:18px 0 45px rgba(0,0,0,.35);overflow:auto}
 .sidebar.open{transform:translateX(0);z-index:130}
-.site-version-corner{position:fixed;left:62px;top:7px;z-index:121;color:#6f7b96;font-size:8px;font-weight:800;letter-spacing:.06em;white-space:nowrap;pointer-events:none}.settings-wrap{position:relative;display:flex;align-items:center}.settings-btn{width:40px!important;height:40px;padding:0!important;margin:0!important;border:1px solid #3a4663!important;border-radius:10px!important;background:#0d1527!important;color:#cbd5e9!important;display:grid;place-items:center;font-size:19px;line-height:1;transition:.15s}.settings-btn:hover,.settings-btn.active{border-color:var(--accent)!important;background:#211d3b!important;color:#fff!important}.settings-popover{position:fixed;z-index:1600;width:min(330px,calc(100vw - 24px));background:#0e1629;border:1px solid #35415f;border-radius:14px;box-shadow:0 20px 55px rgba(0,0,0,.5);padding:10px}.settings-popover h4{margin:2px 4px 9px;font-size:12px;color:#eef3ff}.settings-popover .settings-section-title{padding:5px 4px 7px;color:#75829c;font-size:10px;font-weight:900;letter-spacing:.08em}.settings-popover .settings-action{width:100%;margin:0 0 6px;border:1px solid #2d3953;background:#0d1527;color:#c5cfe1;border-radius:9px;padding:10px 11px;text-align:left;font-size:11px;font-weight:800}.settings-popover .settings-action:hover{border-color:#596986;color:#fff;background:#121c31}.settings-popover .settings-action.danger{border-color:#633040;background:#25131a;color:#ff9caf}.settings-popover .settings-action.danger:hover{border-color:#8b4156;background:#30151f}.settings-popover .settings-info{margin:4px 0 8px;padding:9px 10px;background:#0b1323;border:1px solid #27344e;border-radius:9px;color:#7f8ba4;font-size:10px;line-height:1.55}.settings-popover .settings-divider{height:1px;background:#253149;margin:8px 2px}.sidebar-hitarea{position:fixed;left:0;top:0;bottom:0;width:58px;z-index:120;cursor:pointer;background:transparent}.sidebar-hitarea:hover{background:rgba(146,125,255,.06)}.sidebar-hitarea.open{width:228px}
+.site-version-corner{position:fixed;left:62px;top:7px;z-index:121;color:#6f7b96;font-size:8px;font-weight:800;letter-spacing:.06em;white-space:nowrap;pointer-events:none}.settings-wrap{position:relative;display:flex;align-items:center}.settings-btn{width:40px!important;height:40px;padding:0!important;margin:0!important;border:1px solid #3a4663!important;border-radius:10px!important;background:#0d1527!important;color:#cbd5e9!important;display:grid;place-items:center;font-size:19px;line-height:1;transition:.15s}.settings-btn:hover,.settings-btn.active{border-color:var(--accent)!important;background:#211d3b!important;color:#fff!important}.settings-popover{position:fixed;z-index:1600;width:min(330px,calc(100vw - 24px));background:#0e1629;border:1px solid #35415f;border-radius:14px;box-shadow:0 20px 55px rgba(0,0,0,.5);padding:10px}.settings-popover h4{margin:2px 4px 9px;font-size:12px;color:#eef3ff}.settings-popover .settings-section-title{padding:5px 4px 7px;color:#75829c;font-size:10px;font-weight:900;letter-spacing:.08em}.settings-popover .settings-action{width:100%;margin:0 0 6px;border:1px solid #2d3953;background:#0d1527;color:#c5cfe1;border-radius:9px;padding:10px 11px;text-align:left;font-size:11px;font-weight:800}.settings-popover .settings-action:hover{border-color:#596986;color:#fff;background:#121c31}.settings-popover .settings-action.danger{border-color:#633040;background:#25131a;color:#ff9caf}.settings-popover .settings-action.danger:hover{border-color:#8b4156;background:#30151f}.settings-popover .settings-info{margin:4px 0 8px;padding:9px 10px;background:#0b1323;border:1px solid #27344e;border-radius:9px;color:#7f8ba4;font-size:10px;line-height:1.55}.settings-popover .settings-divider{height:1px;background:#253149;margin:8px 2px}.account-name-editor{padding:4px}.account-name-editor>div{display:flex;align-items:center;gap:7px;margin-bottom:7px}.account-name-editor label{width:38px;font-size:10px;color:#8997b2;font-weight:900}.account-name-editor input{flex:1;min-width:0;background:#0b1323;border:1px solid #2d3953;border-radius:7px;color:#e7edf9;padding:7px 8px;font-size:11px;outline:none}.account-name-editor .settings-action{margin:2px 0 0!important;text-align:center!important}.sidebar-hitarea{position:fixed;left:0;top:0;bottom:0;width:58px;z-index:120;cursor:pointer;background:transparent}.sidebar-hitarea:hover{background:rgba(146,125,255,.06)}.sidebar-hitarea.open{width:228px}
 .sidebar-backdrop{position:fixed;inset:0;background:rgba(2,5,14,.42);backdrop-filter:blur(2px);z-index:90;opacity:0;pointer-events:none;transition:opacity .18s ease}
 .sidebar-backdrop.open{opacity:1;pointer-events:auto}
 .main{width:100%;padding-bottom:28px}
@@ -185,11 +185,18 @@ th,td{padding:8px 8px}
 .corp-owned-standalone{margin:0 0 12px;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:#0a1220}
 .corp-owned-standalone .corp-owned-title{background:#0f192b}
 </style></head><body>
-<div class="site-version-corner">VERSION 0.189</div><div class="sidebar-hitarea" id="sidebarHitarea" aria-label="메뉴 열기" title="왼쪽 메뉴 열기"></div>
+<div class="site-version-corner">VERSION 0.190</div><div class="sidebar-hitarea" id="sidebarHitarea" aria-label="메뉴 열기" title="왼쪽 메뉴 열기"></div>
 <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
 <div class="app"><aside class="sidebar" id="sidebar"><div class="brand"><div class="logo">N</div><div><h1>NIKKE Gear Manager</h1><p>장비·성장 현황 관리</p></div></div><div class="nav"><button type="button" class="active main-view-nav" data-view="characters" onclick="switchMainView('characters')">캐릭터 관리</button><button type="button" class="main-view-nav" data-view="outpost" onclick="switchMainView('outpost')">전초기지 생산량</button></div><div class="section" style="font-size:11px;color:#6f7b96;line-height:1.6">현재는 캐릭터 관리 기능을 제공합니다.<br>다른 관리 기능은 설정 메뉴에서 사용할 수 있습니다.</div></aside>
-<main class="main"><div class="topbar"><div><div class="eyebrow">NIKKE / INVENTORY</div><h2 id="pageTitle">캐릭터 장비 현황</h2></div><div class="actions account-switcher"><button type="button" class="btn account-switch-btn active" data-account="제닐스" onclick="switchAccount('제닐스')">제닐스</button><button type="button" class="btn account-switch-btn" data-account="대상혁" onclick="switchAccount('대상혁')">대상혁</button><div class="settings-wrap"><button type="button" class="settings-btn" id="settingsBtn" aria-label="설정" title="설정" onclick="toggleSettingsMenu(event)">⚙</button></div></div></div><div class="settings-popover" id="settingsPopover" hidden>
+<main class="main"><div class="topbar"><div><div class="eyebrow">NIKKE / INVENTORY</div><h2 id="pageTitle">캐릭터 장비 현황</h2></div><div class="actions account-switcher"><button type="button" class="btn account-switch-btn active" data-account="계정1" onclick="switchAccount(ACCOUNTS[0])">계정1</button><button type="button" class="btn account-switch-btn" data-account="계정2" onclick="switchAccount(ACCOUNTS[1])">계정2</button><div class="settings-wrap"><button type="button" class="settings-btn" id="settingsBtn" aria-label="설정" title="설정" onclick="toggleSettingsMenu(event)">⚙</button></div></div></div><div class="settings-popover" id="settingsPopover" hidden>
   <h4>설정 · 데이터</h4>
+  <div class="settings-section-title">계정 이름</div>
+  <div class="account-name-editor">
+    <div><label>계정1</label><input id="accountName1" type="text" maxlength="20"></div>
+    <div><label>계정2</label><input id="accountName2" type="text" maxlength="20"></div>
+    <button type="button" class="settings-action" onclick="saveAccountNames()">계정 이름 저장</button>
+  </div>
+  <div class="settings-divider"></div>
   <div class="settings-section-title">데이터 관리</div>
   <button type="button" class="settings-action" onclick="closeSettingsMenu();exportCSV()">현재 목록 CSV 저장</button>
   <button type="button" class="settings-action" onclick="closeSettingsMenu();exportJSON()">백업 JSON 저장</button><button type="button" class="settings-action" onclick="closeSettingsMenu();openBackupCodeModal('export')">백업 코드 생성</button><button type="button" class="settings-action" onclick="closeSettingsMenu();openBackupCodeModal('import')">백업 코드 복원</button>
@@ -233,8 +240,14 @@ const LEGACY_ACCOUNT_SELECTION_PREFIX='nikke_character_selection_v1_';
 const ACCOUNT_UNUSED_PREFIX='nikke_unused_characters_v3_';
 const ACCOUNT_UNOWNED_PREFIX='nikke_unowned_characters_v1_';
 const ACCOUNT_STATE_STORAGE='nikke_active_account_v1';
-const ACCOUNTS=['제닐스','대상혁'];
-let activeAccount='제닐스';
+const ACCOUNT_NAMES_STORAGE='nikke_account_names_v1';
+const DEFAULT_ACCOUNTS=['계정1','계정2'];
+let ACCOUNTS=[...DEFAULT_ACCOUNTS];
+try{
+  const savedNames=JSON.parse(localStorage.getItem(ACCOUNT_NAMES_STORAGE)||'null');
+  if(Array.isArray(savedNames)&&savedNames.length===2&&savedNames.every(x=>String(x).trim())) ACCOUNTS=savedNames.map(x=>String(x).trim());
+}catch(e){}
+let activeAccount=ACCOUNTS[0];
 try{
   const savedAccount=localStorage.getItem(ACCOUNT_STATE_STORAGE);
   if(ACCOUNTS.includes(savedAccount)) activeAccount=savedAccount;
@@ -271,7 +284,7 @@ function readAccountData(account){
       return normalized;
     }
   }catch(e){}
-  if(account==='제닐스'){
+  if(account===ACCOUNTS[0]){
     try{
       const saved=localStorage.getItem(STORAGE);
       const parsed=saved?JSON.parse(saved):null;
@@ -1608,6 +1621,27 @@ window.addEventListener('scroll',closeSettingsMenu,true);
 initPanelHeadDrag();initSidebarOutsideClick();function updateAccountButtons(){
   document.querySelectorAll('.account-switch-btn').forEach(b=>b.classList.toggle('active',b.dataset.account===activeAccount));
 }
+function renderAccountNameInputs(){
+  const a=document.getElementById('accountName1'),b=document.getElementById('accountName2');
+  if(a)a.value=ACCOUNTS[0]||'계정1';
+  if(b)b.value=ACCOUNTS[1]||'계정2';
+}
+function saveAccountNames(){
+  const a=(document.getElementById('accountName1')?.value||'').trim()||'계정1';
+  const b=(document.getElementById('accountName2')?.value||'').trim()||'계정2';
+  if(a===b){toast('계정 이름은 서로 다르게 입력해주세요.');return;}
+  const old=ACCOUNTS.slice();
+  ACCOUNTS=[a,b];
+  try{localStorage.setItem(ACCOUNT_NAMES_STORAGE,JSON.stringify(ACCOUNTS));}catch(e){}
+  if(activeAccount===old[0])activeAccount=ACCOUNTS[0];
+  else if(activeAccount===old[1])activeAccount=ACCOUNTS[1];
+  try{localStorage.setItem(ACCOUNT_STATE_STORAGE,activeAccount);}catch(e){}
+  updateAccountButtons();
+  renderAccountNameInputs();
+  closeSettingsMenu();
+  toast('계정 이름이 저장되었습니다.');
+}
+function updateAccountButtons(){document.querySelectorAll('.account-switch-btn').forEach((b,i)=>{b.dataset.account=ACCOUNTS[i]||'';b.textContent=ACCOUNTS[i]||'';b.classList.toggle('active',activeAccount===ACCOUNTS[i]);});}
 function switchAccount(account){
   closeSettingsMenu();
   if(!ACCOUNTS.includes(account)||account===activeAccount)return;
