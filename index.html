@@ -185,7 +185,7 @@ th,td{padding:8px 8px}
 .corp-owned-standalone{margin:0 0 12px;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:#0a1220}
 .corp-owned-standalone .corp-owned-title{background:#0f192b}
 </style></head><body>
-<div class="site-version-corner">VERSION 0.209</div><div class="sidebar-hitarea" id="sidebarHitarea" aria-label="메뉴 열기" title="왼쪽 메뉴 열기"></div>
+<div class="site-version-corner">VERSION 0.210</div><div class="sidebar-hitarea" id="sidebarHitarea" aria-label="메뉴 열기" title="왼쪽 메뉴 열기"></div>
 <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
 <div class="app"><aside class="sidebar" id="sidebar"><div class="brand"><div class="logo">N</div><div><h1>NIKKE Gear Manager</h1><p>장비·성장 현황 관리</p></div></div><div class="nav"><button type="button" class="active main-view-nav" data-view="characters" onclick="switchMainView('characters')">캐릭터 관리</button><button type="button" class="main-view-nav" data-view="outpost" onclick="switchMainView('outpost')">전초기지 생산량</button></div><div class="section" style="font-size:11px;color:#6f7b96;line-height:1.6">현재는 캐릭터 관리 기능을 제공합니다.<br>다른 관리 기능은 설정 메뉴에서 사용할 수 있습니다.</div></aside>
 <main class="main"><div class="topbar"><div><div class="eyebrow">NIKKE / INVENTORY</div><h2 id="pageTitle">캐릭터 장비 현황</h2></div><div class="actions account-switcher"><button type="button" class="btn blsync-top-btn" onclick="openBlablalinkSyncGuide()">계정 동기화</button><button type="button" class="btn account-switch-btn active" data-account="계정1" onclick="switchAccount(ACCOUNTS[0])">계정1</button><button type="button" class="btn account-switch-btn" data-account="계정2" onclick="switchAccount(ACCOUNTS[1])">계정2</button><div class="settings-wrap"><button type="button" class="settings-btn" id="settingsBtn" aria-label="설정" title="설정" onclick="toggleSettingsMenu(event)">⚙</button></div></div></div><div class="settings-popover" id="settingsPopover" hidden>
@@ -217,7 +217,7 @@ th,td{padding:8px 8px}
     <div class="outpost-core-sort"><span class="outpost-core-sort-label">정렬</span><button type="button" class="outpost-core-sort-btn active" data-sort="asc" onclick="setOutpostCoreSort('asc')">오름차순</button><button type="button" class="outpost-core-sort-btn" data-sort="desc" onclick="setOutpostCoreSort('desc')">내림차순</button><label class="outpost-core-half-toggle"><input type="checkbox" id="outpostCoreHalfToggle" onchange="toggleOutpostCoreHalf()"><span>0.5단위 보기</span></label></div>
     <div class="outpost-core-breakpoint-list" id="outpostCoreHintList"></div>
   </div>
-</div></div></div><div class="outpost-head"><div><h3>전초기지 레벨별 생산 재화량</h3><div class="outpost-note">레벨 31~800 · 코어더스트/H가 1단위 증가하는 행 전체를 강조</div></div></div><div class="outpost-production-collapse" id="outpostProductionCollapse">
+</div></div></div><div class="outpost-head"><div><h3>전초기지 레벨별 생산 재화량</h3><div class="outpost-note">레벨 31~800 · 코어더스트/H 생산량 기준으로 0.5단위·1단위 상승 구간을 확인할 수 있습니다.</div></div></div><div class="outpost-production-collapse" id="outpostProductionCollapse">
   <button type="button" class="outpost-production-toggle" id="outpostProductionToggle" aria-expanded="false" onclick="toggleOutpostProduction()">
     <span>전초기지 레벨별 생산 재화량</span><span class="outpost-production-chevron">＋</span>
   </button>
@@ -1458,8 +1458,9 @@ function updateOutpostCoreDustHint(normalCount,currentLevel,hardCount=0){
   if(!main||!sub||!list)return;
 
   // 기준: https://nikkeoutpost.netlify.app/
-  // 일반 + 하드에서 현재까지 클리어한 스테이지를 합산하여,
-  // 현재 진행 이후의 하드 코어더스트 생산량 상승 구간만 표시한다.
+  // 일반 진행도로 계산된 현재 전초기지 레벨을 기준으로,
+  // 이후 하드 스테이지에서 코어더스트가 0.5 단위로 상승하는 구간을 표시한다.
+  // 하드 진행도는 일반 진행도와 합산하지 않고 하드 캠페인 자체의 진행도만 사용한다.
   const sourceBreakpoints=[
     ['2-9',358,73.55],['4-1',362,74.06],['5-3',366,74.55],['6-3',370,75.05],
     ['6-17',374,75.55],['7-7',378,76.03],['7-23',382,76.52],['8-19',386,77.01],
@@ -1482,13 +1483,19 @@ function updateOutpostCoreDustHint(normalCount,currentLevel,hardCount=0){
     ['47-2',695,117.07],['47-23',700,117.50],['48-13',706,118.02],['48-35',712,118.53]
   ];
 
-  const totalCleared=Math.max(0,Number(normalCount)||0)+Math.max(0,Number(hardCount)||0);
+  const levelNow=Math.max(1,Number(currentLevel)||1);
+  const clearedHard=Math.max(0,Number(hardCount)||0);
   const items=[];
   for(const [stage,level,dust] of sourceBreakpoints){
     const chapter=outpostGetChapterFromStage(stage);
     const targetCount=outpostStageToCount(chapter,stage);
-    if(!targetCount || targetCount<=totalCleared)continue;
-    items.push({stage,level,dust,remaining:targetCount-totalCleared});
+    if(!targetCount)continue;
+    // 현재 전초기지 레벨에 이미 도달한 구간은 제외한다.
+    // 같은 레벨일 경우 해당 하드 스테이지가 아직 미클리어라면 표시한다.
+    if(level<levelNow)continue;
+    if(level===levelNow && clearedHard>=targetCount)continue;
+    const remaining=Math.max(0,targetCount-clearedHard);
+    items.push({stage,level,dust,remaining});
   }
 
   if(!items.length){
@@ -1499,7 +1506,7 @@ function updateOutpostCoreDustHint(normalCount,currentLevel,hardCount=0){
   }
 
   main.innerHTML='<strong>하드 캠페인 코어 더스트 상승 구간</strong>';
-  sub.textContent='현재 일반 + 하드 진행도 이후에 적용되는 상승 구간입니다.';
+  sub.textContent='현재 전초기지 레벨 이후, 하드 진행도 기준으로 적용되는 상승 구간입니다.';
   list.innerHTML=items.map(item=>
     '<div class="outpost-core-breakpoint-row" data-level="'+item.level+'">'+
     '<span class="outpost-core-breakpoint-stage">'+esc(item.stage)+'</span>'+
@@ -1522,13 +1529,13 @@ function renderOutpostPanel(){
   const body=document.getElementById('outpostTableBody');if(!body)return;
   if(outpostRendered)return;
   const rows=OUTPOST_PRODUCTION_MD.split(/\r?\n/).map(s=>s.trim()).filter(s=>s.startsWith('|')).map((s,idx)=>s.replace(/^\||\|$/g,'').split('|').map(x=>x.trim())).filter((cells,idx)=>idx>=3 && /^\d+$/.test(cells[0]) && cells.length===7);
-  let prevCore=Math.floor(Number(String(rows[0]?.[6]??'').replace(/,/g,'').trim()));
+  let prevHalf=Math.floor((Number(String(rows[0]?.[6]??'').replace(/,/g,'').trim())||0)*2)/2;
   body.innerHTML=rows.map((r,idx)=>{
     const core=Number(String(r[6]??'').replace(/,/g,'').trim());
-    const currentFloor=Number.isFinite(core)?Math.floor(core):null;
+    const currentHalf=Number.isFinite(core)?Math.floor(core*2)/2:null;
     const level=Number(r[0]);
-    const crossed=idx>0 && level>30 && currentFloor!==null && currentFloor>prevCore;
-    if(currentFloor!==null) prevCore=currentFloor;
+    const crossed=idx>0 && level>30 && currentHalf!==null && currentHalf>prevHalf;
+    if(currentHalf!==null)prevHalf=currentHalf;
     return '<tr'+(crossed?' class="outpost-core-threshold"':'')+'>'+r.map(v=>'<td>'+esc(v)+'</td>').join('')+'</tr>';
   }).join('');
   outpostRendered=true;
