@@ -1809,7 +1809,7 @@ function editSoleScore(p,i,field,value){
   soleInput(p,i,field,value);
 }
 function editable(p,i,field,value,cls){
-  return '<input class="sole-score-edit '+(cls||'')+'" value="'+esc(value??'')+'" onchange="editSoleScore(\\''+p+'\\','+i+',\\''+field+'\\',this.value)" onkeydown="if(event.key===\\'Enter\\'){event.preventDefault();this.blur();}" />';
+  return `<input class="sole-score-edit ${cls||''}" value="${esc(value??'')}" onchange="editSoleScore('${p}',${i},'${field}',this.value)" onkeydown="if(event.key==='Enter'){event.preventDefault();this.blur();}" />`;
 }
 function renderSoleScores(){
   ['3','10','30'].forEach(function(p){
