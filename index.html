@@ -192,7 +192,12 @@ th,td{padding:8px 8px}
 /* v0.20 separate owned equipment panel */
 .corp-owned-standalone{margin:0 0 12px;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:#0a1220}
 .corp-owned-standalone .corp-owned-title{background:#0f192b}
-.outpost-production-title-large{font-size:15.6px;font-weight:900}.outpost-normal-coming-soon{font-size:1.5em;font-weight:900}</style></head><body>
+.outpost-production-title-large{font-size:15.6px;font-weight:900}.outpost-normal-coming-soon{font-size:1.5em;font-weight:900}</style><style>
+#characterPanel,.account-switcher,.settings-popover,.settings-wrap,.blsync-modal-backdrop,.backup-code-modal,.sidebar,.sidebar-hitarea,.sidebar-backdrop,#kpis{display:none!important}
+body{margin:0!important}
+.main{width:100%!important;min-width:0!important}
+.topbar{padding:15px 18px 10px!important}
+</style></head><body>
 <div class="site-version-corner">VERSION 0.222</div><div class="sidebar-hitarea" id="sidebarHitarea" aria-label="메뉴 열기" title="왼쪽 메뉴 열기"></div>
 <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
 <div class="app"><aside class="sidebar" id="sidebar"><div class="brand"><div class="logo">N</div><div><h1>NIKKE Gear Manager</h1><p>장비·성장 현황 관리</p></div></div><div class="nav"><button type="button" class="active main-view-nav" data-view="characters" onclick="switchMainView('characters')">캐릭터 관리</button><button type="button" class="main-view-nav" data-view="outpost" onclick="switchMainView('outpost')">전초기지 생산량</button></div><div class="section" style="font-size:11px;color:#6f7b96;line-height:1.6">현재는 캐릭터 관리 기능을 제공합니다.<br>다른 관리 기능은 설정 메뉴에서 사용할 수 있습니다.</div></aside>
