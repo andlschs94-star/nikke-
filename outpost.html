@@ -1782,6 +1782,7 @@ function setQuickGearStatus(i,part,status){
   }
   save(); closeQuickGearEditor(); renderTable(); toast(`${part} → ${status==='overload'?'오버로드':status==='company'?'기업장비':status==='normal'?'일반장비':'미착용'} 변경`);
 }
+window.addEventListener('load',()=>switchMainView('outpost'));
 </script>
 <div class="backup-code-modal" id="backupCodeModal" hidden>
   <div class="backup-code-card" role="dialog" aria-modal="true" aria-labelledby="backupCodeTitle">
