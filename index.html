@@ -274,8 +274,9 @@ function normalizeAccountData(saved){
 }
 function createFreshAccountData(){
   const fresh=structuredClone(RAW);
+  const freshGearParts=['머리','몸통','장갑','다리'];
   fresh.forEach(r=>{
-    gearParts.forEach(p=>{
+    freshGearParts.forEach(p=>{
       r[p+'_티어']=0;
       r[p+'_레벨']=0;
       r[p+'_옵1']=null; r[p+'_옵1값']=null;
