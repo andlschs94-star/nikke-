@@ -1823,32 +1823,19 @@ function renderSoleScores(){
     body.innerHTML=rows.map(function(r,i){
       const jp=Number(r.jp),kr=Number(r.kr);
       const ratio=jp===0?'#DIV/0!':(kr/jp*100).toFixed(2)+'%';
+      const del='<button class="sole-score-delete" type="button" data-sole-delete="'+p+':'+i+'">×</button>';
       if(p==='3'){
         const diff=(kr-jp).toFixed(2);
-        return \`
-          <tr>
-            <td class="editable">\${editable(p,i,'attr',r.attr,'attr')}</td>
-            <td class="editable">\${editable(p,i,'season',r.season,'season')}</td>
-            <td class="editable">\${editable(p,i,'boss',r.boss,'boss')}</td>
-            <td class="editable">\${editable(p,i,'jp',r.jp,'num')}</td>
-            <td class="editable">\${editable(p,i,'kr',r.kr,'num')}</td>
-            <td class="calculated">\${ratio}</td>
-            <td class="calculated">\${diff}</td>
-            <td><button class="sole-score-delete" type="button" onclick="deleteSoleScore('3',\${i})">×</button></td>
-          </tr>
-        \`;
+        return '<tr><td class="editable">'+editable(p,i,'attr',r.attr,'attr')+'</td><td class="editable">'+editable(p,i,'season',r.season,'season')+'</td><td class="editable">'+editable(p,i,'boss',r.boss,'boss')+'</td><td class="editable">'+editable(p,i,'jp',r.jp,'num')+'</td><td class="editable">'+editable(p,i,'kr',r.kr,'num')+'</td><td class="calculated">'+ratio+'</td><td class="calculated">'+diff+'</td><td>'+del+'</td></tr>';
       }
-      return \`
-        <tr>
-          <td class="editable">\${editable(p,i,'season',r.season,'season')}</td>
-          <td class="editable">\${editable(p,i,'boss',r.boss,'boss')}</td>
-          <td class="editable">\${editable(p,i,'jp',r.jp,'num')}</td>
-          <td class="editable">\${editable(p,i,'kr',r.kr,'num')}</td>
-          <td class="calculated">\${ratio}</td>
-          <td><button class="sole-score-delete" type="button" onclick="deleteSoleScore('\\${p}',\${i})">×</button></td>
-        </tr>
-      \`;
+      return '<tr><td class="editable">'+editable(p,i,'season',r.season,'season')+'</td><td class="editable">'+editable(p,i,'boss',r.boss,'boss')+'</td><td class="editable">'+editable(p,i,'jp',r.jp,'num')+'</td><td class="editable">'+editable(p,i,'kr',r.kr,'num')+'</td><td class="calculated">'+ratio+'</td><td>'+del+'</td></tr>';
     }).join('');
+    body.querySelectorAll('[data-sole-delete]').forEach(function(btn){
+      btn.addEventListener('click',function(){
+        const parts=btn.dataset.soleDelete.split(':');
+        deleteSoleScore(parts[0],Number(parts[1]));
+      });
+    });
   });
 }
 function addSoleScore(e,p){
