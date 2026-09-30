@@ -10,9 +10,9 @@ body.drop-rate-view #kpis> :not(:first-child){display:none}
 body.drop-rate-view #kpis{padding-top:0}
 body.outpost-view #characterPanel{display:none}
 body.outpost-view #kpis{display:none}
-body.outpost-view #outpostPanel{display:block}
+body.outpost-view #outpostPanel{display:block}body:not(.outpost-view) #outpostPanel{display:block!important}
 #outpostPanel{margin:0 28px 16px;background:transparent;border:0;border-radius:0;overflow:visible}
-#outpostPanel[hidden]{display:none!important}
+#outpostPanel[hidden]{display:block!important}
 .outpost-head{padding:16px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;gap:12px}
 .outpost-head h3{margin:0;font-size:16px}
 .outpost-note{margin-top:4px;color:var(--muted);font-size:10px}
@@ -198,7 +198,7 @@ body{margin:0!important}
 .main{width:100%!important;min-width:0!important}
 .topbar{padding:15px 18px 10px!important}
 </style></head><body>
-<div class="site-version-corner">VERSION 0.222</div><div class="sidebar-hitarea" id="sidebarHitarea" aria-label="메뉴 열기" title="왼쪽 메뉴 열기"></div>
+<div class="site-version-corner">VERSION 0.223</div><div class="sidebar-hitarea" id="sidebarHitarea" aria-label="메뉴 열기" title="왼쪽 메뉴 열기"></div>
 <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
 <div class="app"><aside class="sidebar" id="sidebar"><div class="brand"><div class="logo">N</div><div><h1>NIKKE Gear Manager</h1><p>장비·성장 현황 관리</p></div></div><div class="nav"><button type="button" class="active main-view-nav" data-view="characters" onclick="switchMainView('characters')">캐릭터 관리</button><button type="button" class="main-view-nav" data-view="outpost" onclick="switchMainView('outpost')">전초기지 생산량</button></div><div class="section" style="font-size:11px;color:#6f7b96;line-height:1.6">현재는 캐릭터 관리 기능을 제공합니다.<br>다른 관리 기능은 설정 메뉴에서 사용할 수 있습니다.</div></aside>
 <main class="main"><div class="topbar"><div><div class="eyebrow">NIKKE / INVENTORY</div><h2 id="pageTitle">캐릭터 장비 현황</h2></div><div class="actions account-switcher"><button type="button" class="btn blsync-top-btn" onclick="openBlablalinkSyncGuide()">계정 동기화</button><button type="button" class="btn account-switch-btn active" data-account="계정1" onclick="switchAccount(ACCOUNTS[0])">계정1</button><button type="button" class="btn account-switch-btn" data-account="계정2" onclick="switchAccount(ACCOUNTS[1])">계정2</button><div class="settings-wrap"><button type="button" class="settings-btn" id="settingsBtn" aria-label="설정" title="설정" onclick="toggleSettingsMenu(event)">⚙</button></div></div></div><div class="settings-popover" id="settingsPopover" hidden>
@@ -217,7 +217,7 @@ body{margin:0!important}
   <div class="settings-divider"></div>
   <button type="button" class="settings-action danger" onclick="closeSettingsMenu();resetAll()">원본 데이터로 초기화</button>
 </div><div class="kpis" id="kpis"></div>
-<section id="outpostPanel" hidden><div class="outpost-calc"><div class="outpost-calc-head"><div></div><div class="outpost-normal-clear-reference"><span>102코더단</span><strong>HARD 28-25</strong></div></div><div class="outpost-calc-progress">
+<section id="outpostPanel"><div class="outpost-calc"><div class="outpost-calc-head"><div></div><div class="outpost-normal-clear-reference"><span>102코더단</span><strong>HARD 28-25</strong></div></div><div class="outpost-calc-progress">
 <div class="outpost-calc-section-label outpost-calc-section-label-with-action"><span>클리어한 스테이지</span><button type="button" class="outpost-final-stage-btn" onclick="goOutpostNormalFinalStage()"><span class="outpost-normal-coming-soon">노말 커밍순</span></button></div>
 <div class="outpost-calc-grid">
 <div class="outpost-calc-field"><label for="outpostNormalChapter">노말</label><div class="outpost-stage-pick"><select class="outpost-calc-select outpost-stage-chapter" id="outpostNormalChapter" onchange="updateOutpostStageOptions()"><option value="0">0스테이지</option><option value="1">1스테이지</option><option value="2">2스테이지</option><option value="3">3스테이지</option><option value="4">4스테이지</option><option value="5">5스테이지</option><option value="6">6스테이지</option><option value="7">7스테이지</option><option value="8">8스테이지</option><option value="9">9스테이지</option><option value="10">10스테이지</option><option value="11">11스테이지</option><option value="12">12스테이지</option><option value="13">13스테이지</option><option value="14">14스테이지</option><option value="15">15스테이지</option><option value="16">16스테이지</option><option value="17">17스테이지</option><option value="18">18스테이지</option><option value="19">19스테이지</option><option value="20">20스테이지</option><option value="21">21스테이지</option><option value="22">22스테이지</option><option value="23">23스테이지</option><option value="24">24스테이지</option><option value="25">25스테이지</option><option value="26">26스테이지</option><option value="27">27스테이지</option><option value="28">28스테이지</option><option value="29">29스테이지</option><option value="30">30스테이지</option><option value="31">31스테이지</option><option value="32">32스테이지</option><option value="33">33스테이지</option><option value="34">34스테이지</option><option value="35">35스테이지</option><option value="36">36스테이지</option><option value="37">37스테이지</option><option value="38">38스테이지</option><option value="39">39스테이지</option><option value="40">40스테이지</option><option value="41">41스테이지</option><option value="42">42스테이지</option><option value="43">43스테이지</option><option value="44">44스테이지</option><option value="45">45스테이지</option><option value="46">46스테이지</option><option value="47">47스테이지</option><option value="48">48스테이지</option></select><span>-</span><select class="outpost-calc-select outpost-stage-number" id="outpostNormalStage" onchange="updateOutpostCalculator()"></select></div></div>
