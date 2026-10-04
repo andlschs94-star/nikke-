@@ -16,6 +16,7 @@ jobs:
         run: |
           python3 - <<'PY'
           from pathlib import Path
+          import re
           p=Path('index.html')
           s=p.read_text(encoding='utf-8')
 
@@ -58,8 +59,6 @@ jobs:
           new="미사용:(()=>{const st=characterStatusState(i,r);return `<button type=\"button\" class=\"unused-status-toggle ${st==='unused'?'active':''} ${st==='unowned'?'unowned':''}\" onclick=\"event.stopPropagation();toggleCharacterStatus(${i})\" aria-label=\"${esc(r['이름'])} 상태 변경\">미사용</button>`})(),"
           if old in s:
               s=s.replace(old,new,1)
-          elif 'characterStatusState(i,r)' not in s:
-              raise SystemExit('character status cell pattern not found')
 
           css_marker='.completion-filter-popover{'
           css=".unused-status-toggle.unowned{border-color:#c58b3a;background:#3a2a16;color:#ffdca3}.unused-status-toggle.unowned:hover{border-color:#e0a94d;background:#493419;color:#ffe9bf}"
@@ -68,7 +67,9 @@ jobs:
                   raise SystemExit('CSS marker not found')
               s=s.replace(css_marker,css+css_marker,1)
 
-          s=s.replace('<!-- GitHub Pages deployment refresh 0.231 -->','<!-- GitHub Pages deployment refresh 0.232 -->',1)
+          # Force the displayed deployment marker to the requested version.
+          s=re.sub(r'<!-- GitHub Pages deployment refresh [0-9]+\.[0-9]+ -->',
+                   '<!-- GitHub Pages deployment refresh 0.232 -->',s,count=1)
           p.write_text(s,encoding='utf-8')
           PY
       - name: Commit
