@@ -30,15 +30,15 @@ jobs:
             const name=characterName(i,data[i]);
             if(!name)return;
             const state=characterStatusState(i,data[i]);
-            if(state==='unused'){
-              unusedCharacters.delete(name);
+            if(state==='off'){
+              unusedCharacters.add(name);
               unownedCharacters.delete(name);
-            }else if(state==='off'){
+            }else if(state==='unused'){
               unusedCharacters.delete(name);
               unownedCharacters.add(name);
             }else{
               unownedCharacters.delete(name);
-              unusedCharacters.add(name);
+              unusedCharacters.delete(name);
             }
             saveUnusedCharacters();
             try{localStorage.setItem(accountStorageKey(ACCOUNT_UNOWNED_PREFIX,activeAccount),JSON.stringify([...unownedCharacters]));}catch(e){}
@@ -55,7 +55,7 @@ jobs:
               s=s.replace(marker,helper+'\n'+marker,1)
 
           old="미사용:`<button type=\"button\" class=\"unused-status-toggle ${isUnusedCharacter(i,r)?'active':''}\" onclick=\"event.stopPropagation();toggleUnusedCharacter(${i},${!isUnusedCharacter(i,r)})\" aria-label=\"${esc(r['이름'])} 미사용 여부\">${unownedCharacters.has(characterName(i,r))?'미보유':'미사용'}</button>`,"
-          new="미사용:(()=>{const st=characterStatusState(i,r);const label=st==='unused'?'미사용 ON':st==='unowned'?'미보유':'미사용 OFF';return `<button type=\"button\" class=\"unused-status-toggle ${st==='unused'?'active':''} ${st==='unowned'?'unowned':''}\" onclick=\"event.stopPropagation();toggleCharacterStatus(${i})\" aria-label=\"${esc(r['이름'])} 상태 변경\">${label}</button>`})(),"
+          new="미사용:(()=>{const st=characterStatusState(i,r);return `<button type=\"button\" class=\"unused-status-toggle ${st==='unused'?'active':''} ${st==='unowned'?'unowned':''}\" onclick=\"event.stopPropagation();toggleCharacterStatus(${i})\" aria-label=\"${esc(r['이름'])} 상태 변경\">미사용</button>`})(),"
           if old in s:
               s=s.replace(old,new,1)
           elif 'characterStatusState(i,r)' not in s:
@@ -68,7 +68,7 @@ jobs:
                   raise SystemExit('CSS marker not found')
               s=s.replace(css_marker,css+css_marker,1)
 
-          s=s.replace('<!-- GitHub Pages deployment refresh 0.230 -->','<!-- GitHub Pages deployment refresh 0.231 -->',1)
+          s=s.replace('<!-- GitHub Pages deployment refresh 0.230 -->','<!-- GitHub Pages deployment refresh 0.232 -->',1)
           p.write_text(s,encoding='utf-8')
           PY
       - name: Commit
@@ -77,5 +77,5 @@ jobs:
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add index.html
           git diff --cached --quiet && exit 0
-          git commit -m '미사용 상태를 ON OFF 미보유 3단계로 변경'
+          git commit -m '미사용 상태 순서 및 표시 수정'
           git push
