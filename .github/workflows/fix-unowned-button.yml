@@ -19,7 +19,6 @@ jobs:
           p=Path('index.html')
           s=p.read_text(encoding='utf-8')
 
-          # 3-state status cycle: 미사용 ON -> 미사용 OFF -> 미보유 -> 미사용 ON
           helper = '''function characterStatusState(i,r){
             const n=characterName(i,r);
             if(!n)return 'off';
@@ -33,19 +32,13 @@ jobs:
             const state=characterStatusState(i,data[i]);
             if(state==='unused'){
               unusedCharacters.delete(name);
+              unownedCharacters.delete(name);
             }else if(state==='off'){
-              unusedCharacters.clear(name);
-            }else if(state==='unowned'){
-              unusedCharacters.add(name);
-              unownedCharacters.delete(name);
-            }
-            if(state==='off'){
+              unusedCharacters.delete(name);
               unownedCharacters.add(name);
-            }else if(state==='unused'){
-              unownedCharacters.add(name);
-            }else if(state==='unowned'){
-              unusedCharacters.add(name);
+            }else{
               unownedCharacters.delete(name);
+              unusedCharacters.add(name);
             }
             saveUnusedCharacters();
             try{localStorage.setItem(accountStorageKey(ACCOUNT_UNOWNED_PREFIX,activeAccount),JSON.stringify([...unownedCharacters]));}catch(e){}
@@ -54,10 +47,6 @@ jobs:
             renderTable();
           }
           '''
-
-          # Correct the state transitions in the helper to keep the exact requested order.
-          helper = helper.replace("if(state==='off'){\n              unusedCharacters.clear(name);\n            }else if(state==='unowned'){", "if(state==='off'){\n              unusedCharacters.delete(name);\n            }else if(state==='unowned'){")
-          helper = helper.replace("            if(state==='off'){\n              unownedCharacters.add(name);\n            }else if(state==='unused'){\n              unownedCharacters.add(name);\n            }else if(state==='unowned'){\n              unusedCharacters.add(name);\n              unownedCharacters.delete(name);\n            }", "            if(state==='off'){\n              unownedCharacters.add(name);\n            }else if(state==='unused'){\n              unownedCharacters.add(name);\n            }else if(state==='unowned'){\n              unusedCharacters.add(name);\n              unownedCharacters.delete(name);\n            }")
 
           if 'function characterStatusState(i,r)' not in s:
               marker='function renderTable('
@@ -69,10 +58,9 @@ jobs:
           new="미사용:(()=>{const st=characterStatusState(i,r);const label=st==='unused'?'미사용 ON':st==='unowned'?'미보유':'미사용 OFF';return `<button type=\"button\" class=\"unused-status-toggle ${st==='unused'?'active':''} ${st==='unowned'?'unowned':''}\" onclick=\"event.stopPropagation();toggleCharacterStatus(${i})\" aria-label=\"${esc(r['이름'])} 상태 변경\">${label}</button>`})(),"
           if old in s:
               s=s.replace(old,new,1)
-          else:
+          elif 'characterStatusState(i,r)' not in s:
               raise SystemExit('character status cell pattern not found')
 
-          # Add a distinct color for 미보유 while keeping 미사용 ON styling unchanged.
           css_marker='.completion-filter-popover{'
           css=".unused-status-toggle.unowned{border-color:#c58b3a;background:#3a2a16;color:#ffdca3}.unused-status-toggle.unowned:hover{border-color:#e0a94d;background:#493419;color:#ffe9bf}"
           if '.unused-status-toggle.unowned{' not in s:
