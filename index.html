@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="ko"><head><!-- GitHub Pages deployment refresh 0.232 --><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<html lang="ko"><head><!-- GitHub Pages deployment refresh 0.233 --><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>NIKKE Gear Manager</title>
 <style>
 :root{--bg:#080d19;--panel:#0f1729;--panel2:#111c32;--line:#26324b;--text:#edf2ff;--muted:#8490aa;--accent:#927dff;--good:#47d7c7;--danger:#ff6c86}
@@ -979,21 +979,15 @@ function toggleCharacterStatus(i){
   const name=characterName(i,data[i]);
   if(!name)return;
   const state=characterStatusState(i,data[i]);
-  if(state==='unused'){
-    unusedCharacters.delete(name);
-  }else if(state==='off'){
-    unusedCharacters.clear(name);
-  }else if(state==='unowned'){
-    unusedCharacters.add(name);
-    unownedCharacters.delete(name);
-  }
   if(state==='off'){
-    unownedCharacters.add(name);
-  }else if(state==='unused'){
-    unownedCharacters.add(name);
-  }else if(state==='unowned'){
     unusedCharacters.add(name);
     unownedCharacters.delete(name);
+  }else if(state==='unused'){
+    unusedCharacters.delete(name);
+    unownedCharacters.add(name);
+  }else{
+    unownedCharacters.delete(name);
+    unusedCharacters.delete(name);
   }
   saveUnusedCharacters();
   try{localStorage.setItem(accountStorageKey(ACCOUNT_UNOWNED_PREFIX,activeAccount),JSON.stringify([...unownedCharacters]));}catch(e){}
@@ -1001,7 +995,6 @@ function toggleCharacterStatus(i){
   renderHeader();
   renderTable();
 }
-
 function renderTable(){
   renderKpis();
   renderDropRatePanel();
@@ -1017,7 +1010,8 @@ function renderTable(){
     const cells={
       선택:`<button type="button" class="valid-toggle ${selectedCharacters.has(i)?'active':''}" onclick="event.stopPropagation();toggleCharacterSelection(${i},${selectedCharacters.has(i)?'false':'true'})" aria-label="${esc(r['이름'])} 유효 여부">유효</button>`,
       이름:`<button class="name-btn" onclick="openDrawer(${i})">${esc(r['이름'])}</button>`,
-      미사용:(()=>{const st=characterStatusState(i,r);const label=st==='unused'?'미사용 ON':st==='unowned'?'미보유':'미사용 OFF';return `<button type="button" class="unused-status-toggle ${st==='unused'?'active':''} ${st==='unowned'?'unowned':''}" onclick="event.stopPropagation();toggleCharacterStatus(${i})" aria-label="${esc(r['이름'])} 상태 변경">${label}</button>`})(),
+      미사용:(()=>{const st=characterStatusState(i,r);const label=st==='unowned'?'미보유':'미사용';return `<button type="button" class="unused-status-toggle ${st==='unused'?'active':''} ${st==='unowned'?'unowned':''}" onclick="event.stopPropagation();toggleCharacterStatus(${i})" aria-label="${esc(r['이름'])} 상태 변경">${label}</button>`})(),
+
       머리:gearCells['머리'], 몸통:gearCells['몸통'], 장갑:gearCells['장갑'], 다리:gearCells['다리'],
       전투력:num(r['전투력']).toLocaleString(),
       기업:`<span class="tag">${esc(canonicalCharacterCompany(r))}</span>`,
