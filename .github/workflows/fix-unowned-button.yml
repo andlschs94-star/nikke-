@@ -11,23 +11,76 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Match unowned button UI to unused button
+      - name: Update character status toggle
         shell: bash
         run: |
           python3 - <<'PY'
           from pathlib import Path
           p=Path('index.html')
           s=p.read_text(encoding='utf-8')
-          old='.unowned-view-btn{'
+
+          # 3-state status cycle: 미사용 ON -> 미사용 OFF -> 미보유 -> 미사용 ON
+          helper = '''function characterStatusState(i,r){
+            const n=characterName(i,r);
+            if(!n)return 'off';
+            if(unusedCharacters.has(n))return 'unused';
+            if(unownedCharacters.has(n))return 'unowned';
+            return 'off';
+          }
+          function toggleCharacterStatus(i){
+            const name=characterName(i,data[i]);
+            if(!name)return;
+            const state=characterStatusState(i,data[i]);
+            if(state==='unused'){
+              unusedCharacters.delete(name);
+            }else if(state==='off'){
+              unusedCharacters.clear(name);
+            }else if(state==='unowned'){
+              unusedCharacters.add(name);
+              unownedCharacters.delete(name);
+            }
+            if(state==='off'){
+              unownedCharacters.add(name);
+            }else if(state==='unused'){
+              unownedCharacters.add(name);
+            }else if(state==='unowned'){
+              unusedCharacters.add(name);
+              unownedCharacters.delete(name);
+            }
+            saveUnusedCharacters();
+            try{localStorage.setItem(accountStorageKey(ACCOUNT_UNOWNED_PREFIX,activeAccount),JSON.stringify([...unownedCharacters]));}catch(e){}
+            updateUnusedViewButton();
+            renderHeader();
+            renderTable();
+          }
+          '''
+
+          # Correct the state transitions in the helper to keep the exact requested order.
+          helper = helper.replace("if(state==='off'){\n              unusedCharacters.clear(name);\n            }else if(state==='unowned'){", "if(state==='off'){\n              unusedCharacters.delete(name);\n            }else if(state==='unowned'){")
+          helper = helper.replace("            if(state==='off'){\n              unownedCharacters.add(name);\n            }else if(state==='unused'){\n              unownedCharacters.add(name);\n            }else if(state==='unowned'){\n              unusedCharacters.add(name);\n              unownedCharacters.delete(name);\n            }", "            if(state==='off'){\n              unownedCharacters.add(name);\n            }else if(state==='unused'){\n              unownedCharacters.add(name);\n            }else if(state==='unowned'){\n              unusedCharacters.add(name);\n              unownedCharacters.delete(name);\n            }")
+
+          if 'function characterStatusState(i,r)' not in s:
+              marker='function renderTable('
+              if marker not in s:
+                  raise SystemExit('renderTable marker not found')
+              s=s.replace(marker,helper+'\n'+marker,1)
+
+          old="미사용:`<button type=\"button\" class=\"unused-status-toggle ${isUnusedCharacter(i,r)?'active':''}\" onclick=\"event.stopPropagation();toggleUnusedCharacter(${i},${!isUnusedCharacter(i,r)})\" aria-label=\"${esc(r['이름'])} 미사용 여부\">${unownedCharacters.has(characterName(i,r))?'미보유':'미사용'}</button>`,"
+          new="미사용:(()=>{const st=characterStatusState(i,r);const label=st==='unused'?'미사용 ON':st==='unowned'?'미보유':'미사용 OFF';return `<button type=\"button\" class=\"unused-status-toggle ${st==='unused'?'active':''} ${st==='unowned'?'unowned':''}\" onclick=\"event.stopPropagation();toggleCharacterStatus(${i})\" aria-label=\"${esc(r['이름'])} 상태 변경\">${label}</button>`})(),"
           if old in s:
-              start=s.index(old)
-              end=s.index('}', start)+1
-              s=s[:start]+s[start:end].replace('.unowned-view-btn','.unused-view-btn')+s[end:]
+              s=s.replace(old,new,1)
           else:
-              # If there is no dedicated style, make the class inherit the exact
-              # existing unused-view button styling without changing its behavior.
-              s=s.replace('</style>','.unowned-view-btn{width:auto;border:1px solid var(--line);background:#0d1527;color:#b7c2d9;border-radius:9px;padding:9px 10px;margin-bottom:8px;font-weight:700}.unowned-view-btn.active{background:#211d3b;border-color:var(--accent);color:#fff}</style>',1)
-          s=s.replace('<!-- GitHub Pages deployment refresh 0.229 -->','<!-- GitHub Pages deployment refresh 0.230 -->',1)
+              raise SystemExit('character status cell pattern not found')
+
+          # Add a distinct color for 미보유 while keeping 미사용 ON styling unchanged.
+          css_marker='.completion-filter-popover{'
+          css=".unused-status-toggle.unowned{border-color:#c58b3a;background:#3a2a16;color:#ffdca3}.unused-status-toggle.unowned:hover{border-color:#e0a94d;background:#493419;color:#ffe9bf}"
+          if '.unused-status-toggle.unowned{' not in s:
+              if css_marker not in s:
+                  raise SystemExit('CSS marker not found')
+              s=s.replace(css_marker,css+css_marker,1)
+
+          s=s.replace('<!-- GitHub Pages deployment refresh 0.230 -->','<!-- GitHub Pages deployment refresh 0.231 -->',1)
           p.write_text(s,encoding='utf-8')
           PY
       - name: Commit
@@ -36,5 +89,5 @@ jobs:
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add index.html
           git diff --cached --quiet && exit 0
-          git commit -m '미보유 캐릭터 버튼 UI를 미사용 버튼과 통일'
+          git commit -m '미사용 상태를 ON OFF 미보유 3단계로 변경'
           git push
