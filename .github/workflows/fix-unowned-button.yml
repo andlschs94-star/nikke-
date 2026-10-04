@@ -56,7 +56,7 @@ jobs:
               s=s.replace(marker,helper+'\n'+marker,1)
 
           old="미사용:`<button type=\"button\" class=\"unused-status-toggle ${isUnusedCharacter(i,r)?'active':''}\" onclick=\"event.stopPropagation();toggleUnusedCharacter(${i},${!isUnusedCharacter(i,r)})\" aria-label=\"${esc(r['이름'])} 미사용 여부\">${unownedCharacters.has(characterName(i,r))?'미보유':'미사용'}</button>`,"
-          new="미사용:(()=>{const st=characterStatusState(i,r);return `<button type=\"button\" class=\"unused-status-toggle ${st==='unused'?'active':''} ${st==='unowned'?'unowned':''}\" onclick=\"event.stopPropagation();toggleCharacterStatus(${i})\" aria-label=\"${esc(r['이름'])} 상태 변경\">미사용</button>`})(),"
+          new="미사용:(()=>{const st=characterStatusState(i,r);return `<button type=\"button\" class=\"unused-status-toggle ${st==='unused'?'active':''} ${st==='unowned'?'unowned':''}\" onclick=\"event.stopPropagation();toggleCharacterStatus(${i})\" aria-label=\"${esc(r['이름'])} 상태 변경\">${st==='unowned'?'미보유':'미사용'}</button>`})(),"
           if old in s:
               s=s.replace(old,new,1)
 
@@ -78,5 +78,5 @@ jobs:
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add index.html
           git diff --cached --quiet && exit 0
-          git commit -m '버전 0.232 적용'
+          git commit -m '상태 표시 및 버전 자동 갱신 수정'
           git push
