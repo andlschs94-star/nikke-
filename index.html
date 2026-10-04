@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="ko"><head><!-- GitHub Pages deployment refresh 0.243 --><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<html lang="ko"><head><!-- GitHub Pages deployment refresh 0.244 --><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>NIKKE Gear Manager</title>
 <style>
 :root{--bg:#080d19;--panel:#0f1729;--panel2:#111c32;--line:#26324b;--text:#edf2ff;--muted:#8490aa;--accent:#927dff;--good:#47d7c7;--danger:#ff6c86}
@@ -221,7 +221,7 @@ th,td{padding:8px 8px}
 #soleScorePanel .sole-score-edit.num{min-width:58px}
 @media(max-width:1000px){#soleScorePanel .sole-score-grid{gap:8px}}
 .sole-score-edit{width:100%;box-sizing:border-box;border:1px solid transparent;background:transparent;color:inherit;border-radius:4px;padding:4px 5px;text-align:center;font:inherit;font-variant-numeric:tabular-nums}.sole-score-edit:hover,.sole-score-edit:focus{border-color:var(--accent);background:#0b1323;outline:none}.sole-score-table td.editable{padding:5px 6px}.sole-score-table .calculated{font-weight:900;color:#78dfc9}.sole-score-edit.attr{max-width:70px}.sole-score-edit.season{min-width:95px}.sole-score-edit.boss{min-width:110px}.sole-score-edit.num{min-width:70px}.unowned-view-btn{width:auto!important;margin:0!important;white-space:nowrap;border:1px solid #2f3b56;background:#0d1527;color:#cdd7e8;border-radius:9px;padding:9px 11px;font-size:11px;font-weight:800;cursor:pointer}.unowned-view-btn.active{border-color:#bd8e45;background:#382b18;color:#fadea8;box-shadow:inset 0 0 0 1px rgba(189,142,69,.18),0 0 10px rgba(189,142,69,.08)}</style></head><body>
-<div class="site-version-corner">VERSION 0.243</div><div class="sidebar-hitarea" id="sidebarHitarea" aria-label="메뉴 열기" title="왼쪽 메뉴 열기"></div>
+<div class="site-version-corner">VERSION 0.244</div><div class="sidebar-hitarea" id="sidebarHitarea" aria-label="메뉴 열기" title="왼쪽 메뉴 열기"></div>
 <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
 <div class="app"><aside class="sidebar" id="sidebar"><div class="brand"><div class="logo">N</div><div><h1>NIKKE Gear Manager</h1><p>장비·성장 현황 관리</p></div></div><div class="nav"><button type="button" class="active main-view-nav" data-view="characters" onclick="switchMainView('characters')">캐릭터 관리</button><button type="button" class="main-view-nav" data-view="outpost" onclick="switchMainView('outpost')">전초기지 생산량</button><button type="button" class="main-view-nav" data-view="sole" onclick="switchMainView('sole')">솔레점수기록</button></div><div class="section" style="font-size:11px;color:#6f7b96;line-height:1.6">현재는 캐릭터 관리 기능을 제공합니다.<br>다른 관리 기능은 설정 메뉴에서 사용할 수 있습니다.</div></aside>
 <main class="main"><div class="topbar"><div><div class="eyebrow">NIKKE / INVENTORY</div><h2 id="pageTitle">캐릭터 장비 현황</h2></div><div class="actions account-switcher"><button type="button" class="btn blsync-top-btn" onclick="openBlablalinkSyncGuide()">계정 동기화</button><button type="button" class="btn account-switch-btn active" data-account="계정1" onclick="switchAccount(ACCOUNTS[0])">계정1</button><button type="button" class="btn account-switch-btn" data-account="계정2" onclick="switchAccount(ACCOUNTS[1])">계정2</button><div class="settings-wrap"><button type="button" class="settings-btn" id="settingsBtn" aria-label="설정" title="설정" onclick="toggleSettingsMenu(event)">⚙</button></div></div></div><div class="settings-popover" id="settingsPopover" hidden>
@@ -1898,7 +1898,7 @@ function renderSoleScores(){
         return '<tr><td class="editable">'+editable(p,i,'attr',r.attr,'attr')+'</td><td class="editable">'+editable(p,i,'season',r.season,'season')+'</td><td class="editable">'+editable(p,i,'boss',r.boss,'boss')+'</td><td class="editable">'+editable(p,i,'jp',r.jp,'num')+'</td><td class="editable">'+editable(p,i,'kr',r.kr,'num')+'</td><td class="calculated">'+ratio+'</td><td class="calculated">'+diff+'</td><td>'+del+'</td></tr>';
       }
       if(p==='10'){
-        const diff=(jp===null||kr===null)?'-':(jp-kr).toFixed(2);
+        const diff=(jp===null||kr===null)?'-':(kr-jp).toFixed(2);
         return '<tr><td class="editable">'+editable(p,i,'attr',r.attr,'attr')+'</td><td class="editable">'+editable(p,i,'season',r.season,'season')+'</td><td class="editable">'+editable(p,i,'boss',r.boss,'boss')+'</td><td class="editable">'+editable(p,i,'kr',r.kr,'num')+'</td><td class="editable">'+editable(p,i,'jp',r.jp,'num')+'</td><td class="calculated">'+ratio+'</td><td class="calculated">'+diff+'</td><td>'+del+'</td></tr>';
       }
       return '<tr><td class="editable">'+editable(p,i,'attr',r.attr,'attr')+'</td><td class="editable">'+editable(p,i,'season',r.season,'season')+'</td><td class="editable">'+editable(p,i,'boss',r.boss,'boss')+'</td><td class="editable">'+editable(p,i,'kr',r.kr,'num')+'</td><td class="editable">'+editable(p,i,'jp',r.jp,'num')+'</td><td class="calculated">'+ratio+'</td><td>'+del+'</td></tr>';
