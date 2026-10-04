@@ -68,7 +68,7 @@ jobs:
                   raise SystemExit('CSS marker not found')
               s=s.replace(css_marker,css+css_marker,1)
 
-          s=s.replace('<!-- GitHub Pages deployment refresh 0.230 -->','<!-- GitHub Pages deployment refresh 0.232 -->',1)
+          s=s.replace('<!-- GitHub Pages deployment refresh 0.231 -->','<!-- GitHub Pages deployment refresh 0.232 -->',1)
           p.write_text(s,encoding='utf-8')
           PY
       - name: Commit
@@ -77,5 +77,5 @@ jobs:
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add index.html
           git diff --cached --quiet && exit 0
-          git commit -m '미사용 상태 순서 및 표시 수정'
+          git commit -m '버전 0.232 적용'
           git push
