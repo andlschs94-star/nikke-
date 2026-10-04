@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="ko"><head><!-- GitHub Pages deployment refresh 0.265 --><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<html lang="ko"><head><!-- GitHub Pages deployment refresh 0.275 --><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>NIKKE Gear Manager</title>
 <style>
 :root{--bg:#080d19;--panel:#0f1729;--panel2:#111c32;--line:#26324b;--text:#edf2ff;--muted:#8490aa;--accent:#927dff;--good:#47d7c7;--danger:#ff6c86}
@@ -221,7 +221,7 @@ th,td{padding:8px 8px}
 #soleScorePanel .sole-score-edit.num{min-width:58px}
 @media(max-width:1000px){#soleScorePanel .sole-score-grid{gap:8px}}
 .sole-score-edit{width:100%;box-sizing:border-box;border:1px solid transparent;background:transparent;color:inherit;border-radius:4px;padding:4px 5px;text-align:center;font:inherit;font-variant-numeric:tabular-nums}.sole-score-edit:hover,.sole-score-edit:focus{border-color:var(--accent);background:#0b1323;outline:none}.sole-score-table td.editable{padding:5px 6px}.sole-score-table .calculated{font-weight:900;color:#78dfc9}.sole-score-edit.attr{max-width:70px}.sole-score-edit.season{min-width:95px}.sole-score-edit.boss{min-width:110px}.sole-score-edit.num{min-width:70px}.common-unused-btn{width:auto!important;margin:0!important;white-space:nowrap;border:1px solid #4d3f67;background:#17142a;color:#d8caff;border-radius:9px;padding:9px 11px;font-size:11px;font-weight:800;cursor:pointer}.common-unused-btn:hover{border-color:#927dff;background:#211d3b;color:#fff;box-shadow:0 0 10px rgba(146,125,255,.1)}.common-unused-btn:active{transform:translateY(1px)}.unowned-view-btn{width:auto!important;margin:0!important;white-space:nowrap;border:1px solid #2f3b56;background:#0d1527;color:#cdd7e8;border-radius:9px;padding:9px 11px;font-size:11px;font-weight:800;cursor:pointer}.unowned-view-btn.active{border-color:#bd8e45;background:#382b18;color:#fadea8;box-shadow:inset 0 0 0 1px rgba(189,142,69,.18),0 0 10px rgba(189,142,69,.08)}</style></head><body>
-<div class="site-version-corner">VERSION 0.265</div><div class="sidebar-hitarea" id="sidebarHitarea" aria-label="메뉴 열기" title="왼쪽 메뉴 열기"></div>
+<div class="site-version-corner">VERSION 0.275</div><div class="sidebar-hitarea" id="sidebarHitarea" aria-label="메뉴 열기" title="왼쪽 메뉴 열기"></div>
 <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
 <div class="app"><aside class="sidebar" id="sidebar"><div class="brand"><div class="logo">N</div><div><h1>NIKKE Gear Manager</h1><p>장비·성장 현황 관리</p></div></div><div class="nav"><button type="button" class="active main-view-nav" data-view="characters" onclick="switchMainView('characters')">캐릭터 관리</button><button type="button" class="main-view-nav" data-view="outpost" onclick="switchMainView('outpost')">전초기지 생산량</button><button type="button" class="main-view-nav" data-view="sole" onclick="switchMainView('sole')">솔레점수기록</button></div><div class="section" style="font-size:11px;color:#6f7b96;line-height:1.6">현재는 캐릭터 관리 기능을 제공합니다.<br>다른 관리 기능은 설정 메뉴에서 사용할 수 있습니다.</div></aside>
 <main class="main"><div class="topbar"><div><div class="eyebrow">NIKKE / INVENTORY</div><h2 id="pageTitle">캐릭터 장비 현황</h2></div><div class="actions account-switcher"><button type="button" class="btn blsync-top-btn" onclick="openBlablalinkSyncGuide()">계정 동기화</button><button type="button" class="btn account-switch-btn active" data-account="계정1" onclick="switchAccount(ACCOUNTS[0])">계정1</button><button type="button" class="btn account-switch-btn" data-account="계정2" onclick="switchAccount(ACCOUNTS[1])">계정2</button><div class="settings-wrap"><button type="button" class="settings-btn" id="settingsBtn" aria-label="설정" title="설정" onclick="toggleSettingsMenu(event)">⚙</button></div></div></div><div class="settings-popover" id="settingsPopover" hidden>
@@ -1135,7 +1135,35 @@ function saveSelectedCharacters(){
     localStorage.setItem(accountStorageKey(ACCOUNT_SELECTION_PREFIX,activeAccount),JSON.stringify([...new Set(names)]));
   }catch(e){}
 }
-const COMMON_UNUSED_PRESET=["미하라","라피","벨로타","네베","미카","네온","에테르","클레어","파스칼","델타","루드밀라","앵커","아이기스","솔져 E.G.","iDoll 썬","iDoll 플라워","솔져 F.A.","프로덕트 23","프로덕트 12","솔져 O.W.","iDoll 오션","프로덕트 08","도라","키리","소라","앤","E.H.","노벨","메어리","엠마","프림","시그널","K","백학","킬로","N102","퀀시","라이","클레이","아비스타","사쿠라","길티","트로니","질","레오나","아스카","에피넬","토브","엑시아","베스티","니힐리스타","아리아","마스트","소다","에이드","맥","길로틴","율하","마르차나","모리","솔린","D","은화","길로틴 : 윈터 슬레이어","바이퍼","엠마 : 택티컬 업","율리아","레이","신","레이블","폴리","로산나 : 시크 오션","애드미","프리바티 : 언카인드 메이드","스노우 화이트 : 이노센트 데이즈","크로우","브리드","사쿠라 : 블룸 인 서머","일레그","코코아","앤 : 미라클 페어리","퀀시","모더니아","크러스트","메어리","하란","아니스","앨리스 : 원더랜드 바니","미사토","릴리","차임","라푼젤 : 퓨어 그레이스","디젤","유니","도로시","마리"];\nfunction applyCommonUnusedCharacters(){\n  if(!confirm('통상적으로 잘 사용하지 않는 캐릭터를 계정1/계정2 모두 미사용으로 처리할까요?\\n\\n기존 장비, 전투력, 스킬, 호감도 등의 데이터는 초기화하지 않고 현재 상태 그대로 유지합니다.'))return;\n  const names=new Set(COMMON_UNUSED_PRESET.map(x=>String(x).trim()).filter(Boolean));\n  const rawNames=new Set(RAW.map(r=>String(r?.['이름']??'').trim()).filter(Boolean));\n  const matched=new Set([...names].filter(n=>rawNames.has(n)));\n  const unmatched=[...names].filter(n=>!rawNames.has(n));\n  let accountCount=0;\n  ACCOUNTS.forEach(account=>{\n    const unused=new Set(loadAccountUnused(account));\n    const unowned=new Set(loadAccountUnowned(account));\n    const before=unused.size;\n    matched.forEach(name=>{unused.add(name);unowned.delete(name);});\n    try{\n      localStorage.setItem(accountStorageKey(ACCOUNT_UNUSED_PREFIX,account),JSON.stringify([...unused]));\n      localStorage.setItem(accountStorageKey(ACCOUNT_UNOWNED_PREFIX,account),JSON.stringify([...unowned]));\n    }catch(e){console.warn('통상 미사용 저장 실패',e)}\n    if(unused.size>before)accountCount++;\n  });\n  unusedCharacters=loadAccountUnused(activeAccount);\n  unownedCharacters=loadAccountUnowned(activeAccount);\n  updateUnusedViewButton();\n  updateUnownedViewButton();\n  renderHeader();\n  renderTable();\n  const extra=unmatched.length?' · 목록에 없는 이름 '+unmatched.length+'개 제외':'';\n  toast('통상 미사용 적용 완료 · '+matched.size+'종 · 계정 '+accountCount+'개 반영'+extra);\n}\nfunction characterName(i,r){return String((r||data[i]||{})['이름']??'').trim();}
+const COMMON_UNUSED_PRESET=["미하라","라피","벨로타","네베","미카","네온","에테르","클레어","파스칼","델타","루드밀라","앵커","아이기스","솔져 E.G.","iDoll 썬","iDoll 플라워","솔져 F.A.","프로덕트 23","프로덕트 12","솔져 O.W.","iDoll 오션","프로덕트 08","도라","키리","소라","앤","E.H.","노벨","메어리","엠마","프림","시그널","K","백학","킬로","N102","퀀시","라이","클레이","아비스타","사쿠라","길티","트로니","질","레오나","아스카","에피넬","토브","엑시아","베스티","니힐리스타","아리아","마스트","소다","에이드","맥","길로틴","율하","마르차나","모리","솔린","D","은화","길로틴 : 윈터 슬레이어","바이퍼","엠마 : 택티컬 업","율리아","레이","신","레이블","폴리","로산나 : 시크 오션","애드미","프리바티 : 언카인드 메이드","스노우 화이트 : 이노센트 데이즈","크로우","브리드","사쿠라 : 블룸 인 서머","일레그","코코아","앤 : 미라클 페어리","퀀시","모더니아","크러스트","메어리","하란","아니스","앨리스 : 원더랜드 바니","미사토","릴리","차임","라푼젤 : 퓨어 그레이스","디젤","유니","도로시","마리"];
+function applyCommonUnusedCharacters(){
+  if(!confirm('통상적으로 잘 사용하지 않는 캐릭터를 계정1/계정2 모두 미사용으로 처리할까요?\n\n기존 장비, 전투력, 스킬, 호감도 등의 데이터는 초기화하지 않고 현재 상태 그대로 유지합니다.'))return;
+  const names=new Set(COMMON_UNUSED_PRESET.map(x=>String(x).trim()).filter(Boolean));
+  const rawNames=new Set(RAW.map(r=>String(r?.['이름']??'').trim()).filter(Boolean));
+  const matched=new Set([...names].filter(n=>rawNames.has(n)));
+  const unmatched=[...names].filter(n=>!rawNames.has(n));
+  let accountCount=0;
+  ACCOUNTS.forEach(account=>{
+    const unused=new Set(loadAccountUnused(account));
+    const unowned=new Set(loadAccountUnowned(account));
+    const before=unused.size;
+    matched.forEach(name=>{unused.add(name);unowned.delete(name);});
+    try{
+      localStorage.setItem(accountStorageKey(ACCOUNT_UNUSED_PREFIX,account),JSON.stringify([...unused]));
+      localStorage.setItem(accountStorageKey(ACCOUNT_UNOWNED_PREFIX,account),JSON.stringify([...unowned]));
+    }catch(e){console.warn('통상 미사용 저장 실패',e)}
+    if(unused.size>before)accountCount++;
+  });
+  unusedCharacters=loadAccountUnused(activeAccount);
+  unownedCharacters=loadAccountUnowned(activeAccount);
+  updateUnusedViewButton();
+  updateUnownedViewButton();
+  renderHeader();
+  renderTable();
+  const extra=unmatched.length?' · 목록에 없는 이름 '+unmatched.length+'개 제외':'';
+  toast('통상 미사용 적용 완료 · '+matched.size+'종 · 계정 '+accountCount+'개 반영'+extra);
+}
+function characterName(i,r){return String((r||data[i]||{})['이름']??'').trim();}
 function loadAccountUnowned(account){
   try{
     const saved=localStorage.getItem(accountStorageKey(ACCOUNT_UNOWNED_PREFIX,account));
