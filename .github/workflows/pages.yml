@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
   pages: write
   id-token: write
 
@@ -23,6 +23,94 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
+      - name: Apply dark character contrast and clean temporary fix workflows
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          p=Path('index.html')
+          s=p.read_text(encoding='utf-8')
+          css=r'''<style id="v0378-character-contrast-final">
+          /* v0.378: dark mode character/company/class contrast */
+          html.dark-theme #characterPanel table tbody td:nth-child(2),
+          html.dark-mode #characterPanel table tbody td:nth-child(2),
+          body.dark-theme #characterPanel table tbody td:nth-child(2),
+          body.dark-mode #characterPanel table tbody td:nth-child(2),
+          body.theme-dark #characterPanel table tbody td:nth-child(2),
+          html[data-theme="dark"] #characterPanel table tbody td:nth-child(2),
+          body[data-theme="dark"] #characterPanel table tbody td:nth-child(2),
+          html.dark #characterPanel table tbody td:nth-child(2),
+          body.dark #characterPanel table tbody td:nth-child(2),
+          html.js-dark-detected #characterPanel table tbody td:nth-child(2),
+          body.js-dark-detected #characterPanel table tbody td:nth-child(2) {
+            color:#f7f9ff!important;
+            background:#1b2a42!important;
+            font-weight:900!important;
+            text-shadow:0 1px 3px rgba(0,0,0,.95)!important;
+          }
+          html.dark-theme #characterPanel table tbody td:nth-child(3),
+          html.dark-mode #characterPanel table tbody td:nth-child(3),
+          body.dark-theme #characterPanel table tbody td:nth-child(3),
+          body.dark-mode #characterPanel table tbody td:nth-child(3),
+          body.theme-dark #characterPanel table tbody td:nth-child(3),
+          html[data-theme="dark"] #characterPanel table tbody td:nth-child(3),
+          body[data-theme="dark"] #characterPanel table tbody td:nth-child(3),
+          html.dark #characterPanel table tbody td:nth-child(3),
+          body.dark #characterPanel table tbody td:nth-child(3),
+          html.js-dark-detected #characterPanel table tbody td:nth-child(3),
+          body.js-dark-detected #characterPanel table tbody td:nth-child(3),
+          html.dark-theme #characterPanel table tbody td:nth-child(4),
+          html.dark-mode #characterPanel table tbody td:nth-child(4),
+          body.dark-theme #characterPanel table tbody td:nth-child(4),
+          body.dark-mode #characterPanel table tbody td:nth-child(4),
+          body.theme-dark #characterPanel table tbody td:nth-child(4),
+          html[data-theme="dark"] #characterPanel table tbody td:nth-child(4),
+          body[data-theme="dark"] #characterPanel table tbody td:nth-child(4),
+          html.dark #characterPanel table tbody td:nth-child(4),
+          body.dark #characterPanel table tbody td:nth-child(4),
+          html.js-dark-detected #characterPanel table tbody td:nth-child(4),
+          body.js-dark-detected #characterPanel table tbody td:nth-child(4) {
+            color:#e8eefb!important;
+            font-weight:800!important;
+            text-shadow:0 1px 2px rgba(0,0,0,.9)!important;
+          }
+          </style>
+          <script>
+          (function(){
+            function markDark(){
+              var c=getComputedStyle(document.body).color;
+              var m=c.match(/rgba?\(([^)]+)\)/);
+              if(!m)return;
+              var p=m[1].split(',').map(Number);
+              var lum=0.299*p[0]+0.587*p[1]+0.114*p[2];
+              var dark=lum>150;
+              document.documentElement.classList.toggle('js-dark-detected',dark);
+              document.body.classList.toggle('js-dark-detected',dark);
+            }
+            function init(){
+              markDark();
+              new MutationObserver(markDark).observe(document.documentElement,{attributes:true,attributeFilter:['class','data-theme']});
+              new MutationObserver(markDark).observe(document.body,{attributes:true,attributeFilter:['class','style','data-theme']});
+            }
+            if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
+          })();
+          </script>'''
+          if 'v0378-character-contrast-final' not in s:
+              s=s.replace('</head>',css+'</head>',1)
+          s=s.replace('0.377','0.378').replace('v0.377','v0.378')
+          p.write_text(s,encoding='utf-8')
+          Path('VERSION').write_text('0.378\n',encoding='utf-8')
+          PY
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git rm -f .github/workflows/fix-character-contrast.yml .github/workflows/one-time-dark-gear-contrast.yml .github/workflows/apply-character-contrast.yml || true
+          git add index.html VERSION .github/workflows/pages.yml
+          if ! git diff --cached --quiet; then
+            git commit -m "Fix dark character contrast and set version 0.378"
+            git push
+          fi
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
