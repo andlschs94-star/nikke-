@@ -1,0 +1,81 @@
+name: Apply company colors v0.341
+on:
+  push:
+    branches: [main]
+permissions:
+  contents: write
+jobs:
+  apply:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Apply company colors and version
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          p = Path('index.html')
+          s = p.read_text(encoding='utf-8')
+          css = r'''
+          <style id="company-colors-0341">
+          /* Company colors: table + filter buttons */
+          .company-elysion{color:#b83b4b!important;background:rgba(255,105,125,.16)!important;border-color:#e58b9a!important}
+          .company-missilis{color:#7651b5!important;background:rgba(151,111,220,.16)!important;border-color:#b99be8!important}
+          .company-tetra{color:#287a58!important;background:rgba(76,190,130,.16)!important;border-color:#8bcfad!important}
+          .company-pilgrim{color:#b66a18!important;background:rgba(245,165,70,.18)!important;border-color:#e4ad70!important}
+          .company-abnormal{color:#3274ad!important;background:rgba(88,160,220,.17)!important;border-color:#8bb9df!important}
+          .company-filter.company-elysion.active{background:#f3b0b9!important;color:#8f2638!important;border-color:#d96c7d!important}
+          .company-filter.company-missilis.active{background:#d6c4f0!important;color:#603a9d!important;border-color:#a47bd5!important}
+          .company-filter.company-tetra.active{background:#bfe8d2!important;color:#216946!important;border-color:#6eb995!important}
+          .company-filter.company-pilgrim.active{background:#f6d3a5!important;color:#96500e!important;border-color:#d99a4d!important}
+          .company-filter.company-abnormal.active{background:#c5def2!important;color:#2b6394!important;border-color:#71a6d2!important}
+          </style>
+          '''
+          js = r'''
+          <script id="company-colors-js-0341">
+          (()=>{
+            const map={
+              '엘리시온':'elysion',
+              '미실리스':'missilis',
+              '테트라':'tetra',
+              '필그림':'pilgrim',
+              '어브노멀':'abnormal'
+            };
+            function apply(){
+              document.querySelectorAll('button,[role="button"],.company,.company-name,.company-chip,.filter-btn').forEach(el=>{
+                const t=(el.textContent||'').trim();
+                const key=Object.keys(map).find(k=>t===k || t.includes(k));
+                if(!key)return;
+                const cls='company-'+map[key];
+                el.classList.add(cls);
+                if(el.tagName==='BUTTON' || el.getAttribute('role')==='button' || el.classList.contains('filter-btn')) el.classList.add('company-filter');
+              });
+            }
+            apply();
+            new MutationObserver(apply).observe(document.body,{subtree:true,childList:true});
+          })();
+          </script>
+          '''
+          if 'company-colors-0341' not in s:
+              s=s.replace('</head>',css+'</head>',1)
+          if 'company-colors-js-0341' not in s:
+              s=s.replace('</body>',js+'</body>',1)
+          p.write_text(s,encoding='utf-8')
+          v=Path('VERSION')
+          if v.exists(): v.write_text('0.341\n',encoding='utf-8')
+          PY
+      - name: Commit changes
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add index.html VERSION
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m 'Apply company colors and filter colors v0.341'
+          git push
+      - name: Remove one-shot workflow
+        if: success()
+        run: |
+          rm -f .github/workflows/apply-company-colors-0341.yml
+          git add -A
+          git diff --cached --quiet || git commit -m 'Remove one-shot company color workflow'
+          git push || true
