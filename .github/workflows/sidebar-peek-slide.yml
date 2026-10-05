@@ -1,0 +1,35 @@
+name: Sidebar peek slide UI
+on:
+  push:
+    branches: [main]
+permissions:
+  contents: write
+jobs:
+  update:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Apply sidebar UI
+        shell: python
+        run: |
+          from pathlib import Path
+          import re
+          p=Path('index.html'); s=p.read_text(encoding='utf-8')
+          css='''<style id="sidebar-peek-slide-v0383">.sidebar{position:fixed!important;left:0!important;top:0!important;z-index:1000!important;height:100vh!important;transform:translateX(calc(-100% + 14px));transition:transform .28s ease,box-shadow .28s ease!important;box-shadow:8px 0 24px rgba(0,0,0,.08)!important}.sidebar:hover{transform:translateX(calc(-100% + 14px))!important}body.sidebar-open .sidebar{transform:translateX(0)!important;box-shadow:10px 0 30px rgba(0,0,0,.28)!important}.app{padding-left:14px!important}.sidebar-peek-tab{position:absolute;right:-14px;top:50%;width:14px;height:82px;transform:translateY(-50%);border:1px solid var(--line);border-left:0;border-radius:0 9px 9px 0;background:var(--panel);color:var(--muted);display:grid;place-items:center;cursor:pointer;box-shadow:3px 0 10px rgba(0,0,0,.12);font-size:12px;line-height:1;user-select:none}@media(max-width:900px){.sidebar{transform:translateX(calc(-100% + 14px))!important}.app{padding-left:14px!important}}</style>'''
+          js='''<script id="sidebar-peek-slide-js-v0383">(()=>{const init=()=>{const sb=document.querySelector('.sidebar');if(!sb||sb.dataset.peekSlideReady)return;sb.dataset.peekSlideReady='1';const tab=document.createElement('button');tab.type='button';tab.className='sidebar-peek-tab';tab.setAttribute('aria-label','메뉴 열기');tab.textContent='›';sb.appendChild(tab);const setOpen=o=>{document.body.classList.toggle('sidebar-open',o);tab.textContent=o?'‹':'›';tab.setAttribute('aria-label',o?'메뉴 닫기':'메뉴 열기')};tab.addEventListener('click',e=>{e.stopPropagation();setOpen(!document.body.classList.contains('sidebar-open'))});document.addEventListener('click',e=>{if(document.body.classList.contains('sidebar-open')&&!sb.contains(e.target))setOpen(false)})};if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init()})();</script>'''
+          if 'sidebar-peek-slide-v0383' not in s:s=s.replace('</head>',css+'</head>',1)
+          if 'sidebar-peek-slide-js-v0383' not in s:s=s.replace('</body>',js+'</body>',1)
+          vp=Path('VERSION'); old=vp.read_text(encoding='utf-8').strip(); m=re.fullmatch(r'(\d+)\.(\d+)',old)
+          if not m: raise SystemExit('Invalid VERSION '+old)
+          new=f'{m.group(1)}.{int(m.group(2))+1:03d}'
+          s=s.replace('0.382',new).replace('0.383',new)
+          vp.write_text(new+'\n',encoding='utf-8'); p.write_text(s,encoding='utf-8')
+          print(old,'->',new)
+      - name: Commit and remove workflow
+        shell: bash
+        run: |
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add index.html VERSION && git commit -m "UI: sidebar peek and slide"
+          git rm .github/workflows/sidebar-peek-slide.yml && git commit -m "chore: remove sidebar UI workflow" && git push
