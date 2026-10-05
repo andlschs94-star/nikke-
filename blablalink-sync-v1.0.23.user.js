@@ -1,10 +1,10 @@
 // ==UserScript==
 
 // @name         NIKKE Gear Manager - BlablaLink 자동 장비 동기화
-// @namespace    https://andlschs94-star.github.io/nikke-/
+// @namespace    https://nikkegear885.github.io/nikke-/
 // @version      1.0.23
-// @updateURL    https://raw.githubusercontent.com/andlschs94-star/nikke-/main/blablalink-sync-v1.0.23.user.js
-// @downloadURL  https://raw.githubusercontent.com/andlschs94-star/nikke-/main/blablalink-sync.user.js
+// @updateURL    https://raw.githubusercontent.com/nikkegear885/nikke-/main/blablalink-sync-v1.0.23.user.js
+// @downloadURL  https://raw.githubusercontent.com/nikkegear885/nikke-/main/blablalink-sync.user.js
 // @description  로그인된 BlablaLink 세션에서 NIKKE 캐릭터별 기업장비 현황을 NIKKE Gear Manager로 전송합니다.
 // @author       NIKKE Gear Manager
 // @match        https://*.blablalink.com/*
@@ -16,7 +16,7 @@
 (function(){
   'use strict';
 
-  const TARGET_ORIGIN = 'https://andlschs94-star.github.io';
+  const TARGET_ORIGIN = 'https://nikkegear885.github.io';
   const API = {
     player: 'https://api.blablalink.com/api/ugc/direct/standalonesite/User/GetUserGamePlayerInfo',
     chars: 'https://api.blablalink.com/api/game/proxy/Game/GetUserCharacters',
