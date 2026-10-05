@@ -31,8 +31,8 @@ jobs:
           from pathlib import Path
           p=Path('index.html')
           s=p.read_text(encoding='utf-8')
-          css=r'''<style id="v0378-character-contrast-final">
-          /* v0.378: dark mode character/company/class contrast */
+          css=r'''<style id="v0379-character-contrast-final">
+          /* v0.379: 전체 캐릭터 표의 캐릭터명 가독성 강화 */
           html.dark-theme #characterPanel table tbody td:nth-child(2),
           html.dark-mode #characterPanel table tbody td:nth-child(2),
           body.dark-theme #characterPanel table tbody td:nth-child(2),
@@ -48,6 +48,36 @@ jobs:
             background:#1b2a42!important;
             font-weight:900!important;
             text-shadow:0 1px 3px rgba(0,0,0,.95)!important;
+            border-left:1px solid #3b4e6c!important;
+            border-right:1px solid #3b4e6c!important;
+            opacity:1!important;
+            filter:none!important;
+          }
+          html.dark-theme #characterPanel table tbody td:nth-child(2) *,
+          html.dark-mode #characterPanel table tbody td:nth-child(2) *,
+          body.dark-theme #characterPanel table tbody td:nth-child(2) *,
+          body.dark-mode #characterPanel table tbody td:nth-child(2) *,
+          body.theme-dark #characterPanel table tbody td:nth-child(2) *,
+          html[data-theme="dark"] #characterPanel table tbody td:nth-child(2) *,
+          body[data-theme="dark"] #characterPanel table tbody td:nth-child(2) *,
+          html.dark #characterPanel table tbody td:nth-child(2) *,
+          body.dark #characterPanel table tbody td:nth-child(2) *,
+          html.js-dark-detected #characterPanel table tbody td:nth-child(2) *,
+          body.js-dark-detected #characterPanel table tbody td:nth-child(2) * {
+            color:#f7f9ff!important;
+            font-weight:900!important;
+            text-shadow:0 1px 3px rgba(0,0,0,.95)!important;
+            opacity:1!important;
+            filter:none!important;
+          }
+          html.dark-theme #characterPanel table tbody tr:nth-child(even) td:nth-child(2),
+          html.dark-mode #characterPanel table tbody tr:nth-child(even) td:nth-child(2),
+          body.dark-theme #characterPanel table tbody tr:nth-child(even) td:nth-child(2),
+          body.dark-mode #characterPanel table tbody tr:nth-child(even) td:nth-child(2),
+          body.theme-dark #characterPanel table tbody tr:nth-child(even) td:nth-child(2),
+          html.js-dark-detected #characterPanel table tbody tr:nth-child(even) td:nth-child(2),
+          body.js-dark-detected #characterPanel table tbody tr:nth-child(even) td:nth-child(2) {
+            background:#162238!important;
           }
           html.dark-theme #characterPanel table tbody td:nth-child(3),
           html.dark-mode #characterPanel table tbody td:nth-child(3),
@@ -96,19 +126,22 @@ jobs:
             if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
           })();
           </script>'''
-          if 'v0378-character-contrast-final' not in s:
-              s=s.replace('</head>',css+'</head>',1)
-          s=s.replace('0.377','0.378').replace('v0.377','v0.378')
+          # Replace the previous character contrast block so the new selector also reaches inner spans/divs.
+          import re
+          s=re.sub(r'<style id="v0378-character-contrast-final">.*?</style>\s*<script>.*?</script>', '', s, flags=re.S)
+          s=re.sub(r'<style id="v0379-character-contrast-final">.*?</style>\s*<script>.*?</script>', '', s, flags=re.S)
+          s=s.replace('</head>',css+'</head>',1)
+          s=s.replace('0.378','0.379').replace('v0.378','v0.379')
           p.write_text(s,encoding='utf-8')
-          Path('VERSION').write_text('0.378\n',encoding='utf-8')
+          Path('VERSION').write_text('0.379\n',encoding='utf-8')
           PY
 
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git rm -f .github/workflows/fix-character-contrast.yml .github/workflows/one-time-dark-gear-contrast.yml .github/workflows/apply-character-contrast.yml || true
+          git rm -f .github/workflows/fix-character-contrast.yml .github/workflows/one-time-dark-gear-contrast.yml .github/workflows/apply-character-contrast.yml .github/workflows/one-time-character-contrast-0379.yml || true
           git add index.html VERSION .github/workflows/pages.yml
           if ! git diff --cached --quiet; then
-            git commit -m "Fix dark character contrast and set version 0.378"
+            git commit -m "Fix dark character column contrast and set version 0.379"
             git push
           fi
 
