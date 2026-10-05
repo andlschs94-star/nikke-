@@ -2500,8 +2500,273 @@ body.drop-rate-view #kpis{
 @media(min-width:1001px){
   .main{max-width:1200px!important;}
 }
-</style></head><body>
-<div class="site-version-corner">VERSION 0.366</div><div class="sidebar-hitarea" id="sidebarHitarea" aria-label="메뉴 열기" title="왼쪽 메뉴 열기"></div>
+</style><style id="v0367-dark-theme">
+/* v0.367: 어두운 화면 보기 */
+html.dark-theme,
+html.dark-theme body{
+  --bg:#070b14!important;
+  --bg2:#0d1422!important;
+  --panel:#101827!important;
+  --panel2:#151f31!important;
+  --line:#273550!important;
+  --line2:#3a4a67!important;
+  --text:#edf3ff!important;
+  --muted:#93a2b9!important;
+  --accent:#8fa8ff!important;
+  --accent2:#7f96e8!important;
+  --good:#61c9bb!important;
+  --warning:#e3b35d!important;
+  --danger:#e47b91!important;
+}
+html.dark-theme body{
+  background:linear-gradient(180deg,#0a101b 0%,#080d16 55%,#070b13 100%)!important;
+  color:#edf3ff!important;
+}
+html.dark-theme body::before,
+html.dark-theme body::after{opacity:.18!important}
+html.dark-theme .sidebar{
+  background:linear-gradient(180deg,#101827 0%,#0b121e 100%)!important;
+  border-right-color:#293851!important;
+  box-shadow:8px 0 30px rgba(0,0,0,.30)!important;
+}
+html.dark-theme .topbar,
+html.dark-theme .panel,
+html.dark-theme #characterPanel,
+html.dark-theme #kpis,
+html.dark-theme #outpostPanel,
+html.dark-theme .drop-rate-wrap,
+html.dark-theme .sole-score-panel{
+  color:#edf3ff!important;
+}
+html.dark-theme .topbar{
+  background:rgba(10,16,27,.72)!important;
+  border-color:#273550!important;
+}
+html.dark-theme .topbar h2,
+html.dark-theme .panel-head-title h3,
+html.dark-theme .panel h3,
+html.dark-theme .section-title{
+  color:#eef4ff!important;
+}
+html.dark-theme .panel,
+html.dark-theme .kpi,
+html.dark-theme .drop-rate-accordion,
+html.dark-theme .drop-rate-wrap,
+html.dark-theme .sole-score-card,
+html.dark-theme .gear-summary-wrap,
+html.dark-theme .unused-gear-transfer-wrap,
+html.dark-theme .corp-owned-standalone{
+  background:#101827!important;
+  border-color:#2a3952!important;
+  box-shadow:none!important;
+}
+html.dark-theme .panel-head,
+html.dark-theme .drop-rate-head,
+html.dark-theme .drop-rate-toggle,
+html.dark-theme .sole-score-card-head,
+html.dark-theme .gear-summary-title-toggle,
+html.dark-theme .unused-gear-transfer-title{
+  background:#141f31!important;
+  border-color:#2d3d58!important;
+  color:#edf3ff!important;
+}
+html.dark-theme .drop-rate-card,
+html.dark-theme .gear-part,
+html.dark-theme .outpost-current-production-item,
+html.dark-theme .outpost-level-card,
+html.dark-theme .outpost-core-hint{
+  background:#121c2c!important;
+  border-color:#31415d!important;
+  color:#e6eefb!important;
+}
+html.dark-theme .outpost-production-collapse,
+html.dark-theme .outpost-calc,
+html.dark-theme .outpost-table{
+  background:#101827!important;
+  border-color:#2a3952!important;
+}
+html.dark-theme .outpost-production-toggle{
+  background:#141f31!important;
+  color:#edf3ff!important;
+}
+html.dark-theme input,
+html.dark-theme select,
+html.dark-theme textarea,
+html.dark-theme .searchbar input,
+html.dark-theme .settings-popover input{
+  background:#0c1421!important;
+  color:#edf3ff!important;
+  border-color:#33445f!important;
+}
+html.dark-theme input::placeholder,
+html.dark-theme textarea::placeholder{
+  color:#7f8da5!important;
+}
+html.dark-theme .btn,
+html.dark-theme .settings-action,
+html.dark-theme .quick-filter-btn,
+html.dark-theme .drop-stage-btn,
+html.dark-theme .drop-rate-details-toggle,
+html.dark-theme .outpost-core-sort-btn,
+html.dark-theme .outpost-core-half-toggle,
+html.dark-theme .outpost-final-stage-btn,
+html.dark-theme .valid-toggle,
+html.dark-theme .unused-status-toggle,
+html.dark-theme .unused-view-btn{
+  background:#111b2b!important;
+  border-color:#344660!important;
+  color:#cfdaeb!important;
+}
+html.dark-theme .btn:hover,
+html.dark-theme .settings-action:hover,
+html.dark-theme .quick-filter-btn:hover,
+html.dark-theme .drop-stage-btn:hover,
+html.dark-theme .drop-rate-details-toggle:hover,
+html.dark-theme .outpost-core-sort-btn:hover,
+html.dark-theme .outpost-core-half-toggle:hover,
+html.dark-theme .outpost-final-stage-btn:hover{
+  background:#18253a!important;
+  border-color:#55708f!important;
+  color:#f1f6ff!important;
+}
+html.dark-theme .btn.primary,
+html.dark-theme .quick-filter-btn.active,
+html.dark-theme .outpost-core-sort-btn.active,
+html.dark-theme .outpost-core-half-toggle.active{
+  background:#202d4d!important;
+  border-color:#7189d9!important;
+  color:#fff!important;
+}
+html.dark-theme .settings-popover{
+  background:#101827!important;
+  border-color:#34445e!important;
+  box-shadow:0 18px 50px rgba(0,0,0,.55)!important;
+}
+html.dark-theme .settings-popover h4{
+  color:#edf3ff!important;
+}
+html.dark-theme .settings-popover .settings-section-title{
+  color:#8090a8!important;
+}
+html.dark-theme .settings-popover .settings-info{
+  background:#141f31!important;
+  border-color:#30415d!important;
+  color:#94a2b7!important;
+}
+html.dark-theme .settings-popover .settings-divider{
+  background:#2c3b54!important;
+}
+html.dark-theme .blsync-modal{
+  background:#101827!important;
+  border-color:#34445e!important;
+  box-shadow:0 20px 65px rgba(0,0,0,.55)!important;
+}
+html.dark-theme .blsync-head{
+  background:#141f31!important;
+  border-color:#2d3d58!important;
+}
+html.dark-theme .blsync-body{
+  background:#101827!important;
+  color:#aebbd0!important;
+}
+html.dark-theme .blsync-note{
+  background:#141f31!important;
+  border-color:#30415d!important;
+  color:#aebbd0!important;
+}
+html.dark-theme .exclude-modal{
+  background:#101827!important;
+  border-color:#34445e!important;
+}
+html.dark-theme .exclude-modal-head,
+html.dark-theme .exclude-modal-foot,
+html.dark-theme .exclude-toolbar{
+  background:#141f31!important;
+  border-color:#2d3d58!important;
+}
+html.dark-theme .exclude-list{
+  background:#101827!important;
+}
+html.dark-theme .exclude-item{
+  background:#141f31!important;
+  border-color:#32425d!important;
+  color:#dce6f5!important;
+}
+html.dark-theme .gear-part.equipped{
+  background:#111b2b!important;
+}
+html.dark-theme .gear-part.missing{
+  background:#101827!important;
+}
+html.dark-theme .gear-part.overload{
+  background:#211b38!important;
+  border-color:#8570c7!important;
+}
+html.dark-theme .gear-part.company{
+  background:#153126!important;
+  border-color:#5caa7c!important;
+}
+html.dark-theme .gear-part.other{
+  background:#321b24!important;
+  border-color:#c26d7c!important;
+}
+html.dark-theme .gear-summary th,
+html.dark-theme .corp-owned-table th,
+html.dark-theme .unused-gear-transfer-table th,
+html.dark-theme .outpost-table th{
+  background:#182539!important;
+  color:#9eb0c7!important;
+  border-color:#344660!important;
+}
+html.dark-theme .gear-summary td,
+html.dark-theme .corp-owned-table td,
+html.dark-theme .unused-gear-transfer-table td,
+html.dark-theme .outpost-table td{
+  background:#101827!important;
+  color:#d7e1ef!important;
+  border-color:#293951!important;
+}
+html.dark-theme .gear-summary tr:nth-child(even) td,
+html.dark-theme .corp-owned-table tr:nth-child(even) td,
+html.dark-theme .unused-gear-transfer-table tr:nth-child(even) td,
+html.dark-theme .outpost-table tr:nth-child(even) td{
+  background:#0d1522!important;
+}
+html.dark-theme .gear-summary .total-row td,
+html.dark-theme .corp-owned-table .total-row td{
+  background:#182539!important;
+  color:#f1f5fb!important;
+}
+html.dark-theme .outpost-normal-clear-reference{
+  background:linear-gradient(180deg,#203a4d,#142b3b)!important;
+  border-color:#5e91ad!important;
+}
+html.dark-theme .outpost-normal-clear-reference span{
+  color:#d9f0ff!important;
+}
+html.dark-theme .outpost-normal-clear-reference strong{
+  color:#8fc7e6!important;
+}
+html.dark-theme .site-version-corner,
+html.dark-theme .eyebrow{
+  color:#7889a1!important;
+}
+html.dark-theme .blsync-top-btn{
+  background:#4a2c13!important;
+  border-color:#d4872c!important;
+  color:#ffd08a!important;
+}
+html.dark-theme .blsync-top-btn:hover{
+  background:#5a3616!important;
+  border-color:#e5a14f!important;
+  color:#ffe4b8!important;
+}
+html.dark-theme .kpi{
+  background:#101827!important;
+}
+</style>
+<script>(function(){try{if(localStorage.getItem('nikke_theme_v1')==='dark')document.documentElement.classList.add('dark-theme')}catch(e){}})();</script></head><body>
+<div class="site-version-corner">VERSION 0.367</div><div class="sidebar-hitarea" id="sidebarHitarea" aria-label="메뉴 열기" title="왼쪽 메뉴 열기"></div>
 <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
 <div class="app"><aside class="sidebar" id="sidebar"><div class="brand"><div class="logo">N</div><div><h1>NIKKE Gear Manager</h1><p>장비·성장 현황 관리</p></div></div><div class="nav"><button type="button" class="active main-view-nav" data-view="characters" onclick="switchMainView('characters')">캐릭터 관리</button><button type="button" class="main-view-nav" data-view="outpost" onclick="switchMainView('outpost')">전초기지 생산량</button><button type="button" class="main-view-nav" data-view="sole" onclick="switchMainView('sole')">솔레점수기록</button></div><div class="section" style="font-size:11px;color:#6f7b96;line-height:1.6">현재는 캐릭터 관리 기능을 제공합니다.<br>다른 관리 기능은 설정 메뉴에서 사용할 수 있습니다.</div></aside>
 <main class="main"><div class="topbar"><div><div class="eyebrow">NIKKE / INVENTORY</div><h2 id="pageTitle">캐릭터 장비 현황</h2></div><div class="actions account-switcher"><button type="button" class="btn blsync-top-btn" onclick="openBlablalinkSyncGuide()">계정 동기화</button><button type="button" class="btn account-switch-btn active" data-account="계정1" onclick="switchAccount(ACCOUNTS[0])">계정1</button><button type="button" class="btn account-switch-btn" data-account="계정2" onclick="switchAccount(ACCOUNTS[1])">계정2</button><div class="settings-wrap"><button type="button" class="settings-btn" id="settingsBtn" aria-label="설정" title="설정" onclick="toggleSettingsMenu(event)">⚙</button></div></div></div><div class="settings-popover" id="settingsPopover" hidden>
@@ -2512,6 +2777,9 @@ body.drop-rate-view #kpis{
     <div><label>계정2</label><input id="accountName2" type="text" maxlength="20"></div>
     <button type="button" class="settings-action" onclick="saveAccountNames()">계정 이름 저장</button>
   </div>
+  <div class="settings-divider"></div>
+  <div class="settings-section-title">화면</div>
+  <button type="button" class="settings-action" id="themeToggleAction" onclick="toggleDarkTheme()">어두운 화면으로 보기</button>
   <div class="settings-divider"></div>
   <div class="settings-section-title">데이터 관리</div>
   <button type="button" class="settings-action" onclick="closeSettingsMenu();exportCSV()">현재 목록 CSV 저장</button>
@@ -4163,6 +4431,19 @@ function closeSettingsMenu(){
   if(p)p.hidden=true;
   if(b)b.classList.remove('active');
   settingsPopoverOpen=false;
+}
+function applyThemeMode(){
+  const dark=document.documentElement.classList.contains('dark-theme');
+  const btn=document.getElementById('themeToggleAction');
+  if(btn)btn.textContent=dark?'밝은 화면으로 보기':'어두운 화면으로 보기';
+}
+function toggleDarkTheme(){
+  const root=document.documentElement;
+  const dark=!root.classList.contains('dark-theme');
+  root.classList.toggle('dark-theme',dark);
+  try{localStorage.setItem('nikke_theme_v1',dark?'dark':'light');}catch(e){}
+  applyThemeMode();
+  toast(dark?'어두운 화면으로 변경되었습니다.':'밝은 화면으로 변경되었습니다.');
 }
 function toggleSettingsMenu(e){
   e?.stopPropagation();
