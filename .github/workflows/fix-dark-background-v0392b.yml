@@ -1,0 +1,56 @@
+name: Fix dark theme background
+on:
+  push:
+    branches:
+      - main
+permissions:
+  contents: write
+jobs:
+  fix:
+    runs-on: ubuntu-latest
+    if: github.actor != 'github-actions[bot]'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Patch page
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+          p = Path('index.html')
+          s = p.read_text(encoding='utf-8')
+          css = '''<style id="dark-background-fix-v0392">
+          html.dark-theme, html.dark-theme body, html.dark-theme #app, html.dark-theme .app {
+            background:#070b14 !important;
+            background-image:radial-gradient(circle at 20% 0,#182240 0,#0a0f1d 42%,#070b14 100%) !important;
+            color:#edf3ff !important;
+          }
+          html.dark-theme .main { background:#070b14 !important; color:#edf3ff !important; }
+          html.dark-theme .v0325-light-surface,
+          html.dark-theme [class*="v0325-light-surface"] { background:#101827 !important; border-color:#2a3952 !important; color:#dce6f3 !important; }
+          html.dark-theme .drop-rate-view,
+          html.dark-theme .drop-rate-view #app,
+          html.dark-theme .drop-rate-view .app,
+          html.dark-theme .drop-rate-view .main,
+          html.dark-theme .drop-rate-view main,
+          html.dark-theme .drop-rate-view .content,
+          html.dark-theme .drop-rate-view .section { background:#101827 !important; color:#dce6f3 !important; }
+          </style>'''
+          if 'dark-background-fix-v0392' not in s:
+              s = s.replace('</head>', css + '</head>', 1)
+          v = Path('VERSION')
+          old = v.read_text(encoding='utf-8').strip()
+          m = re.fullmatch(r'(\d+)\.(\d+)', old)
+          new = f'{m.group(1)}.{int(m.group(2))+1:03d}' if m else '0.392'
+          v.write_text(new + '\n', encoding='utf-8')
+          s = re.sub(r'VERSION\s+0\.\d{3}', f'VERSION {new}', s)
+          p.write_text(s, encoding='utf-8')
+          PY
+      - name: Commit and remove temporary workflow
+        run: |
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add index.html VERSION
+          git rm .github/workflows/fix-dark-background-v0392b.yml
+          git commit -m "fix: restore dark theme page background"
+          git push
