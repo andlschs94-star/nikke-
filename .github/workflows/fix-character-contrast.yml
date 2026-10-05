@@ -1,0 +1,74 @@
+name: Fix character contrast
+on:
+  push:
+    branches: [main]
+permissions:
+  contents: write
+jobs:
+  fix:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Improve dark character contrast and bump version
+        shell: python
+        run: |
+          from pathlib import Path
+          import re
+          p=Path('index.html')
+          s=p.read_text(encoding='utf-8')
+          css='''<style id="v0378-character-contrast">
+/* v0.378: 어두운 화면 캐릭터명/기업/클래스 대비 강화 */
+html.dark-theme .character-name,
+html.dark-theme .char-name,
+html.dark-theme .character-cell,
+html.dark-theme td.character,
+html.dark-theme .character-row .character,
+html.dark-theme .character-row .name {
+  color:#f2f5ff!important;
+  font-weight:800!important;
+  text-shadow:0 1px 2px rgba(0,0,0,.75)!important;
+}
+html.dark-theme .character-row,
+html.dark-theme .character-row td {
+  background:#111b2d!important;
+}
+html.dark-theme .character-row:hover,
+html.dark-theme .character-row:hover td {
+  background:#18243a!important;
+}
+html.dark-theme .character-row .company,
+html.dark-theme .character-row .class,
+html.dark-theme .character-row .character-company,
+html.dark-theme .character-row .character-class {
+  color:#e2e9f7!important;
+  background:#1b2940!important;
+  border-color:#465a78!important;
+}
+/* 실제 표의 캐릭터명이 일반 셀 텍스트로 렌더링되는 경우까지 대비 */
+html.dark-theme #characterPanel table tbody td:nth-child(2),
+html.dark-theme #characterPanel table tbody td:nth-child(3),
+html.dark-theme #characterPanel table tbody td:nth-child(4) {
+  color:#edf2ff!important;
+  font-weight:800!important;
+  text-shadow:0 1px 2px rgba(0,0,0,.8)!important;
+}
+</style>'''
+          if 'v0378-character-contrast' not in s:
+              s=s.replace('</head>',css+'</head>',1)
+          v=Path('VERSION').read_text(encoding='utf-8').strip()
+          a,b=v.split('.')
+          new=f'{a}.{int(b)+1:03d}'
+          s=re.sub(r'v0\.377',f'v{new}',s)
+          p.write_text(s,encoding='utf-8')
+          Path('VERSION').write_text(new+'\n',encoding='utf-8')
+      - name: Commit and remove workflow
+        shell: bash
+        run: |
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git rm .github/workflows/fix-character-contrast.yml
+          git add index.html VERSION
+          git diff --cached --quiet && exit 0
+          git commit -m "Fix dark character name contrast and bump version"
+          git push
