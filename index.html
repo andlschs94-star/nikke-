@@ -4132,6 +4132,25 @@ html:not(.dark-theme) #unusedGearTransferPanel .unused-gear-transfer-title{
 html:not(.dark-theme) #unusedGearTransferPanel .unused-gear-transfer-title:hover{
   background:#dcecf7!important;
 }
+</style><style id="layout-width-sidebar-edge-fix-v0405">
+/* v0.405: 왼쪽 끝 클릭 영역 확대 + 데스크톱 좌우 여백 약 20% 축소 */
+@media(min-width:1001px){
+  .app{padding-left:11px!important}
+  .topbar{margin-left:6px!important;margin-right:6px!important}
+  .panel{margin-left:22px!important;margin-right:22px!important}
+  .kpis{padding-left:22px!important;padding-right:22px!important}
+  .drop-rate-wrap{margin-left:22px!important;margin-right:22px!important}
+  #outpostPanel,.outpost-production-collapse{margin-left:22px!important;margin-right:22px!important}
+}
+/* 화면 최좌측 0px부터 클릭 가능한 메뉴 열기 영역 */
+.sidebar-hitarea{
+  width:40px!important;
+  left:0!important;
+  z-index:100001!important;
+  pointer-events:auto!important;
+}
+.sidebar-hitarea:hover{background:rgba(146,125,255,.06)!important}
+.sidebar-hitarea.open{width:228px!important}
 </style></head><body>
 <div class="site-version-corner">VERSION 0.404</div><div class="sidebar-hitarea" id="sidebarHitarea" aria-label="메뉴 열기" title="왼쪽 메뉴 열기"></div>
 <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
