@@ -4006,7 +4006,7 @@ body.sidebar-open .sidebar{pointer-events:auto!important;transform:translateX(0)
 body.sidebar-open .sidebar:hover{transform:translateX(0)!important}
 body.sidebar-open .sidebar .sidebar-peek-tab{pointer-events:auto!important}
 </style></head><body>
-<div class="site-version-corner">VERSION 0.385</div><div class="sidebar-hitarea" id="sidebarHitarea" aria-label="메뉴 열기" title="왼쪽 메뉴 열기"></div>
+<div class="site-version-corner">VERSION 0.386</div><div class="sidebar-hitarea" id="sidebarHitarea" aria-label="메뉴 열기" title="왼쪽 메뉴 열기"></div>
 <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
 <div class="app"><aside class="sidebar" id="sidebar"><div class="brand"><div class="logo">N</div><div><h1>NIKKE Gear Manager</h1><p>장비·성장 현황 관리</p></div></div><div class="nav"><button type="button" class="active main-view-nav" data-view="characters" onclick="switchMainView('characters')">캐릭터 관리</button><button type="button" class="main-view-nav" data-view="outpost" onclick="switchMainView('outpost')">전초기지 생산량</button><button type="button" class="main-view-nav" data-view="sole" onclick="switchMainView('sole')">솔레점수기록</button></div><div class="section" style="font-size:11px;color:#6f7b96;line-height:1.6">현재는 캐릭터 관리 기능을 제공합니다.<br>다른 관리 기능은 설정 메뉴에서 사용할 수 있습니다.</div></aside>
 <main class="main"><div class="topbar"><div><div class="eyebrow">NIKKE / INVENTORY</div><h2 id="pageTitle">캐릭터 장비 현황</h2></div><div class="actions account-switcher"><button type="button" class="btn blsync-top-btn" style="background:#fff1dc!important;border:1px solid #e5a14f!important;color:#a85f16!important;box-shadow:0 2px 8px rgba(214,142,50,.16)!important;font-weight:900!important" onclick="openBlablalinkSyncGuide()">계정 동기화</button><button type="button" class="theme-toggle-btn" id="themeToggleBtn" aria-label="어두운 화면으로 보기" title="어두운 화면으로 보기" onclick="toggleDarkTheme()">☀️</button><button type="button" class="btn account-switch-btn active" data-account="계정1" onclick="switchAccount(ACCOUNTS[0])">계정1</button><button type="button" class="btn account-switch-btn" data-account="계정2" onclick="switchAccount(ACCOUNTS[1])">계정2</button><div class="settings-wrap"><button type="button" class="settings-btn" id="settingsBtn" aria-label="설정" title="설정" onclick="toggleSettingsMenu(event)">⚙</button></div></div></div><div class="settings-popover" id="settingsPopover" hidden>
@@ -5988,7 +5988,34 @@ document.addEventListener('keydown',function(e){if(e.key==='Escape')closeSoleRew
   new MutationObserver(apply).observe(document.body,{subtree:true,childList:true});
 })();
 </script>
-<script id="sidebar-peek-slide-js-v0383">(()=>{const init=()=>{const sb=document.querySelector('.sidebar');if(!sb||sb.dataset.peekSlideReady)return;sb.dataset.peekSlideReady='1';const tab=document.createElement('button');tab.type='button';tab.className='sidebar-peek-tab';tab.setAttribute('aria-label','메뉴 열기');tab.textContent='›';sb.appendChild(tab);const setOpen=o=>{document.body.classList.toggle('sidebar-open',o);tab.textContent=o?'‹':'›';tab.setAttribute('aria-label',o?'메뉴 닫기':'메뉴 열기')};tab.addEventListener('click',e=>{e.stopPropagation();setOpen(!document.body.classList.contains('sidebar-open'))});document.addEventListener('click',e=>{if(document.body.classList.contains('sidebar-open')&&!sb.contains(e.target))setOpen(false)})};if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init()})();</script></body></html>
+<script id="sidebar-peek-slide-js-v0383">(()=>{const init=()=>{const sb=document.querySelector('.sidebar');if(!sb||sb.dataset.peekSlideReady)return;sb.dataset.peekSlideReady='1';const tab=document.createElement('button');tab.type='button';tab.className='sidebar-peek-tab';tab.setAttribute('aria-label','메뉴 열기');tab.textContent='›';sb.appendChild(tab);const setOpen=o=>{document.body.classList.toggle('sidebar-open',o);tab.textContent=o?'‹':'›';tab.setAttribute('aria-label',o?'메뉴 닫기':'메뉴 열기')};tab.addEventListener('click',e=>{e.stopPropagation();setOpen(!document.body.classList.contains('sidebar-open'))});document.addEventListener('click',e=>{if(document.body.classList.contains('sidebar-open')&&!sb.contains(e.target))setOpen(false)})};if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init()})();</script><style id="sidebar-final-fix-v0386">
+/* v0.386: sidebar is click-only; never react to mouse movement */
+.sidebar{pointer-events:auto!important;}
+.sidebar:hover{transform:translateX(calc(-100% + 14px))!important;}
+.sidebar.sidebar-open{transform:translateX(0)!important;pointer-events:auto!important;}
+.sidebar.open{transform:translateX(0)!important;pointer-events:auto!important;}
+.sidebar-peek-tab{pointer-events:auto!important;position:absolute!important;right:-14px!important;z-index:2000!important;}
+</style>
+<script>
+(function(){
+  function initSidebar(){
+    const sb=document.querySelector('.sidebar');
+    if(!sb||sb.dataset.clickOnlyFixed==='1')return;
+    sb.dataset.clickOnlyFixed='1';
+    let tab=sb.querySelector('.sidebar-peek-tab');
+    if(!tab){
+      tab=document.createElement('button');
+      tab.type='button'; tab.className='sidebar-peek-tab'; tab.textContent='☰';
+      sb.appendChild(tab);
+    }
+    function open(){sb.classList.add('sidebar-open');}
+    function close(){sb.classList.remove('sidebar-open');}
+    tab.addEventListener('click',function(e){e.preventDefault();e.stopPropagation(); if(sb.classList.contains('sidebar-open')||sb.classList.contains('open')) close(); else open();});
+    document.addEventListener('click',function(e){if(sb.classList.contains('sidebar-open')&&!sb.contains(e.target))close();});
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',initSidebar);else initSidebar();
+})();
+</script></body></html>
 <style id="common-unused-power-sort-0356">
 /* v0.356: 미사용 일괄적용 창 바깥 클릭으로 닫기 지원 */
 </style>
