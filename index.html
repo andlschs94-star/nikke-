@@ -2184,8 +2184,148 @@ body.drop-rate-view #kpis{
 #kpis>.gear-summary-wrap .gear-summary-title-toggle:hover{
   background:#d2eaf5!important;
 }
+</style><style id="v0359-outpost-light-surfaces">
+/* v0.359: 전초기지 생산량 화면의 구형 다크 배경을 최신 연청색 UI로 통일 */
+#outpostPanel .outpost-calc,
+#outpostPanel .outpost-calc-progress,
+#outpostPanel .outpost-level-card,
+#outpostPanel .outpost-current-production,
+#outpostPanel .outpost-current-production-item,
+#outpostPanel .outpost-core-hint{
+  background:#f8fcfe!important;
+  border-color:#bfd5df!important;
+  color:#405b6c!important;
+  box-shadow:none!important;
+}
+#outpostPanel .outpost-calc-head{
+  background:#edf7fb!important;
+  border-color:#cfe1eb!important;
+}
+#outpostPanel .outpost-production-collapse{
+  background:#f8fcfe!important;
+  border-color:#bfd5df!important;
+}
+#outpostPanel .outpost-production-toggle{
+  background:#edf7fb!important;
+  color:#294b5e!important;
+}
+#outpostPanel .outpost-production-toggle:hover{
+  background:#e5f2f8!important;
+}
+#outpostPanel .outpost-calc-title,
+#outpostPanel .outpost-calc-section-label,
+#outpostPanel .outpost-level-label,
+#outpostPanel .outpost-current-production-title,
+#outpostPanel .outpost-core-hint-title{
+  color:#3f7898!important;
+}
+#outpostPanel .outpost-calc-note,
+#outpostPanel .outpost-level-help,
+#outpostPanel .outpost-current-production-item .label,
+#outpostPanel .outpost-core-hint-sub,
+#outpostPanel .outpost-core-sort-label,
+#outpostPanel .outpost-progress-caption,
+#outpostPanel .outpost-calc-field label{
+  color:#6b8291!important;
+}
+#outpostPanel .outpost-progress-caption strong{
+  color:#347fa7!important;
+}
+#outpostPanel .outpost-level-number{
+  color:#294b5e!important;
+}
+#outpostPanel .outpost-level-number span{
+  color:#6b8291!important;
+}
+#outpostPanel .outpost-progress-bar{
+  background:#d4e5ec!important;
+}
+#outpostPanel .outpost-progress-bar.active{
+  background:#78b9d5!important;
+}
+#outpostPanel .outpost-calc-select{
+  background:#fff!important;
+  color:#405b6c!important;
+  border:1px solid #bfd5df!important;
+}
+#outpostPanel .outpost-calc-select:focus{
+  box-shadow:0 0 0 1px #8fc3d9!important;
+}
+#outpostPanel .outpost-stage-pick>span{
+  color:#6b8291!important;
+}
+#outpostPanel .outpost-current-production-item .value{
+  color:#294b5e!important;
+}
+#outpostPanel .outpost-core-sort-btn,
+#outpostPanel .outpost-core-half-toggle{
+  background:#fff!important;
+  border-color:#bfd5df!important;
+  color:#607989!important;
+  box-shadow:none!important;
+}
+#outpostPanel .outpost-core-sort-btn:hover,
+#outpostPanel .outpost-core-half-toggle:hover{
+  background:#eef7fb!important;
+  border-color:#8fc3d9!important;
+  color:#347a9e!important;
+}
+#outpostPanel .outpost-core-sort-btn.active,
+#outpostPanel .outpost-core-half-toggle.active{
+  background:#dceef8!important;
+  border-color:#73b3d2!important;
+  color:#347a9e!important;
+  box-shadow:none!important;
+}
+#outpostPanel .outpost-core-breakpoint-list{
+  border-top-color:#cfe1eb!important;
+}
+#outpostPanel .outpost-core-breakpoint-row{
+  border-bottom-color:#d7e5ec!important;
+  color:#607989!important;
+}
+#outpostPanel .outpost-core-breakpoint-stage{
+  color:#405b6c!important;
+}
+#outpostPanel .outpost-core-breakpoint-level{
+  color:#6b8291!important;
+}
+#outpostPanel .outpost-core-breakpoint-row strong{
+  color:#347a9e!important;
+}
+#outpostPanel .outpost-core-hint-main{
+  color:#294b5e!important;
+}
+#outpostPanel .outpost-core-hint strong{
+  color:#347a9e!important;
+}
+#outpostPanel .outpost-core-hint{
+  border-color:#bfd5df!important;
+}
+#outpostPanel .outpost-table{
+  background:#f8fcfe!important;
+}
+#outpostPanel .outpost-table th{
+  background:#e5f2f8!important;
+  color:#506b7b!important;
+  border-bottom-color:#c7dce6!important;
+}
+#outpostPanel .outpost-table td{
+  background:#f8fcfe!important;
+  color:#405b6c!important;
+  border-bottom-color:#d3e3ea!important;
+}
+#outpostPanel .outpost-table tr:nth-child(even) td{
+  background:#f0f7fa!important;
+}
+#outpostPanel .outpost-table td:first-child{
+  color:#294b5e!important;
+}
+#outpostPanel .outpost-normal-coming-soon{
+  color:inherit!important;
+}
 </style></head><body>
-<div class="site-version-corner">VERSION 0.358</div><div class="sidebar-hitarea" id="sidebarHitarea" aria-label="메뉴 열기" title="왼쪽 메뉴 열기"></div>
+<div class="site-version-corner">VERSION 0.359</div><div class="sidebar-hitarea" id="sidebarHitarea" aria-label="메뉴 열기" title="왼쪽 메뉴 열기"></div>
 <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
 <div class="app"><aside class="sidebar" id="sidebar"><div class="brand"><div class="logo">N</div><div><h1>NIKKE Gear Manager</h1><p>장비·성장 현황 관리</p></div></div><div class="nav"><button type="button" class="active main-view-nav" data-view="characters" onclick="switchMainView('characters')">캐릭터 관리</button><button type="button" class="main-view-nav" data-view="outpost" onclick="switchMainView('outpost')">전초기지 생산량</button><button type="button" class="main-view-nav" data-view="sole" onclick="switchMainView('sole')">솔레점수기록</button></div><div class="section" style="font-size:11px;color:#6f7b96;line-height:1.6">현재는 캐릭터 관리 기능을 제공합니다.<br>다른 관리 기능은 설정 메뉴에서 사용할 수 있습니다.</div></aside>
 <main class="main"><div class="topbar"><div><div class="eyebrow">NIKKE / INVENTORY</div><h2 id="pageTitle">캐릭터 장비 현황</h2></div><div class="actions account-switcher"><button type="button" class="btn blsync-top-btn" onclick="openBlablalinkSyncGuide()">계정 동기화</button><button type="button" class="btn account-switch-btn active" data-account="계정1" onclick="switchAccount(ACCOUNTS[0])">계정1</button><button type="button" class="btn account-switch-btn" data-account="계정2" onclick="switchAccount(ACCOUNTS[1])">계정2</button><div class="settings-wrap"><button type="button" class="settings-btn" id="settingsBtn" aria-label="설정" title="설정" onclick="toggleSettingsMenu(event)">⚙</button></div></div></div><div class="settings-popover" id="settingsPopover" hidden>
