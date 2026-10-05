@@ -11,12 +11,13 @@ jobs:
       contents: write
     steps:
       - uses: actions/checkout@v4
-      - name: Hide only the stray visible text
+      - name: Apply safe visual patches
         run: |
           python3 - <<'PY'
           from pathlib import Path
           p = Path('index.html')
           s = p.read_text(encoding='utf-8')
+
           marker = '/* hide stray literal comment text v1 */'
           if marker not in s:
               injection = '''<script>\n/* hide stray literal comment text v1 */\n(function(){\n  var re = /^\\s*(?:\\\\n)?\\s*\\/\\*\\s*\\*\\/\\s*(?:\\\\n)?\\s*$/;\n  var w = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);\n  var n;\n  while (n = w.nextNode()) {\n    if (re.test(n.nodeValue || '')) n.nodeValue = '';\n  }\n})();\n</script>'''
@@ -24,7 +25,16 @@ jobs:
                   s = s.replace('</body>', injection + '\n</body>', 1)
               else:
                   s += '\n' + injection + '\n'
-              p.write_text(s, encoding='utf-8')
+
+          css_marker = '/* v0.332 unused button light-surface patch */'
+          if css_marker not in s:
+              css = '''<style>\n/* v0.332 unused button light-surface patch */\n.unused-view-btn:not(.active){\n  background:#f8fcfe!important;\n  border-color:#b9d1df!important;\n  color:#587184!important;\n  box-shadow:0 2px 7px rgba(61,101,126,.05)!important;\n}\n.unused-view-btn:not(.active):hover{\n  background:#eef8fc!important;\n  border-color:#7db5d1!important;\n  color:#35677f!important;\n}\n</style>'''
+              if '</head>' in s:
+                  s = s.replace('</head>', css + '\n</head>', 1)
+              else:
+                  s = css + '\n' + s
+
+          p.write_text(s, encoding='utf-8')
           PY
       - name: Commit patch
         run: |
@@ -32,5 +42,5 @@ jobs:
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add index.html
           if git diff --cached --quiet; then exit 0; fi
-          git commit -m 'Apply literal comment text visibility fix'
+          git commit -m 'Match unused filter button to light UI'
           git push
