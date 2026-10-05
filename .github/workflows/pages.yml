@@ -53,6 +53,8 @@ jobs:
           </style>'''
           s=re.sub(r'<style id="v0380-character-row-background-deploy">.*?</style>','',s,flags=re.S)
           s=s.replace('</head>',css+'</head>',1)
+          # The repository VERSION is 0.380; keep the visible page version in sync.
+          s=s.replace('0.379','0.380')
           p.write_text(s,encoding='utf-8')
           PY
 
