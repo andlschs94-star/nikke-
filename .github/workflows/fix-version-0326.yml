@@ -1,0 +1,28 @@
+name: Fix displayed version v0.326
+on:
+  push:
+    branches: [main]
+jobs:
+  fix-version:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - name: Replace old displayed versions
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p = Path('index.html')
+          s = p.read_text(encoding='utf-8')
+          for old in ('0.324', '0.325'):
+              s = s.replace(old, '0.326')
+          s = s.replace('GitHub Pages deployment refresh 0.326', 'GitHub Pages deployment refresh 0.326')
+          p.write_text(s, encoding='utf-8')
+          PY
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add index.html
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m 'Set displayed site version to v0.326'
+          git push
