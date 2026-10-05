@@ -2765,8 +2765,347 @@ html.dark-theme .kpi{
   background:#101827!important;
 }
 </style>
-<script>(function(){try{if(localStorage.getItem('nikke_theme_v1')==='dark')document.documentElement.classList.add('dark-theme')}catch(e){}})();</script></head><body>
-<div class="site-version-corner">VERSION 0.368</div><div class="sidebar-hitarea" id="sidebarHitarea" aria-label="메뉴 열기" title="왼쪽 메뉴 열기"></div>
+<script>(function(){try{if(localStorage.getItem('nikke_theme_v1')==='dark')document.documentElement.classList.add('dark-theme')}catch(e){}})();</script><style id="v0369-dark-theme-complete">
+/* v0.369: 다크 모드 내부 요소 전체 보강 */
+html.dark-theme .nav button{
+  background:#111b2b!important;
+  border-color:#2d3d58!important;
+  color:#cbd7e8!important;
+}
+html.dark-theme .nav button.active{
+  background:#202d4d!important;
+  border-color:#7189d9!important;
+  color:#fff!important;
+}
+html.dark-theme .eyebrow,
+html.dark-theme .panel-head small,
+html.dark-theme .panel-head-title small{
+  color:#8190a8!important;
+}
+html.dark-theme .panel-head,
+html.dark-theme .quick-filter-bar,
+html.dark-theme .table-wrap{
+  background:#111a29!important;
+  border-color:#2b3b55!important;
+}
+html.dark-theme .panel-head-left-tools,
+html.dark-theme .panel-head-right{
+  color:#d5dfed!important;
+}
+html.dark-theme .searchbar input{
+  background:#0b1421!important;
+  border-color:#354761!important;
+  color:#edf3ff!important;
+}
+html.dark-theme th{
+  background:#182538!important;
+  color:#a6b6cc!important;
+  border-bottom-color:#344660!important;
+}
+html.dark-theme td{
+  background:#101925!important;
+  color:#d9e2ef!important;
+  border-bottom-color:#293951!important;
+}
+html.dark-theme tbody tr:nth-child(even) td{
+  background:#0d1521!important;
+}
+html.dark-theme .quick-filter-title,
+html.dark-theme .gear-legend,
+html.dark-theme .hide-target-label{
+  color:#8291a8!important;
+}
+html.dark-theme .quick-filter-divider{
+  background:#33435c!important;
+}
+html.dark-theme .th-btn{
+  background:transparent!important;
+  color:#b8c5d8!important;
+}
+html.dark-theme .th-btn:hover,
+html.dark-theme .th-btn.active{
+  color:#eef4ff!important;
+}
+html.dark-theme .column-filter-popover,
+html.dark-theme .completion-filter-popover,
+html.dark-theme .drop-stage-popover{
+  background:#101827!important;
+  border-color:#34445e!important;
+  box-shadow:0 18px 50px rgba(0,0,0,.55)!important;
+  color:#dce6f4!important;
+}
+html.dark-theme .column-filter-popover h4,
+html.dark-theme .completion-filter-popover h4{
+  color:#edf3ff!important;
+}
+html.dark-theme .column-filter-actions button,
+html.dark-theme .column-filter-option,
+html.dark-theme .filter-chip,
+html.dark-theme .sort-chip,
+html.dark-theme .completion-filter-option,
+html.dark-theme .drop-stage-option{
+  background:#141f31!important;
+  border-color:#32425c!important;
+  color:#cdd8e8!important;
+}
+html.dark-theme .column-filter-option:hover,
+html.dark-theme .filter-chip:hover,
+html.dark-theme .sort-chip:hover,
+html.dark-theme .drop-stage-option:hover{
+  background:#1a293e!important;
+  border-color:#57708f!important;
+  color:#f2f6fb!important;
+}
+html.dark-theme .column-filter-option.active,
+html.dark-theme .filter-chip.active,
+html.dark-theme .sort-chip.active,
+html.dark-theme .drop-stage-option.active{
+  background:#202d4d!important;
+  border-color:#7189d9!important;
+  color:#fff!important;
+}
+html.dark-theme .filter-section,
+html.dark-theme .gear-filter-part-group{
+  border-color:#2d3d57!important;
+}
+html.dark-theme .filter-section-title,
+html.dark-theme .gear-filter-part-title{
+  color:#edf3ff!important;
+}
+html.dark-theme .filter-section-subtitle,
+html.dark-theme .filter-help,
+html.dark-theme .gear-filter-intro{
+  color:#8d9bb0!important;
+}
+html.dark-theme .modal-sort,
+html.dark-theme .outpost-calc-select,
+html.dark-theme .field input,
+html.dark-theme .field select{
+  background:#0b1421!important;
+  border-color:#354761!important;
+  color:#edf3ff!important;
+}
+html.dark-theme .drawer{
+  background:rgba(2,5,14,.72)!important;
+}
+html.dark-theme .drawer-card{
+  background:#0f1725!important;
+  border-color:#34445e!important;
+  box-shadow:-20px 0 60px rgba(0,0,0,.45)!important;
+}
+html.dark-theme .drawer-head{
+  background:#141f31!important;
+  border-color:#2d3d58!important;
+}
+html.dark-theme .drawer-body,
+html.dark-theme .piece{
+  background:#101827!important;
+  color:#dce5f2!important;
+}
+html.dark-theme .piece{
+  border-color:#30415d!important;
+}
+html.dark-theme .field label{
+  color:#8c9bb0!important;
+}
+html.dark-theme .avatar{
+  background:linear-gradient(135deg,#293952,#151f30)!important;
+}
+html.dark-theme .tag{
+  background:#182539!important;
+  border-color:#344660!important;
+  color:#b8c7da!important;
+}
+html.dark-theme .piece-status{
+  background:#111b2b!important;
+  border-color:#344660!important;
+  color:#cbd8e8!important;
+}
+html.dark-theme .valid-toggle:not(.active),
+html.dark-theme .unused-status-toggle:not(.active):not(.unowned),
+html.dark-theme .unused-view-btn:not(.active),
+html.dark-theme .unowned-view-btn:not(.active){
+  background:#111b2b!important;
+  border-color:#344660!important;
+  color:#cbd7e8!important;
+}
+html.dark-theme .quick-gear-btn,
+html.dark-theme .quick-gear-close{
+  background:#111b2b!important;
+  border-color:#344660!important;
+  color:#cbd7e8!important;
+}
+html.dark-theme .quick-gear-btn:hover,
+html.dark-theme .quick-gear-close:hover{
+  background:#18253a!important;
+  border-color:#55708f!important;
+  color:#f1f6ff!important;
+}
+html.dark-theme .drop-rate-footnote,
+html.dark-theme .drop-rate-sub,
+html.dark-theme .drop-rate-result{
+  color:#99a8bd!important;
+  border-color:#33445f!important;
+}
+html.dark-theme .drop-rate-result b{
+  color:#e9f0fa!important;
+}
+html.dark-theme .drop-rate-value{
+  color:#a9bdf0!important;
+}
+html.dark-theme .drop-rate-secondary{
+  color:#7f90a8!important;
+}
+html.dark-theme .drop-stage-rate{
+  color:#8b9ab0!important;
+}
+html.dark-theme .unused-gear-transfer-note,
+html.dark-theme .corp-owned-note,
+html.dark-theme .gear-summary-note{
+  background:#141f31!important;
+  color:#8e9daf!important;
+  border-color:#2d3d58!important;
+}
+html.dark-theme .unused-gear-transfer-section-title{
+  background:#182538!important;
+  color:#dce6f2!important;
+  border-color:#33445f!important;
+}
+html.dark-theme .unused-gear-transfer-target-row{
+  border-color:#2b4d43!important;
+}
+html.dark-theme .outpost-calc-head,
+html.dark-theme .outpost-production-toggle{
+  background:#141f31!important;
+}
+html.dark-theme .outpost-calc-title,
+html.dark-theme .outpost-calc-section-label,
+html.dark-theme .outpost-level-label,
+html.dark-theme .outpost-current-production-title{
+  color:#8fb5d0!important;
+}
+html.dark-theme .outpost-calc-note,
+html.dark-theme .outpost-level-help,
+html.dark-theme .outpost-current-production-item .label,
+html.dark-theme .outpost-core-hint-sub{
+  color:#8d9caf!important;
+}
+html.dark-theme .outpost-progress-caption{
+  color:#aab7c8!important;
+}
+html.dark-theme .outpost-progress-bar{
+  background:#344358!important;
+}
+html.dark-theme .outpost-progress-bar.active{
+  background:#6389ad!important;
+}
+html.dark-theme .outpost-core-breakpoint-row{
+  background:#101827!important;
+}
+html.dark-theme .outpost-core-breakpoint-row:nth-child(even){
+  background:#0d1521!important;
+}
+html.dark-theme .outpost-core-breakpoint-stage{
+  color:#dce6f3!important;
+}
+html.dark-theme .outpost-core-breakpoint-level{
+  color:#8f9fb4!important;
+}
+html.dark-theme .sole-score-intro,
+html.dark-theme .sole-score-note{
+  background:#141f31!important;
+  border-color:#2d3d58!important;
+  color:#9aa8ba!important;
+}
+html.dark-theme .sole-score-intro h3,
+html.dark-theme .sole-score-card-head strong{
+  color:#edf3ff!important;
+}
+html.dark-theme .sole-score-intro p,
+html.dark-theme .sole-score-card-head span{
+  color:#8c9bb0!important;
+}
+html.dark-theme .sole-score-edit,
+html.dark-theme .sole-score-add-btn,
+html.dark-theme .sole-score-delete{
+  background:#111b2b!important;
+  border-color:#344660!important;
+  color:#cbd7e8!important;
+}
+html.dark-theme .sole-score-table-wrap,
+html.dark-theme .sole-score-table{
+  background:#101827!important;
+}
+html.dark-theme .backup-code-modal,
+html.dark-theme .blsync-modal-backdrop,
+html.dark-theme .sole-reward-modal,
+html.dark-theme .filter-modal{
+  background:rgba(2,5,14,.78)!important;
+}
+html.dark-theme .backup-code-card,
+html.dark-theme .sole-reward-card,
+html.dark-theme .filter-modal-card{
+  background:#101827!important;
+  border-color:#34445e!important;
+  color:#dce6f3!important;
+}
+html.dark-theme .backup-code-head,
+html.dark-theme .backup-code-body,
+html.dark-theme .backup-code-actions,
+html.dark-theme .sole-reward-head,
+html.dark-theme .filter-modal-head,
+html.dark-theme .filter-modal-foot{
+  background:#141f31!important;
+  border-color:#2d3d58!important;
+  color:#dce6f3!important;
+}
+html.dark-theme .backup-code-textarea{
+  background:#0b1421!important;
+  border-color:#354761!important;
+  color:#edf3ff!important;
+}
+html.dark-theme .backup-code-help,
+html.dark-theme .backup-code-status{
+  color:#8c9bb0!important;
+}
+html.dark-theme .sole-reward-close{
+  background:#111b2b!important;
+  border-color:#344660!important;
+  color:#cbd7e8!important;
+}
+html.dark-theme .sole-reward-image{
+  background:#101827!important;
+}
+html.dark-theme .sole-reward-image img{
+  background:#fff!important;
+}
+html.dark-theme .exclude-modal-backdrop{
+  background:rgba(2,5,14,.78)!important;
+}
+html.dark-theme .exclude-modal{
+  background:#101827!important;
+}
+html.dark-theme .exclude-modal-head,
+html.dark-theme .exclude-modal-foot,
+html.dark-theme .exclude-toolbar{
+  background:#141f31!important;
+  border-color:#2d3d58!important;
+}
+html.dark-theme .exclude-toolbar input{
+  background:#0b1421!important;
+  border-color:#354761!important;
+  color:#edf3ff!important;
+}
+html.dark-theme .common-unused-active-filters .common-unused-filter-chip{
+  background:#182539!important;
+  border-color:#344660!important;
+  color:#becbdd!important;
+}
+html.dark-theme .exclude-count{
+  color:#8d9caf!important;
+}
+</style></head><body>
+<div class="site-version-corner">VERSION 0.369</div><div class="sidebar-hitarea" id="sidebarHitarea" aria-label="메뉴 열기" title="왼쪽 메뉴 열기"></div>
 <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
 <div class="app"><aside class="sidebar" id="sidebar"><div class="brand"><div class="logo">N</div><div><h1>NIKKE Gear Manager</h1><p>장비·성장 현황 관리</p></div></div><div class="nav"><button type="button" class="active main-view-nav" data-view="characters" onclick="switchMainView('characters')">캐릭터 관리</button><button type="button" class="main-view-nav" data-view="outpost" onclick="switchMainView('outpost')">전초기지 생산량</button><button type="button" class="main-view-nav" data-view="sole" onclick="switchMainView('sole')">솔레점수기록</button></div><div class="section" style="font-size:11px;color:#6f7b96;line-height:1.6">현재는 캐릭터 관리 기능을 제공합니다.<br>다른 관리 기능은 설정 메뉴에서 사용할 수 있습니다.</div></aside>
 <main class="main"><div class="topbar"><div><div class="eyebrow">NIKKE / INVENTORY</div><h2 id="pageTitle">캐릭터 장비 현황</h2></div><div class="actions account-switcher"><button type="button" class="btn blsync-top-btn" onclick="openBlablalinkSyncGuide()">계정 동기화</button><button type="button" class="btn account-switch-btn active" data-account="계정1" onclick="switchAccount(ACCOUNTS[0])">계정1</button><button type="button" class="btn account-switch-btn" data-account="계정2" onclick="switchAccount(ACCOUNTS[1])">계정2</button><div class="settings-wrap"><button type="button" class="settings-btn" id="settingsBtn" aria-label="설정" title="설정" onclick="toggleSettingsMenu(event)">⚙</button></div></div></div><div class="settings-popover" id="settingsPopover" hidden>
