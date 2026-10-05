@@ -1,4 +1,4 @@
-name: Fix drop rate inner colors v0.326 retry
+name: Apply v0.326 drop-rate color fix
 on:
   push:
     paths:
@@ -29,11 +29,10 @@ jobs:
           s=s.replace('0.325','0.326')
           p.write_text(s,encoding='utf-8')
           PY
-      - name: Commit site and remove workflow
+      - name: Commit site update
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add index.html
-          git rm .github/workflows/fix-drop-rate-colors-v0326.yml
-          git commit -m 'Fix dark controls in acquisition probability (v0.326)'
+          git commit -m 'Apply v0.326 drop-rate color fix'
           git push
