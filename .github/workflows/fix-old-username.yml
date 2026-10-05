@@ -1,0 +1,28 @@
+name: Fix old GitHub username reference
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+
+jobs:
+  fix:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Replace old username
+        run: |
+          if grep -RIl --exclude-dir=.git 'andlschs94-star' . | grep -q '^./index.html$'; then
+            sed -i 's/andlschs94-star/nikkegear885/g' index.html
+            git config user.name 'github-actions[bot]'
+            git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+            git add index.html
+            git commit -m 'Fix GitHub username reference after account rename'
+            git push
+          else
+            echo 'No old username reference found in index.html.'
+          fi
