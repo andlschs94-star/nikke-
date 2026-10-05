@@ -3884,7 +3884,7 @@ html.dark-theme .gear-part.other .part-state {
 }
 </style>
 <style id="v0379-character-column-final">
-/* v0.389: 전체 캐릭터 표의 캐릭터명 가독성 강화 */
+/* v0.390: 전체 캐릭터 표의 캐릭터명 가독성 강화 */
 html.dark-theme #characterPanel tbody td:nth-child(2),
 html.dark-theme #characterPanel tbody td:nth-child(2) *,
 html.dark-theme #characterPanel tbody td:nth-child(2) span,
@@ -3904,7 +3904,7 @@ html.dark-theme #characterPanel tbody tr:nth-child(even) td:nth-child(2) {
   background:#162238!important;
 }
 </style><style id="v0379-character-contrast-final">
-/* v0.389: 전체 캐릭터 표의 캐릭터명 가독성 강화 */
+/* v0.390: 전체 캐릭터 표의 캐릭터명 가독성 강화 */
 html.dark-theme #characterPanel table tbody td:nth-child(2),
 html.dark-mode #characterPanel table tbody td:nth-child(2),
 body.dark-theme #characterPanel table tbody td:nth-child(2),
@@ -4035,8 +4035,34 @@ body.drop-rate-view:not(.dark-theme) .section,
 body.drop-rate-view:not(.dark-theme) .drop-rate-accordion,
 body.drop-rate-view:not(.dark-theme) .drop-rate-panel,
 body.drop-rate-view:not(.dark-theme) .drop-rate-section{background:#dcecf7!important}
+</style><style id="equipment-panel-background-fix-v0390">
+body:not(.dark-theme) .drop-rate-view,
+body:not(.dark-theme) .drop-rate-view #app,
+body:not(.dark-theme) .drop-rate-view .app,
+body:not(.dark-theme) .drop-rate-view .main,
+body:not(.dark-theme) .drop-rate-view main,
+body:not(.dark-theme) .drop-rate-view .content,
+body:not(.dark-theme) .drop-rate-view .section,
+body:not(.dark-theme) .drop-rate-view .panel,
+body:not(.dark-theme) .drop-rate-view .card,
+body:not(.dark-theme) .drop-rate-view .accordion,
+body:not(.dark-theme) .drop-rate-view .accordion-wrap,
+body:not(.dark-theme) .drop-rate-view .equipment-section,
+body:not(.dark-theme) .drop-rate-view .equipment-panel-wrap,
+body:not(.dark-theme) .drop-rate-view .corporate-equipment-section,
+body:not(.dark-theme) .drop-rate-view .corporate-equipment-panel-wrap,
+body:not(.dark-theme) .drop-rate-view .drop-rate-accordion,
+body:not(.dark-theme) .drop-rate-view .drop-rate-panel,
+body:not(.dark-theme) .drop-rate-view .drop-rate-section {
+  background-color:#dcecf7!important;
+}
+body:not(.dark-theme) .drop-rate-view .drop-rate-accordion,
+body:not(.dark-theme) .drop-rate-view .drop-rate-panel,
+body:not(.dark-theme) .drop-rate-view .drop-rate-section {
+  border-color:#a9cde4!important;
+}
 </style></head><body>
-<div class="site-version-corner">VERSION 0.389</div><div class="sidebar-hitarea" id="sidebarHitarea" aria-label="메뉴 열기" title="왼쪽 메뉴 열기"></div>
+<div class="site-version-corner">VERSION 0.390</div><div class="sidebar-hitarea" id="sidebarHitarea" aria-label="메뉴 열기" title="왼쪽 메뉴 열기"></div>
 <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
 <div class="app"><aside class="sidebar" id="sidebar"><div class="brand"><div class="logo">N</div><div><h1>NIKKE Gear Manager</h1><p>장비·성장 현황 관리</p></div></div><div class="nav"><button type="button" class="active main-view-nav" data-view="characters" onclick="switchMainView('characters')">캐릭터 관리</button><button type="button" class="main-view-nav" data-view="outpost" onclick="switchMainView('outpost')">전초기지 생산량</button><button type="button" class="main-view-nav" data-view="sole" onclick="switchMainView('sole')">솔레점수기록</button></div><div class="section" style="font-size:11px;color:#6f7b96;line-height:1.6">현재는 캐릭터 관리 기능을 제공합니다.<br>다른 관리 기능은 설정 메뉴에서 사용할 수 있습니다.</div></aside>
 <main class="main"><div class="topbar"><div><div class="eyebrow">NIKKE / INVENTORY</div><h2 id="pageTitle">캐릭터 장비 현황</h2></div><div class="actions account-switcher"><button type="button" class="btn blsync-top-btn" style="background:#fff1dc!important;border:1px solid #e5a14f!important;color:#a85f16!important;box-shadow:0 2px 8px rgba(214,142,50,.16)!important;font-weight:900!important" onclick="openBlablalinkSyncGuide()">계정 동기화</button><button type="button" class="theme-toggle-btn" id="themeToggleBtn" aria-label="어두운 화면으로 보기" title="어두운 화면으로 보기" onclick="toggleDarkTheme()">☀️</button><button type="button" class="btn account-switch-btn active" data-account="계정1" onclick="switchAccount(ACCOUNTS[0])">계정1</button><button type="button" class="btn account-switch-btn" data-account="계정2" onclick="switchAccount(ACCOUNTS[1])">계정2</button><div class="settings-wrap"><button type="button" class="settings-btn" id="settingsBtn" aria-label="설정" title="설정" onclick="toggleSettingsMenu(event)">⚙</button></div></div></div><div class="settings-popover" id="settingsPopover" hidden>
@@ -6019,7 +6045,7 @@ document.addEventListener('keydown',function(e){if(e.key==='Escape')closeSoleRew
 })();
 </script>
 <script id="sidebar-peek-slide-js-v0383">(()=>{const init=()=>{const sb=document.querySelector('.sidebar');if(!sb||sb.dataset.peekSlideReady)return;sb.dataset.peekSlideReady='1';const tab=document.createElement('button');tab.type='button';tab.className='sidebar-peek-tab';tab.setAttribute('aria-label','메뉴 열기');tab.textContent='›';sb.appendChild(tab);const setOpen=o=>{document.body.classList.toggle('sidebar-open',o);tab.textContent=o?'‹':'›';tab.setAttribute('aria-label',o?'메뉴 닫기':'메뉴 열기')};tab.addEventListener('click',e=>{e.stopPropagation();setOpen(!document.body.classList.contains('sidebar-open'))});document.addEventListener('click',e=>{if(document.body.classList.contains('sidebar-open')&&!sb.contains(e.target))setOpen(false)})};if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init()})();</script><style id="sidebar-final-fix-v0386">
-/* v0.389: sidebar is click-only; never react to mouse movement */
+/* v0.390: sidebar is click-only; never react to mouse movement */
 .sidebar{pointer-events:auto!important;}
 .sidebar:hover{transform:translateX(calc(-100% + 14px))!important;}
 .sidebar.sidebar-open{transform:translateX(0)!important;pointer-events:auto!important;}
