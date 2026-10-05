@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="ko"><head><!-- GitHub Pages deployment refresh 0.316 --><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<html lang="ko"><head><!-- GitHub Pages deployment refresh 0.317 --><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>NIKKE Gear Manager</title>
 <style>
 :root{--bg:#080d19;--panel:#0f1729;--panel2:#111c32;--line:#26324b;--text:#edf2ff;--muted:#8490aa;--accent:#927dff;--good:#47d7c7;--danger:#ff6c86}
@@ -260,8 +260,198 @@ table{min-width:1080px}th,td{padding:10px 10px;border-bottom-color:#1a2640}th{ba
 @media(max-width:1000px){.topbar{padding:22px 20px 14px}.panel{margin-left:20px;margin-right:20px}}
 @media(max-width:650px){.topbar{padding:18px 12px 12px}.topbar h2{font-size:23px}.panel{margin-left:12px;margin-right:12px;border-radius:10px}.panel-head{padding:11px 12px}.quick-filter-bar{padding:7px 9px}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{transition-duration:.01ms!important;animation-duration:.01ms!important;animation-iteration-count:1!important}}
+
+/* v0.317 Dribbble-inspired dashboard UI refresh */
+:root{
+  --bg:#070a12;--panel:#0d1322;--panel2:#111a2d;--panel3:#151f34;
+  --line:#202b42;--line2:#2c3a57;--text:#f3f6ff;--muted:#8793aa;
+  --accent:#9b87ff;--accent2:#6fded0;--danger:#ff708d;--warning:#f3c36b;
+}
+body{
+  background:
+    radial-gradient(900px 520px at 72% -10%,rgba(99,78,190,.16),transparent 58%),
+    radial-gradient(700px 460px at 8% 18%,rgba(45,153,146,.08),transparent 60%),
+    linear-gradient(180deg,#080c15 0%,#070a12 100%);
+}
+.app{gap:0}
+.sidebar{
+  width:248px;padding:22px 14px 18px;
+  border-right:1px solid rgba(50,64,93,.7);
+  background:rgba(7,11,19,.96);
+  box-shadow:18px 0 44px rgba(0,0,0,.22);
+}
+.brand{padding:2px 6px 0;margin-bottom:30px}
+.logo{
+  width:42px;height:42px;border-radius:12px;
+  background:linear-gradient(135deg,#735de8,#aa97ff);
+  box-shadow:0 10px 30px rgba(115,93,232,.25);
+}
+.brand h1{font-size:15px;letter-spacing:-.03em}
+.brand p{font-size:10px;color:#7f8ba4}
+.nav{display:grid;gap:6px}
+.nav button{
+  position:relative;
+  width:100%;margin:0;padding:12px 13px;
+  border:1px solid transparent;border-radius:10px;
+  background:transparent;color:#8f9bb3;text-align:left;
+  font-size:12px;font-weight:800;
+  transition:.18s ease;
+}
+.nav button:hover{
+  background:#10182a;color:#e6ebf7;border-color:#1f2b43;
+  transform:none;
+}
+.nav button.active{
+  background:linear-gradient(90deg,rgba(155,135,255,.18),rgba(155,135,255,.06));
+  border-color:#40386d;color:#fff;
+  box-shadow:inset 3px 0 0 var(--accent),0 8px 24px rgba(0,0,0,.12);
+}
+.nav button.active::after{
+  content:"";position:absolute;right:11px;top:50%;width:5px;height:5px;
+  border-radius:50%;background:var(--accent);
+  box-shadow:0 0 10px rgba(155,135,255,.7);
+  transform:translateY(-50%);
+}
+.sidebar .section{
+  margin-top:24px!important;padding:12px 8px;
+  border-top:1px solid #1b263b;color:#69758d!important;
+}
+.topbar{
+  padding:24px 28px 18px;
+  position:relative;
+}
+.topbar::after{
+  content:"";position:absolute;left:28px;right:28px;bottom:0;height:1px;
+  background:linear-gradient(90deg,transparent,#26344e 14%,#26344e 86%,transparent);
+}
+.eyebrow{font-size:9px;color:#7f8ca7;font-weight:900;letter-spacing:.18em}
+.topbar h2{font-size:29px;line-height:1.08;margin:6px 0 0;letter-spacing:-.05em}
+.actions{gap:6px}
+.actions .btn,.manage-btn,.detail-column-btn,.unused-view-btn,.unowned-view-btn,.common-unused-btn{
+  border-radius:8px!important;padding:9px 11px!important;
+  border-color:#283651!important;background:#0d1423!important;
+  color:#b9c4d8!important;font-size:10.5px!important;
+}
+.actions .btn:hover,.manage-btn:hover,.detail-column-btn:hover,.unused-view-btn:hover,.unowned-view-btn:hover,.common-unused-btn:hover{
+  border-color:#4a5c80!important;background:#121c30!important;color:#fff!important;
+  transform:translateY(-1px);
+}
+.account-switch-btn.active{
+  background:#241f46!important;border-color:#7968db!important;color:#fff!important;
+  box-shadow:inset 0 0 0 1px rgba(172,155,255,.16),0 8px 18px rgba(0,0,0,.14);
+}
+.kpis{gap:12px;padding:0 28px 18px}
+.kpi{
+  background:linear-gradient(180deg,rgba(17,26,45,.9),rgba(11,18,31,.92));
+  border:1px solid #25324b;border-radius:12px;padding:15px 16px;
+  box-shadow:0 10px 28px rgba(0,0,0,.12);
+}
+.kpi .label{font-size:9px;letter-spacing:.05em;text-transform:uppercase;color:#7d8aa4}
+.kpi .value{font-size:24px;letter-spacing:-.04em}
+.panel{
+  margin:0 28px 22px;border-radius:13px;
+  border:1px solid #25324b;background:rgba(10,15,26,.84);
+  box-shadow:0 18px 50px rgba(0,0,0,.16);
+}
+.panel-head{
+  min-height:62px;padding:12px 14px;
+  background:linear-gradient(180deg,rgba(19,29,49,.88),rgba(13,20,34,.75));
+}
+.panel-head-title h3{font-size:15px;letter-spacing:-.03em}
+.panel-head-title small{font-size:9px;color:#77849d}
+.panel-head-left-tools{gap:6px}
+.searchbar input{
+  width:300px!important;
+  height:36px;padding:0 12px!important;
+  border-radius:9px!important;
+  border:1px solid #263650!important;
+  background:#090f1b!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.02);
+}
+.searchbar input:focus{border-color:#6759a9!important;box-shadow:0 0 0 3px rgba(155,135,255,.08)!important}
+.quick-filter-bar{
+  padding:8px 12px;background:#0a101b;border-bottom:1px solid #202d44;
+}
+.quick-filter-group{gap:4px}
+.quick-filter-title{font-size:9px;color:#68758e}
+.quick-filter-btn{
+  padding:6px 9px;font-size:9.5px;border-radius:7px;
+  background:#0c1321;border-color:#24324b;color:#9da9bd;
+}
+.quick-filter-btn.active{
+  background:#201c3a;border-color:#7969db;color:#fff;
+  box-shadow:inset 0 0 0 1px rgba(155,135,255,.13);
+}
+.table-wrap{background:rgba(5,9,17,.2)}
+table{min-width:1080px}
+th,td{padding:9px 9px;font-size:11px}
+th{
+  background:#0e1729;color:#8795ae;
+  border-bottom:1px solid #2a3853;
+  box-shadow:0 1px 0 rgba(255,255,255,.015);
+}
+tbody tr:nth-child(even) td{background:rgba(11,17,29,.24)}
+tbody tr:hover td{background:rgba(155,135,255,.045)!important}
+.name-btn{font-size:11.5px}
+.tag{
+  padding:4px 8px;border-radius:999px;
+  background:#0d1626;border-color:#2a3954;font-size:9px;
+}
+.gear-part{
+  border-color:#273651!important;background:#0b1321!important;
+  border-radius:7px!important;
+}
+.gear-part:hover{border-color:#506487!important;background:#111a2d!important}
+.valid-toggle,.unused-status-toggle{border-radius:7px!important}
+.unused-status-toggle.active{
+  background:#3a1e29!important;border-color:#a95d70!important;color:#ffdce3!important;
+}
+.unused-status-toggle.unowned{
+  background:#382b18!important;border-color:#bd8e45!important;color:#fadea8!important;
+}
+.common-unused-btn{
+  background:linear-gradient(180deg,#211c3a,#17142a)!important;
+  border-color:#574b86!important;color:#d8ceff!important;
+}
+.common-unused-btn::before{content:"";display:inline-block;width:5px;height:5px;border-radius:50%;background:var(--accent);margin-right:6px;vertical-align:1px;box-shadow:0 0 8px rgba(155,135,255,.7)}
+.unused-view-btn.active{
+  background:#351e29!important;border-color:#a95d70!important;color:#ffdce3!important;
+}
+.unowned-view-btn.active{
+  background:#382b18!important;border-color:#bd8e45!important;color:#fadea8!important;
+}
+.column-filter-popover,.settings-popover,.filter-modal-card,.drawer-card,.exclude-modal,.backup-code-card{
+  background:#0e1627;border-color:#33425f;border-radius:12px;
+  box-shadow:0 28px 80px rgba(0,0,0,.58);
+}
+.column-filter-option{background:#0a1220;border-color:#253550}
+.column-filter-option.active{background:#211d3b;border-color:#806fe5}
+.sole-score-card{
+  background:linear-gradient(180deg,rgba(15,23,39,.9),rgba(10,16,28,.88));
+  border-color:#2a3852;
+}
+.outpost-calc,.outpost-production-collapse{
+  background:rgba(10,16,29,.88);border-color:#2b3b57;
+}
+.outpost-calc-head,.outpost-production-toggle{
+  background:linear-gradient(180deg,rgba(18,28,47,.9),rgba(13,21,36,.82));
+}
+@media(max-width:1000px){
+  .sidebar{width:224px}
+  .topbar{padding:20px 20px 16px}.topbar::after{left:20px;right:20px}
+  .kpis{padding-left:20px;padding-right:20px}
+  .panel{margin-left:20px;margin-right:20px}
+}
+@media(max-width:650px){
+  .topbar h2{font-size:23px}
+  .topbar{padding:17px 12px 13px}.topbar::after{left:12px;right:12px}
+  .panel{margin-left:12px;margin-right:12px;border-radius:10px}
+  .kpis{padding-left:12px;padding-right:12px}
+  .panel-head{padding:10px 11px}
+  .searchbar input{width:100%!important}
+}
 </style></head><body>
-<div class="site-version-corner">VERSION 0.316</div><div class="sidebar-hitarea" id="sidebarHitarea" aria-label="메뉴 열기" title="왼쪽 메뉴 열기"></div>
+<div class="site-version-corner">VERSION 0.317</div><div class="sidebar-hitarea" id="sidebarHitarea" aria-label="메뉴 열기" title="왼쪽 메뉴 열기"></div>
 <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
 <div class="app"><aside class="sidebar" id="sidebar"><div class="brand"><div class="logo">N</div><div><h1>NIKKE Gear Manager</h1><p>장비·성장 현황 관리</p></div></div><div class="nav"><button type="button" class="active main-view-nav" data-view="characters" onclick="switchMainView('characters')">캐릭터 관리</button><button type="button" class="main-view-nav" data-view="outpost" onclick="switchMainView('outpost')">전초기지 생산량</button><button type="button" class="main-view-nav" data-view="sole" onclick="switchMainView('sole')">솔레점수기록</button></div><div class="section" style="font-size:11px;color:#6f7b96;line-height:1.6">현재는 캐릭터 관리 기능을 제공합니다.<br>다른 관리 기능은 설정 메뉴에서 사용할 수 있습니다.</div></aside>
 <main class="main"><div class="topbar"><div><div class="eyebrow">NIKKE / INVENTORY</div><h2 id="pageTitle">캐릭터 장비 현황</h2></div><div class="actions account-switcher"><button type="button" class="btn blsync-top-btn" onclick="openBlablalinkSyncGuide()">계정 동기화</button><button type="button" class="btn account-switch-btn active" data-account="계정1" onclick="switchAccount(ACCOUNTS[0])">계정1</button><button type="button" class="btn account-switch-btn" data-account="계정2" onclick="switchAccount(ACCOUNTS[1])">계정2</button><div class="settings-wrap"><button type="button" class="settings-btn" id="settingsBtn" aria-label="설정" title="설정" onclick="toggleSettingsMenu(event)">⚙</button></div></div></div><div class="settings-popover" id="settingsPopover" hidden>
