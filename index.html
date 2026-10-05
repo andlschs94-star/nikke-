@@ -4679,7 +4679,7 @@ function renderDropRatePanel(){
     const days=exp>0?Math.ceil(exp/3):0;
     return '<div class="drop-rate-card"><h4>'+esc(dungeonNames[p]||p)+'</h4>'
       +'<div class="drop-rate-row"><label>파밍 단계</label>'
-      +'<button type="button" class="drop-stage-btn" onclick="openDropStageMenu(\\''+p+'\\',this)">'+stage+'단계 ▾</button></div>'
+      +'<button type="button" class="drop-stage-btn" onclick="openDropStageMenu(\''+p+'\',this)">'+stage+'단계 ▾</button></div>'
       +'<div class="drop-rate-value">'+fmt(n)+'종 · '+fmt(neededCount)+'개 · '+fmt(expectedDays)+'일</div>'
       +'<div class="drop-rate-summary-always">유효장비 '+fmt(n)+'종 · 총 필요 장비 '+fmt(neededCount)+'개 · 종류별 중복 수량과 유효장비 감소를 반영한 모두 획득 예상 일수 <b>'+fmt(expectedDays)+'일</b></div>'
       +'<button type="button" class="drop-rate-details-toggle" onclick="toggleDropRateDetails(this)" aria-expanded="false">상세 내용 보기 ＋</button>'
