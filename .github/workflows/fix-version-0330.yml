@@ -1,0 +1,40 @@
+name: Finalize displayed version v0.330
+
+on:
+  push:
+    paths:
+      - '.github/workflows/fix-version-0330.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set displayed version
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          p = Path('index.html')
+          s = p.read_text(encoding='utf-8')
+          for old in ('VERSION 0.327','VERSION 0.328','VERSION 0.329'):
+              s = s.replace(old, 'VERSION 0.330')
+          s = s.replace('GitHub Pages deployment refresh 0.327', 'GitHub Pages deployment refresh 0.330')
+          p.write_text(s, encoding='utf-8')
+          PY
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html
+          git diff --cached --quiet && exit 0
+          git commit -m "Finalize displayed version v0.330"
+          git push
+      - name: Remove temporary workflow
+        run: |
+          rm -f .github/workflows/fix-version-0330.yml
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add .github/workflows/fix-version-0330.yml
+          git commit -m "Remove temporary version workflow v0.330"
+          git push
