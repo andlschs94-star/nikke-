@@ -4648,6 +4648,10 @@ function toggleOwnedCorporateCompany(company){
 }
 function renderOwnedCorporatePanel(){
   const box=document.getElementById('ownedCorporatePanel');if(!box)return;
+  /* v0.403: 보유 중인 기업장비 개수 패널 제거 */
+  box.hidden=true;
+  box.innerHTML='';
+  return;
   const companies=['엘리시온','미실리스','테트라','필그림','어브노멀'];
   const classes=['화력형','방어형','지원형'];
   const fmt=n=>Number(n).toLocaleString('ko-KR');
