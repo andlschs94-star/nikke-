@@ -1,0 +1,49 @@
+name: Darken character status colors 0.339
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - '.github/workflows/darken-status-colors-0339.yml'
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - name: Apply darker status colors
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re
+
+          p = Path('index.html')
+          s = p.read_text(encoding='utf-8')
+          marker = '/* 0.339 darker character status colors */'
+          css = '''<style id="status-colors-0339">
+          /* 0.339 darker character status colors */
+          .gear-part.overload{background:#ded0ff!important;border-color:#a98ee8!important}
+          .gear-part.company{background:#c9ecd9!important;border-color:#76bd98!important}
+          .gear-part.other{background:#ffd1d8!important;border-color:#df8e9d!important}
+          .valid-toggle.active{background:#bfe6de!important;border-color:#68aea4!important;color:#236e66!important}
+          .unused-status-toggle.active{background:#ffcbd5!important;border-color:#d98296!important;color:#a53f58!important}
+          .unused-status-toggle.unowned{background:#ffe2ad!important;border-color:#d1a052!important;color:#8a621d!important}
+          </style>'''
+          s = re.sub(r'<style id="status-colors-0339">.*?</style>', '', s, flags=re.S)
+          if marker not in s:
+              s = s.replace('</head>', css + '\n</head>', 1)
+          else:
+              s = s.replace(marker, marker)
+          s = re.sub(r'VERSION 0\.\d+', 'VERSION 0.339', s, count=1)
+          p.write_text(s, encoding='utf-8')
+
+          v = Path('VERSION')
+          v.write_text('0.339\n', encoding='utf-8')
+          PY
+      - name: Commit changes
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add index.html VERSION
+          git diff --cached --quiet || git commit -m 'Darken character status colors and bump version to 0.339'
+          git push
