@@ -6,7 +6,7 @@
    * Cloudflare Worker 배포 후 아래 URL을 실제 Worker 주소로 바꿔 주세요.
    * 예: https://nikke-profile-verify.<사용자계정>.workers.dev
    */
-  const PROFILE_VERIFY_API = 'https://YOUR-WORKER-URL.workers.dev';
+  const PROFILE_VERIFY_API = 'https://nikke-profile-verify.nikke-profile-verify.workers.dev';
 
   const STORAGE_KEY = 'nikke_gm_blablalink_profile_verification';
 
