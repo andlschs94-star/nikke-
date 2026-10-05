@@ -124,6 +124,273 @@ async function getProfile(profileUrl, intlOpenId){
   };
 }
 
+const NIKKE_CHARACTERS_API = 'https://api.blablalink.com/api/game/proxy/Game/GetUserCharacters';
+const NIKKE_DETAILS_API = 'https://api.blablalink.com/api/game/proxy/Game/GetUserCharacterDetails';
+const NIKKE_AREAS = Object.freeze([81, 82, 83, 84, 85]);
+const NIKKE_DETAIL_BATCH_SIZE = 40;
+const BLABLALINK_INVALID_TOKEN_CODE = 300001;
+
+function getServiceSession(env){
+  const gameToken = String(env?.BLABLALINK_GAME_TOKEN || '').trim();
+  const gameOpenId = String(env?.BLABLALINK_GAME_OPENID || '').trim();
+  const serviceIntlOpenId = String(env?.BLABLALINK_SERVICE_INTL_OPENID || '').trim();
+
+  if(!gameToken || !gameOpenId || !serviceIntlOpenId){
+    const missing = [];
+    if(!gameToken) missing.push('BLABLALINK_GAME_TOKEN');
+    if(!gameOpenId) missing.push('BLABLALINK_GAME_OPENID');
+    if(!serviceIntlOpenId) missing.push('BLABLALINK_SERVICE_INTL_OPENID');
+    const err = new Error('서비스용 BlaBlaLink Secret이 부족합니다: ' + missing.join(', '));
+    err.sync_type = 'service_secret_missing';
+    err.status = 503;
+    throw err;
+  }
+
+  return {gameToken, gameOpenId, serviceIntlOpenId};
+}
+
+function makeGameCommonParams(){
+  return JSON.stringify({
+    game_id:'16',
+    area_id:'global',
+    source:'pc_web',
+    intl_game_id:'29080',
+    language:'ko',
+    env:'prod',
+    data_statistics_scene:'outer',
+    data_statistics_page_id:'https://www.blablalink.com/shiftyspad/nikke',
+    data_statistics_client_type:'pc_web',
+    data_statistics_lang:'ko'
+  });
+}
+
+function makeGameHeaders(session){
+  return {
+    'Content-Type':'application/json',
+    'Accept':'application/json, text/plain, */*',
+    'User-Agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/154.0.0.0 Safari/537.36',
+    'Origin':'https://www.blablalink.com',
+    'Referer':'https://www.blablalink.com/',
+    'x-channel-type':'2',
+    'x-language':'ko',
+    'x-common-params':makeGameCommonParams(),
+    'Cookie':[
+      'game_token=' + session.gameToken,
+      'game_openid=' + session.gameOpenId,
+      'game_gameid=29080',
+      'game_channelid=131'
+    ].join('; ')
+  };
+}
+
+async function callNikkeGameApi(api, body, session){
+  let upstream;
+  try{
+    upstream = await fetch(api, {
+      method:'POST',
+      headers:makeGameHeaders(session),
+      body:JSON.stringify(body),
+      redirect:'manual'
+    });
+  }catch(e){
+    const err = new Error('BlaBlaLink NIKKE API에 연결하지 못했습니다.');
+    err.sync_type = 'upstream_network_error';
+    err.status = 502;
+    err.cause_message = String(e?.message || '');
+    throw err;
+  }
+
+  let data = {};
+  try{
+    data = await upstream.json();
+  }catch(e){
+    const err = new Error('BlaBlaLink NIKKE API 응답을 읽지 못했습니다.');
+    err.sync_type = 'upstream_invalid_response';
+    err.status = 502;
+    err.http_status = upstream.status;
+    throw err;
+  }
+
+  return {
+    http_status: upstream.status,
+    code: Number(data?.code),
+    msg: String(data?.msg || ''),
+    data:data?.data || {}
+  };
+}
+
+function extractIntlOpenId(decodedOpenId){
+  const value = String(decodedOpenId || '').trim();
+  const m = value.match(/^29080-(\\d+)$/);
+  if(!m){
+    const err = new Error('프로필 URL의 openid가 NIKKE 글로벌 게임 계정 형식이 아닙니다.');
+    err.sync_type = 'invalid_intl_openid';
+    err.status = 400;
+    throw err;
+  }
+  return m[1];
+}
+
+async function syncPublicNikkeProfile(profileUrl, env){
+  const decoded = decodeOpenIdFromProfileUrl(profileUrl);
+  const intlOpenId = extractIntlOpenId(decoded);
+
+  // 기존 공개 프로필 조회 기능을 그대로 사용해 프로필 자체가 정상인지 먼저 확인한다.
+  await getProfile(profileUrl, decoded);
+
+  const session = getServiceSession(env);
+
+  const areasChecked = [];
+  const candidates = [];
+
+  for(const areaId of NIKKE_AREAS){
+    const result = await callNikkeGameApi(
+      NIKKE_CHARACTERS_API,
+      {
+        intl_open_id:intlOpenId,
+        nikke_area_id:areaId
+      },
+      session
+    );
+
+    areasChecked.push({
+      area_id:areaId,
+      http_status:result.http_status,
+      code:Number.isFinite(result.code) ? result.code : null,
+      msg:result.msg
+    });
+
+    if(result.code === BLABLALINK_INVALID_TOKEN_CODE){
+      const err = new Error('서비스용 BlaBlaLink 세션이 만료되었거나 유효하지 않습니다.');
+      err.sync_type = 'service_session_expired';
+      err.status = 503;
+      err.area_id = areaId;
+      err.areas_checked = areasChecked;
+      throw err;
+    }
+
+    if(result.code !== 0){
+      continue;
+    }
+
+    const characters = Array.isArray(result.data?.characters)
+      ? result.data.characters
+      : null;
+
+    if(characters === null){
+      const err = new Error('GetUserCharacters 응답에 data.characters가 없습니다.');
+      err.sync_type = 'characters_shape_error';
+      err.status = 502;
+      err.area_id = areaId;
+      err.areas_checked = areasChecked;
+      throw err;
+    }
+
+    if(characters.length > 0){
+      candidates.push({
+        area_id:areaId,
+        characters
+      });
+    }
+  }
+
+  if(candidates.length === 0){
+    const err = new Error('공개 NIKKE 로스터를 조회할 수 있는 지역을 찾지 못했습니다.');
+    err.sync_type = 'no_public_roster';
+    err.status = 404;
+    err.areas_checked = areasChecked;
+    throw err;
+  }
+
+  if(candidates.length > 1){
+    const err = new Error('여러 NIKKE 지역에서 로스터가 확인되어 임의로 지역을 선택하지 않았습니다.');
+    err.sync_type = 'multiple_rosters';
+    err.status = 409;
+    err.areas_checked = areasChecked;
+    err.candidates = candidates.map(item => ({
+      area_id:item.area_id,
+      character_count:item.characters.length
+    }));
+    throw err;
+  }
+
+  const selected = candidates[0];
+  const nameCodes = selected.characters
+    .map(item => item?.name_code)
+    .filter(value => value !== undefined && value !== null && String(value).trim() !== '')
+    .map(value => Number(value))
+    .filter(value => Number.isFinite(value));
+
+  if(nameCodes.length !== selected.characters.length){
+    const err = new Error('GetUserCharacters 응답에서 일부 name_code를 찾지 못했습니다.');
+    err.sync_type = 'invalid_character_data';
+    err.status = 502;
+    err.area_id = selected.area_id;
+    err.character_count = selected.characters.length;
+    err.name_code_count = nameCodes.length;
+    throw err;
+  }
+
+  let detailCount = 0;
+
+  for(let i=0;i<nameCodes.length;i+=NIKKE_DETAIL_BATCH_SIZE){
+    const batch = nameCodes.slice(i, i + NIKKE_DETAIL_BATCH_SIZE);
+    const result = await callNikkeGameApi(
+      NIKKE_DETAILS_API,
+      {
+        intl_open_id:intlOpenId,
+        nikke_area_id:selected.area_id,
+        name_codes:batch
+      },
+      session
+    );
+
+    if(result.code === BLABLALINK_INVALID_TOKEN_CODE){
+      const err = new Error('서비스용 BlaBlaLink 세션이 조회 중 만료되었습니다.');
+      err.sync_type = 'service_session_expired';
+      err.status = 503;
+      err.area_id = selected.area_id;
+      throw err;
+    }
+
+    if(result.code !== 0){
+      const err = new Error(
+        result.msg || ('GetUserCharacterDetails 조회 실패 (code ' + result.code + ')')
+      );
+      err.sync_type = 'details_api_error';
+      err.status = 502;
+      err.area_id = selected.area_id;
+      err.code = Number.isFinite(result.code) ? result.code : null;
+      err.batch_start = i;
+      err.batch_size = batch.length;
+      throw err;
+    }
+
+    const details = Array.isArray(result.data?.character_details)
+      ? result.data.character_details
+      : null;
+
+    if(details === null){
+      const err = new Error('GetUserCharacterDetails 응답에 data.character_details가 없습니다.');
+      err.sync_type = 'details_shape_error';
+      err.status = 502;
+      err.area_id = selected.area_id;
+      err.batch_start = i;
+      throw err;
+    }
+
+    detailCount += details.length;
+  }
+
+  return {
+    ok:true,
+    intl_open_id:intlOpenId,
+    area_id:selected.area_id,
+    character_count:selected.characters.length,
+    detail_count:detailCount
+  };
+}
+
 function randomCode(){
   const alphabet = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
   const bytes = crypto.getRandomValues(new Uint8Array(6));
@@ -220,6 +487,44 @@ export default {
             profile_url:profileUrl
           }
         });
+      }
+
+      if(action === '/sync'){
+        const profileUrl = String(body?.profile_url || '').trim();
+        if(!profileUrl){
+          return json({
+            ok:false,
+            sync_type:'missing_profile_url',
+            message:'profile_url이 필요합니다.'
+          }, 400);
+        }
+
+        try{
+          const result = await syncPublicNikkeProfile(profileUrl, env);
+          return json(result, 200);
+        }catch(e){
+          const payload = {
+            ok:false,
+            sync_type:String(e?.sync_type || 'sync_error'),
+            message:String(e?.message || '공개 NIKKE 조회 중 오류가 발생했습니다.')
+          };
+
+          for(const key of [
+            'area_id',
+            'code',
+            'http_status',
+            'character_count',
+            'name_code_count',
+            'batch_start',
+            'batch_size',
+            'areas_checked',
+            'candidates'
+          ]){
+            if(e?.[key] !== undefined) payload[key] = e[key];
+          }
+
+          return json(payload, Number.isInteger(e?.status) ? e.status : 400);
+        }
       }
 
       if(action === '/verify'){
