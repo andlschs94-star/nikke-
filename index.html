@@ -4486,10 +4486,9 @@ function startBlablalinkSync(targetAccount){
   setTimeout(()=>{if(blSyncTimer){clearInterval(blSyncTimer);blSyncTimer=null}},120000);
 }
 function applyBlablalinkSyncPayload(p,targetAccount){
-  const p=d.payload||{};
   if(!p.ok){setBlSyncStatus('동기화 실패: '+String(p.error||'알 수 없는 오류'));return}
   // 동기화를 시작한 계정에만 결과를 적용합니다.
-  const syncAccount=ACCOUNTS.includes(blSyncAccount)?blSyncAccount:activeAccount;
+  const syncAccount=ACCOUNTS.includes(targetAccount)?targetAccount:activeAccount;
   // 동기화 시작 시점의 수동 "미사용"과 "미보유" 상태를 각각 고정합니다.
   // 동기화 과정에서 계정/데이터가 바뀌어도 사용자가 직접 체크한 미사용 상태는 유지합니다.
   const preservedUnusedNames=new Set(
