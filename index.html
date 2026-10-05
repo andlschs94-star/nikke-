@@ -2143,7 +2143,7 @@ body.drop-rate-view #kpis{
 #commonUnusedModal .exclude-list{max-height:52vh}
 </style>
 </head><body>
-<div class="site-version-corner">VERSION 0.352</div><div class="sidebar-hitarea" id="sidebarHitarea" aria-label="메뉴 열기" title="왼쪽 메뉴 열기"></div>
+<div class="site-version-corner">VERSION 0.353</div><div class="sidebar-hitarea" id="sidebarHitarea" aria-label="메뉴 열기" title="왼쪽 메뉴 열기"></div>
 <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
 <div class="app"><aside class="sidebar" id="sidebar"><div class="brand"><div class="logo">N</div><div><h1>NIKKE Gear Manager</h1><p>장비·성장 현황 관리</p></div></div><div class="nav"><button type="button" class="active main-view-nav" data-view="characters" onclick="switchMainView('characters')">캐릭터 관리</button><button type="button" class="main-view-nav" data-view="outpost" onclick="switchMainView('outpost')">전초기지 생산량</button><button type="button" class="main-view-nav" data-view="sole" onclick="switchMainView('sole')">솔레점수기록</button></div><div class="section" style="font-size:11px;color:#6f7b96;line-height:1.6">현재는 캐릭터 관리 기능을 제공합니다.<br>다른 관리 기능은 설정 메뉴에서 사용할 수 있습니다.</div></aside>
 <main class="main"><div class="topbar"><div><div class="eyebrow">NIKKE / INVENTORY</div><h2 id="pageTitle">캐릭터 장비 현황</h2></div><div class="actions account-switcher"><button type="button" class="btn blsync-top-btn" onclick="openBlablalinkSyncGuide()">계정 동기화</button><button type="button" class="btn account-switch-btn active" data-account="계정1" onclick="switchAccount(ACCOUNTS[0])">계정1</button><button type="button" class="btn account-switch-btn" data-account="계정2" onclick="switchAccount(ACCOUNTS[1])">계정2</button><div class="settings-wrap"><button type="button" class="settings-btn" id="settingsBtn" aria-label="설정" title="설정" onclick="toggleSettingsMenu(event)">⚙</button></div></div></div><div class="settings-popover" id="settingsPopover" hidden>
@@ -3109,9 +3109,8 @@ function toggleCommonUnusedModalFilter(key,value){
 }
 function getCommonUnusedVisibleCandidates(){
   const q=String(document.getElementById('commonUnusedSearch')?.value||'').trim().toLowerCase();
-  const presetSet=new Set(COMMON_UNUSED_PRESET.map(x=>String(x).trim()).filter(Boolean));
   return RAW.map((r,i)=>({r,i,name:characterName(i,r)})).filter(x=>{
-    if(!x.name||!presetSet.has(x.name))return false;
+    if(!x.name)return false;
     if(q&&!x.name.toLowerCase().includes(q))return false;
     if(commonUnusedModalFilters.valid&&!selectedCharacters.has(x.i))return false;
     const company=canonicalCharacterCompany(x.r);
@@ -3135,9 +3134,9 @@ function updateCommonUnusedFilterButtons(){
 function openCommonUnusedModal(){
   const modal=document.getElementById('commonUnusedModal');
   if(!modal)return;
-  const presetNames=new Set(COMMON_UNUSED_PRESET.map(x=>String(x).trim()).filter(Boolean));
+  const allNames=new Set(RAW.map((r,i)=>characterName(i,r)).filter(Boolean));
   const current=new Set(loadAccountUnused(activeAccount));
-  commonUnusedSelection=new Set([...presetNames].filter(n=>current.has(n)));
+  commonUnusedSelection=new Set([...allNames].filter(n=>current.has(n)));
   commonUnusedModalFilters={valid:false,company:new Set(),class:new Set()};
   const search=document.getElementById('commonUnusedSearch');
   if(search)search.value='';
@@ -3159,10 +3158,9 @@ function renderCommonUnusedList(){
     const checked=commonUnusedSelection.has(name)?' checked':'';
     return '<label class="exclude-item"><input type="checkbox"'+checked+' onchange="toggleCommonUnusedSelection('+JSON.stringify(name)+',this.checked)"><span>'+esc(name)+'</span></label>';
   }).join('');
-  const total=new Set(COMMON_UNUSED_PRESET.map(x=>String(x).trim()).filter(Boolean));
-  const targetCount=[...total].filter(n=>RAW.some(r=>String(r?.['이름']??'').trim()===n)).length;
+  const total=new Set(RAW.map((r,i)=>characterName(i,r)).filter(Boolean));
   const selected=[...commonUnusedSelection].filter(n=>total.has(n)).length;
-  if(count)count.textContent='선택 '+selected+'명 · 현재 표시 '+candidates.length+'명 · 대상 목록 '+targetCount+'명';
+  if(count)count.textContent='선택 '+selected+'명 · 현재 표시 '+candidates.length+'명 · 전체 캐릭터 '+total.size+'명';
   updateCommonUnusedFilterButtons();
 }
 function toggleCommonUnusedSelection(name,checked){
@@ -3174,9 +3172,7 @@ function setVisibleCommonUnused(checked){
   renderCommonUnusedList();
 }
 function applySelectedCommonUnusedCharacters(){
-  const presetNames=new Set(COMMON_UNUSED_PRESET.map(x=>String(x).trim()).filter(Boolean));
-  const rawNames=new Set(RAW.map(r=>String(r?.['이름']??'').trim()).filter(Boolean));
-  const applicable=new Set([...presetNames].filter(n=>rawNames.has(n)));
+  const applicable=new Set(RAW.map((r,i)=>characterName(i,r)).filter(Boolean));
   const selected=new Set([...commonUnusedSelection].filter(n=>applicable.has(n)));
   const nextUnused=new Set(loadAccountUnused(activeAccount));
   const nextUnowned=new Set(loadAccountUnowned(activeAccount));
