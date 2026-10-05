@@ -221,7 +221,7 @@ async function callNikkeGameApi(api, body, session){
 
 function extractIntlOpenId(decodedOpenId){
   const value = String(decodedOpenId || '').trim();
-  const m = value.match(/^(\\d+)-(\\d+)$/);
+  const m = value.match(/^(\d+)-(\d+)$/);
   if(!m){
     const err = new Error('프로필 URL의 openid 형식을 해석하지 못했습니다.');
     err.sync_type = 'invalid_intl_openid';
