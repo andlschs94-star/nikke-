@@ -1,0 +1,58 @@
+name: Fix sidebar hover behavior
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+
+jobs:
+  fix:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Fix sidebar so mouse movement does not open or move it
+        shell: python
+        run: |
+          from pathlib import Path
+          import re
+
+          p = Path('index.html')
+          s = p.read_text(encoding='utf-8')
+
+          css = '''<style id="sidebar-click-only-fix">
+          /* Sidebar must open only by clicking the visible tab; mouse movement/hover must never move it. */
+          .sidebar{pointer-events:none!important;transform:translateX(calc(-100% + 14px))!important;transition:transform .28s ease,box-shadow .28s ease!important}
+          .sidebar:hover{transform:translateX(calc(-100% + 14px))!important}
+          .sidebar .sidebar-peek-tab{pointer-events:auto!important}
+          body.sidebar-open .sidebar{pointer-events:auto!important;transform:translateX(0)!important}
+          body.sidebar-open .sidebar:hover{transform:translateX(0)!important}
+          body.sidebar-open .sidebar .sidebar-peek-tab{pointer-events:auto!important}
+          </style>'''
+          if 'sidebar-click-only-fix' not in s:
+              s = s.replace('</head>', css + '</head>', 1)
+
+          # Increase the site version by exactly 0.001.
+          vp = Path('VERSION')
+          old = vp.read_text(encoding='utf-8').strip()
+          m = re.fullmatch(r'(\d+)\.(\d+)', old)
+          if not m:
+              raise SystemExit(f'Invalid VERSION: {old}')
+          new = f'{m.group(1)}.{int(m.group(2))+1:03d}'
+          s = re.sub(r'(?<!\d)0\.\d{3}(?!\d)(?=</)', new, s)
+          vp.write_text(new + '\n', encoding='utf-8')
+          p.write_text(s, encoding='utf-8')
+          print(f'VERSION {old} -> {new}')
+
+      - name: Commit and remove temporary workflow
+        shell: bash
+        run: |
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add index.html VERSION
+          git commit -m "Fix sidebar click-only behavior"
+          git rm .github/workflows/fix-sidebar-hover.yml
+          git commit -m "Remove temporary sidebar fix workflow"
+          git push
