@@ -1,0 +1,35 @@
+name: Remove profile import tooltip
+on:
+  push:
+    branches: [main]
+jobs:
+  patch:
+    if: github.actor != 'github-actions[bot]' && !contains(github.event.head_commit.message, 'Remove profile import tooltip')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - name: Patch index
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          p=Path('index.html')
+          s=p.read_text(encoding='utf-8')
+          marker='<!-- PROFILE_IMPORT_TOOLTIP_FIX_V1 -->'
+          if marker not in s:
+              patch='''<style id="profile-import-tooltip-fix">.profile-import-tooltip,.profile-import-title-tooltip{display:none!important}</style>'''
+              script='''<script id="profile-import-tooltip-fix-script">(()=>{function fix(){const b=document.getElementById('profileImportBtn');if(b){b.removeAttribute('title');b.removeAttribute('data-title');b.removeAttribute('data-tooltip');b.setAttribute('aria-label','프로필 불러오기')}document.querySelectorAll('[title="BlaBlaLink 프로필 불러오기"],[data-tooltip="BlaBlaLink 프로필 불러오기"]').forEach(e=>e.removeAttribute('title'))}if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',fix);else fix();new MutationObserver(fix).observe(document.documentElement,{subtree:true,childList:true,attributes:true,attributeFilter:['title','data-tooltip']})})();</script>'''
+              s=s.replace('</head>',patch+marker+'</head>',1)
+              s=s.replace('</body>',script+'</body>',1)
+              p.write_text(s,encoding='utf-8')
+          PY
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add index.html
+          git diff --cached --quiet || git commit -m 'Remove profile import tooltip'
+          git push
+          rm -f .github/workflows/remove-profile-tooltip.yml
+          git add -u .github/workflows/remove-profile-tooltip.yml || true
+          git commit -m 'Remove temporary tooltip workflow' || true
+          git push || true
