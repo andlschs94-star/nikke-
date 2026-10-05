@@ -1,53 +1,54 @@
 name: Fix sidebar white screen
 on:
   push:
-    branches: [main]
+    branches:
+      - main
 permissions:
   contents: write
 jobs:
   fix:
-    if: github.actor != 'github-actions[bot]'
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - name: Patch index and version
-        shell: python
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Patch sidebar and version
         run: |
+          python - <<'PY'
           from pathlib import Path
           import re
           p = Path('index.html')
           s = p.read_text(encoding='utf-8')
-          patch = r'''<style id="sidebar-white-screen-fix-v0387">
-/* v0.387: sidebar floats over the existing page; no page-covering backdrop */
-html,body{background:var(--bg)!important;color:var(--text)!important}
-.app{background:var(--bg)!important;min-height:100vh!important}
+          marker = 'sidebar-white-screen-fix-v0387'
+          patch = '''<style id="sidebar-white-screen-fix-v0387">
+/* Sidebar floats over the existing page. Never hide, whiten, or dim the page behind it. */
+.sidebar{z-index:99999!important;position:fixed!important;top:0!important;left:0!important;height:100vh!important}
+.sidebar.open{transform:translateX(0)!important;pointer-events:auto!important}
+.sidebar-backdrop,[class*="sidebar-backdrop"]{display:none!important;visibility:hidden!important;opacity:0!important;pointer-events:none!important;background:transparent!important}
 .main{display:block!important;visibility:visible!important;opacity:1!important;filter:none!important;min-height:100vh!important;background:var(--bg)!important}
-.sidebar-backdrop{display:none!important;visibility:hidden!important;opacity:0!important;pointer-events:none!important;background:transparent!important}
-.sidebar{z-index:9999!important}
-.sidebar.open,.sidebar.open:hover,body.sidebar-open .sidebar,body.sidebar-open .sidebar:hover{z-index:9999!important;pointer-events:auto!important;transform:translateX(0)!important}
+.app{min-height:100vh!important;background:var(--bg)!important}
+body{background:radial-gradient(circle at 20% 0,#182240 0,#0a0f1d 42%,#070b14 100%)!important}
 </style>
 <script id="sidebar-white-screen-fix-js-v0387">
 (function(){
-  function removeBackdrop(){
-    document.querySelectorAll('.sidebar-backdrop').forEach(function(el){el.remove();});
-    var main=document.querySelector('.main');
-    if(main){main.style.display='block';main.style.visibility='visible';main.style.opacity='1';main.style.filter='none';}
+  function fix(){
+    document.querySelectorAll('.sidebar-backdrop,[class*="sidebar-backdrop"]').forEach(function(e){e.remove();});
+    var m=document.querySelector('.main');
+    if(m){m.style.display='block';m.style.visibility='visible';m.style.opacity='1';m.style.filter='none';}
   }
-  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',removeBackdrop);
-  else removeBackdrop();
-  new MutationObserver(removeBackdrop).observe(document.documentElement,{childList:true,subtree:true});
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',fix); else fix();
 })();
 </script>'''
-          if 'sidebar-white-screen-fix-v0387' not in s:
-            s = s.replace('</head>', patch + '</head>', 1)
-          s = re.sub(r'(?<![0-9])0\.386(?![0-9])', '0.387', s)
+          if marker not in s:
+              s = s.replace('</head>', patch + '</head>', 1)
+          s = re.sub(r'(?<![0-9])0\\.386(?![0-9])', '0.387', s)
           p.write_text(s, encoding='utf-8')
           Path('VERSION').write_text('0.387\n', encoding='utf-8')
-      - name: Commit patched site
-        shell: bash
+          PY
+      - name: Commit site change
         run: |
           git config user.name github-actions[bot]
           git config user.email 41898282+github-actions[bot]@users.noreply.github.com
           git add index.html VERSION
-          git commit -m "Fix sidebar white screen and bump version to 0.387"
+          git diff --cached --quiet && exit 0
+          git commit -m "fix: sidebar overlay without white page and bump to 0.387"
           git push
