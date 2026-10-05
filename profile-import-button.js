@@ -113,7 +113,7 @@
     const sync = [...document.querySelectorAll('button,.btn')].find(el =>
       text(el.textContent).replace(/\s/g,'').includes('계정동기화')
     );
-    if(!sync) return;
+    if(!sync) return false;
 
     const btn = document.createElement('button');
     btn.id = 'profileImportBtn';
@@ -326,11 +326,14 @@
       btn.classList.add('profile-verified');
       btn.textContent = '프로필 인증 ✓';
     }
+    return true;
   }
 
-  if(document.readyState === 'loading'){
-    document.addEventListener('DOMContentLoaded', init, {once:true});
-  }else{
-    init();
+  function start(){
+    if(init()) return;
+    const observer=new MutationObserver(()=>{if(init()){observer.disconnect();}});
+    observer.observe(document.documentElement,{subtree:true,childList:true});
   }
+  if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start, {once:true});
+  else start();
 })();
