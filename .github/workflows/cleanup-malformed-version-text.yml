@@ -21,7 +21,6 @@ jobs:
           p = Path('index.html')
           s = p.read_text(encoding='utf-8')
 
-          # Remove the accidentally visible patch/comment text near the version label.
           s = re.sub(r'/\*+\s*\*/?\s*', '', s)
           s = re.sub(r'\*/+\s*', '', s)
           s = s.replace(r'\n', '')
@@ -29,19 +28,15 @@ jobs:
           s = re.sub(r'0\.327', '0.331', s)
           s = re.sub(r'v0\.330', 'v0.331', s)
           s = re.sub(r'0\.330', '0.331', s)
-
-          # Remove the temporary DOM cleaner if a previous repair inserted it.
           s = re.sub(r'<script>\s*\(function\(\)\{\s*function clean\(node\).*?</script>\s*', '', s, flags=re.S)
-
           p.write_text(s, encoding='utf-8')
 
-          # Remove the temporary repair workflows so they cannot rewrite the site again.
           for wf in [
               '.github/workflows/cleanup-malformed-version-text.yml',
               '.github/workflows/repair-site-version.yml',
           ]:
               q = Path(wf)
-              if q.exists() and q.name != Path(__file__).name:
+              if q.exists():
                   q.unlink()
       - name: Commit final repair
         run: |
