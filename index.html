@@ -6374,6 +6374,12 @@ html.dark-theme #outpostPanel .outpost-final-stage-btn{
   padding:9px 18px!important;
   font-size:16px!important;
 }
+</style><style id="outpost-stage-width-v0430">
+/* v0.430: 클리어한 스테이지 선택칸 좌우 비율 조정 */
+/* 기존 1 : 0.55 비율에서 왼쪽을 30% 줄이고, 남는 폭을 오른쪽에 배분 */
+#outpostPanel .outpost-stage-pick{
+  grid-template-columns:minmax(0,.7fr) 12px minmax(74px,.85fr)!important;
+}
 </style></body></html>
 <style id="common-unused-power-sort-0356">
 /* v0.356: 미사용 일괄적용 창 바깥 클릭으로 닫기 지원 */
