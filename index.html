@@ -6380,6 +6380,47 @@ html.dark-theme #outpostPanel .outpost-final-stage-btn{
 #outpostPanel .outpost-stage-pick{
   grid-template-columns:minmax(0,.7fr) 12px minmax(74px,.85fr)!important;
 }
+</style><style id="sole-score-fit-v0431">
+/* v0.431: 솔로 레이드 점수 기록 표를 가로 스크롤 없이 전체 표시 */
+#soleScorePanel .sole-score-table{
+  width:100%!important;
+  min-width:0!important;
+  table-layout:fixed!important;
+}
+#soleScorePanel .sole-score-table th,
+#soleScorePanel .sole-score-table td{
+  padding:4px 4px!important;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+#soleScorePanel .sole-score-table th:nth-child(1),
+#soleScorePanel .sole-score-table td:nth-child(1){width:10%}
+#soleScorePanel .sole-score-table th:nth-child(2),
+#soleScorePanel .sole-score-table td:nth-child(2){width:13%}
+#soleScorePanel .sole-score-table th:nth-child(3),
+#soleScorePanel .sole-score-table td:nth-child(3){width:19%}
+#soleScorePanel .sole-score-table th:nth-child(4),
+#soleScorePanel .sole-score-table td:nth-child(4){width:12%}
+#soleScorePanel .sole-score-table th:nth-child(5),
+#soleScorePanel .sole-score-table td:nth-child(5){width:12%}
+#soleScorePanel .sole-score-table th:nth-child(6),
+#soleScorePanel .sole-score-table td:nth-child(6){width:13%}
+#soleScorePanel .sole-score-table th:nth-child(7),
+#soleScorePanel .sole-score-table td:nth-child(7){width:13%}
+#soleScorePanel .sole-score-table th:nth-child(8),
+#soleScorePanel .sole-score-table td:nth-child(8){width:8%}
+#soleScorePanel .sole-score-table th:nth-child(8):last-child,
+#soleScorePanel .sole-score-table td:nth-child(8):last-child{text-align:center}
+#soleScorePanel .sole-score-edit{
+  min-width:0!important;
+  max-width:none!important;
+  width:100%!important;
+  padding:3px 2px!important;
+  font-size:10px!important;
+}
+#soleScorePanel .sole-score-table-wrap{
+  overflow-x:hidden!important;
+}
 </style></body></html>
 <style id="common-unused-power-sort-0356">
 /* v0.356: 미사용 일괄적용 창 바깥 클릭으로 닫기 지원 */
