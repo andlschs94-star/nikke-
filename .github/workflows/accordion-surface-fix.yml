@@ -1,0 +1,75 @@
+name: Accordion surface cleanup
+on:
+  push:
+    branches: [main]
+permissions:
+  contents: write
+jobs:
+  fix:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Fix light-mode accordion wrapper surfaces and bump version
+        shell: python
+        run: |
+          from pathlib import Path
+          import re
+          p=Path('index.html')
+          s=p.read_text(encoding='utf-8')
+          marker='accordion-surface-cleanup-v0398'
+          if marker not in s:
+            patch=r'''<style id="accordion-surface-cleanup-v0398">
+/* v0.398: keep only the accordion itself colored; remove stray wrapper bands */
+html:not(.dark-theme) body #kpis,
+html:not(.dark-theme) body .drop-rate-accordion-wrap,
+html:not(.dark-theme) body .drop-rate-section-wrap{background:transparent!important;border-color:transparent!important;box-shadow:none!important}
+html.dark-theme body #kpis,
+html.dark-theme body .drop-rate-accordion-wrap,
+html.dark-theme body .drop-rate-section-wrap{box-shadow:none!important}
+</style>
+<script id="accordion-surface-cleanup-js-v0398">
+(function(){
+  function clean(){
+    if(!document.documentElement.classList.contains('dark-theme')){
+      var needles=['보유 중인 기업장비 개수','미사용 캐릭터 장비 이동 안내'];
+      document.querySelectorAll('body *').forEach(function(el){
+        if(el.children.length>0 || !el.textContent) return;
+        var t=el.textContent.replace(/\\s+/g,' ').trim();
+        if(!needles.some(function(n){return t.indexOf(n)!==-1;})) return;
+        var p=el.parentElement;
+        for(var i=0;i<6 && p;i++,p=p.parentElement){
+          var bg=getComputedStyle(p).backgroundColor;
+          if(bg==='rgb(255, 255, 255)' || bg==='rgb(249, 252, 254)' || bg==='rgb(248, 252, 255)'){
+            p.style.setProperty('background','transparent','important');
+            p.style.setProperty('border-color','transparent','important');
+            p.style.setProperty('box-shadow','none','important');
+          }
+        }
+      });
+    }
+  }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',clean); else clean();
+  setTimeout(clean,250); setTimeout(clean,800);
+})();
+</script>'''
+            s=s.replace('</head>',patch+'</head>',1)
+            p.write_text(s,encoding='utf-8')
+          vf=Path('VERSION')
+          old=vf.read_text(encoding='utf-8').strip() if vf.exists() else '0.397'
+          m=re.fullmatch(r'(\d+)\.(\d+)',old)
+          new=f'{m.group(1)}.{int(m.group(2))+1:03d}' if m else '0.398'
+          vf.write_text(new+'\n',encoding='utf-8')
+          s=p.read_text(encoding='utf-8')
+          s=re.sub(r'(?<![0-9])0\.397(?![0-9])',new,s)
+          p.write_text(s,encoding='utf-8')
+      - name: Commit fix and remove one-time workflow
+        shell: bash
+        run: |
+          git config user.name github-actions[bot]
+          git config user.email 41898282+users.noreply.github.com
+          git rm .github/workflows/accordion-surface-fix.yml
+          git add index.html VERSION
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m "Fix accordion wrapper background surfaces"
+          git push
