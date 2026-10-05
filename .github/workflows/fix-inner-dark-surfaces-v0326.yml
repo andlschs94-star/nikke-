@@ -10,43 +10,16 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Patch inner surfaces and version
+      - name: Patch index
+        env:
+          CSS_B64: LyogdjAuMzI2OiBjaGFuZ2UgZGFyayBJTk5FUiB3aW5kb3cvdGFibGUgc3VyZmFjZXMgKi9cbjpyb290e3ctYmctI2Y0ZjlmYztwYW5lbDojZjhmY2ZlO3BhbmVsMjojZWVmNmZhO2xpbmU6I2M4ZGNlNzt0ZXh0OiMxNzI2M2I7bXV0ZWQ6IzcxODQ5YXN9XG5odG1sLGJvZHl7YmFja2dyb3VuZDojZjRmOWZjI3Njc0aW50O2NvbG9yOnZhcigtLXRleHQpfVxuLyogSW5uZXIgdGFibGVzICovXG50YWJsZSx0aGVhZCx0Ym9keSx0cix0ZCx0aHtAYmFja2dyb3VuZDojZjhmY2ZlIWltcG9ydGFudDtjb2xvcjppbmhlcml0fVxuI3t9XG50aGVhZCx0aHtAYmFja2dyb3VuZDojZThmM2Y4IWltcG9ydGFudH1cblxuLm91dHBvc3QtcHJvZHVjdGlvbi1ib2R5LC5vdXRwb3N0LXRhYmxlLXdyYXAsLm91dHBvc3QtdGFibGUsLm91dHBvc3QtY2FsYyxvdXRwb3N0LWNhbGctcHJvZ3Jlc3MsLm91dHBvc3QtbGV2ZWwtY2FyZCwu b3V0cG9zdC1jdXJyZW50LXByb2R1Y3Rpb24sLm91dHBvc3QtY3VycmVudC1wcm9kdWN0aW9uLWl0ZW0sLm91dHBvc3QtY29yZS1oaW50LC5vdXRwb3N0LWNvcmUtYnJlYWtwb2ludC1saXN0LC5vdXRwb3N0LWNvcmUtYnJlYWtwb2ludC1yb3csLmRy b3AtcmF0ZS1ib2R5LC5kcm9wLXJhdGUtY29udGVudCwu b3duZWQtY29ycG9yYXRlLWJvZHksLm93bmVkLWNvcnBvcmF0ZS10YWJsZS13cmFwLC51bnVzZWQtdHJhbnNmZXItYm9keSwucmVxdWlyZWQtZ2Vhci1ib2R5LC5jaGFyYWN0ZXItbGlzdCwuY2hhcmFjdGVyLXRhYmxlLXdyYXAsLmdlYXItemdhcHRhYmxlLXdyYXAsLnBhbmVsLWJvZHksLmNhcmQtYm9keSwubW9kYWwtYm9keSwucG9wdXAtYm9keSwuZHJhd2VyLWJvZHl7YmFja2dyb3VuZDojZjhmY2ZlIWltcG9ydGFudDtjb2xvcjppbmhlcml0IWltcG9ydGFudH1cblxuLm91dHBvc3QtdGFibGUgdHIu b3V0cG9zdC1jb3JlLXRocmVzaG9sZCB0ZHtiYWNrZ3JvdW5kOnJnYmEoMTQ2LDEyNSwyNTUsLjE0KWltcG9ydGFudH1cgpzZWxlY3QsaW5wdXQsdGV4dGFyZWF7YmFja2dyb3VuZDojZmZmIWltcG9ydGFudDtjb2xvcjojMTcyNjNiIWltcG9ydGFudDti b3JkZXItY29sb3I6I2M1ZGJlNiFpbXBvcnRhbnR9
         run: |
-          python3 - <<'PY'
-          from pathlib import Path
-          p = Path('index.html')
-          s = p.read_text(encoding='utf-8')
-          css = r'''
-/* v0.326: change dark INNER window/table surfaces while preserving text colors */
-:root{--bg:#f4f9fc;--panel:#f8fcfe;--panel2:#eef6fa;--line:#c8dce7;--text:#17263b;--muted:#71849a}
-html,body{background:#f4f9fc!important;color:var(--text)}
-/* Inner tables and list bodies */
-table,thead,tbody,tr,td,th{background:#f8fcfe!important;color:inherit}
-thead,th{background:#e8f3f8!important}
-tbody tr:nth-child(even),tbody tr:nth-child(odd){background:#f8fcfe!important}
-tbody td,tbody th{border-color:#cfe0e8!important}
-/* Common dark inner surfaces */
-.outpost-production-body,.outpost-table-wrap,.outpost-table,.outpost-calc,.outpost-calc-progress,.outpost-level-card,.outpost-current-production,.outpost-current-production-item,.outpost-core-hint,.outpost-core-breakpoint-list,.outpost-core-breakpoint-row,.drop-rate-body,.drop-rate-content,.owned-corporate-body,.owned-corporate-table-wrap,.unused-transfer-body,.required-gear-body,.character-list,.character-table-wrap,.gear-table-wrap,.panel-body,.card-body,.modal-body,.popup-body,.drawer-body{background:#f8fcfe!important;color:inherit!important}
-/* Explicit dark cells/rows used by the corporate-equipment panels */
-.owned-corporate-table tr,.owned-corporate-table td,.owned-corporate-table th,.required-gear-table tr,.required-gear-table td,.required-gear-table th,.gear-table tr,.gear-table td,.gear-table th{background:#f8fcfe!important;color:inherit!important;border-color:#cfe0e8!important}
-/* Preserve intentionally highlighted status cells */
-.outpost-table tr.outpost-core-threshold td{background:rgba(146,125,255,.14)!important}
-/* Inputs/selects inside windows */
-select,input,textarea{background:#fff!important;color:#17263b!important;border-color:#c5dbe6!important}
-/* Scroll tracks / containers */
-.outpost-table-wrap,.outpost-core-breakpoint-list,.gear-table-wrap{scrollbar-color:#9db4c2 #edf5f8}
-'''
-          marker='</style>'
-          if 'v0.326: change dark INNER window/table surfaces' not in s:
-              s=s.replace(marker, css+'\n'+marker, 1)
-          s=s.replace('0.325','0.326')
-          p.write_text(s,encoding='utf-8')
-          PY
-      - name: Commit site and remove workflow
+          python3 -c "import os,base64;from pathlib import Path;p=Path('index.html');s=p.read_text(encoding='utf-8');css=base64.b64decode(os.environ['CSS_B64'].replace(' ','')).decode();s=s.replace('</style>',css+'</style>',1) if 'v0.326: change dark INNER window/table surfaces' not in s else s;s=s.replace('0.325','0.326');p.write_text(s,encoding='utf-8')"
+      - name: Commit and remove workflow
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add index.html .github/workflows/fix-inner-dark-surfaces-v0326.yml
+          git add index.html
           git rm .github/workflows/fix-inner-dark-surfaces-v0326.yml
           git commit -m 'Fix inner dark window surfaces (v0.326)'
           git push
