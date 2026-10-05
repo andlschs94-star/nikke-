@@ -46,11 +46,10 @@ jobs:
           s = re.sub(r'VERSION\s+0\.\d{3}', f'VERSION {new}', s)
           p.write_text(s, encoding='utf-8')
           PY
-      - name: Commit and remove temporary workflow
+      - name: Commit page changes
         run: |
           git config user.name github-actions[bot]
           git config user.email 41898282+github-actions[bot]@users.noreply.github.com
           git add index.html VERSION
-          git rm .github/workflows/fix-dark-background-v0392b.yml
           git commit -m "fix: restore dark theme page background"
           git push
