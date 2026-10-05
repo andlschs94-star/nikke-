@@ -15,70 +15,26 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - name: Patch current page for a real 0.402 refresh
+      - name: Set visible version to 0.402
         shell: bash
         run: |
           set -e
           python3 - <<'PY'
           from pathlib import Path
-          import re
-
-          p = Path("index.html")
-          s = p.read_text(encoding="utf-8")
-
-          marker = "pages-refresh-0402"
-          patch = r'''<meta name="pages-refresh-0402" content="force-pages-refresh">
-          <script id="pages-version-sync-0402">
-          (function(){
-            async function syncVersion(){
-              try{
-                const r=await fetch('VERSION?cb='+Date.now(),{cache:'no-store'});
-                const v=(await r.text()).trim();
-                if(!/^\d+\.\d{3}$/.test(v)) return;
-                document.querySelectorAll('body *').forEach(function(el){
-                  if(el.children.length) return;
-                  const t=(el.textContent||'').trim();
-                  if(/^VERSION\s+\d+\.\d{3}$/.test(t)){
-                    el.textContent='VERSION '+v;
-                  }
-                });
-                document.title='NIKKE Gear Manager';
-              }catch(e){}
-            }
-            if(document.readyState==='loading'){
-              document.addEventListener('DOMContentLoaded',syncVersion,{once:true});
-            }else{
-              syncVersion();
-            }
-          })();
-          </script>'''
-          if marker not in s:
-              s = s.replace("</head>", patch + "</head>", 1)
-              p.write_text(s, encoding="utf-8")
+          p=Path("index.html")
+          s=p.read_text(encoding="utf-8")
+          s=s.replace("VERSION 0.401","VERSION 0.402")
+          s=s.replace("VERSION 0.400","VERSION 0.402")
+          p.write_text(s,encoding="utf-8")
           PY
-
           git config user.name github-actions[bot]
           git config user.email 41898282+github-actions[bot]@users.noreply.github.com
-
-          for i in 1 2 3 4 5; do
-            git add index.html
-            if git diff --cached --quiet; then
-              break
-            fi
-            git commit -m "fix: force GitHub Pages refresh for v0.402"
-            if git push origin main; then
-              exit 0
-            fi
-            git reset --soft HEAD~1
-            git reset
-            git pull --rebase origin main
-          done
-
           git add index.html
           git rm .github/workflows/force-pages-refresh-0402.yml
-          git commit -m "chore: remove one-time pages refresh workflow"
+          git commit -m "fix: make v0.402 visible on GitHub Pages"
           for i in 1 2 3 4 5; do
             if git push origin main; then exit 0; fi
-            git pull --rebase origin main
+            git fetch origin main
+            git rebase origin/main
           done
           exit 1
