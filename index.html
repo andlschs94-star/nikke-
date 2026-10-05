@@ -5129,12 +5129,12 @@ function renderTable(){
 const COLUMN_DEFS={
   선택:{label:'유효',filter:true}, 이름:{label:'니케',filter:true}, 미사용:{label:'미사용'}, 머리:{label:'머리',filter:true}, 몸통:{label:'몸통',filter:true}, 장갑:{label:'장갑',filter:true}, 다리:{label:'다리',filter:true},
   전투력:{label:'전투력',filter:true}, 기업:{label:'기업',filter:true}, 속성:{label:'속성',filter:true}, 버스트:{label:'버스트',filter:true}, 클래스:{label:'클래스',filter:true},
-  돌파:{label:'돌파'}, 코강:{label:'코강'}, 스킬:{label:'스킬'}, 옵션:{label:'옵션'}, 큐브:{label:'큐브',filter:true}
+  돌파:{label:'돌파'}, 코강:{label:'코강'}, 스킬:{label:'스킬'}
 };
-const DEFAULT_COLUMN_ORDER=['선택','이름','기업','클래스','머리','몸통','장갑','다리','전투력','속성','버스트','돌파','코강','스킬','옵션','큐브','미사용'];
+const DEFAULT_COLUMN_ORDER=['선택','이름','기업','클래스','머리','몸통','장갑','다리','전투력','속성','버스트','돌파','코강','스킬','미사용'];
 const COLUMN_ORDER_STORAGE='nikke_column_order_v2';
 const COLUMN_VISIBILITY_STORAGE='nikke_column_visibility_v1';
-const DETAIL_COLUMNS=['전투력','버스트','속성','돌파','코강','스킬','옵션','큐브'];
+const DETAIL_COLUMNS=['전투력','버스트','속성','돌파','코강','스킬'];
 let hiddenColumns=(()=>{try{
   const v=JSON.parse(localStorage.getItem(COLUMN_VISIBILITY_STORAGE)||'null');
   if(Array.isArray(v)) return new Set([...v,'스킬'].filter(k=>DETAIL_COLUMNS.includes(k)));
@@ -5150,7 +5150,7 @@ function updateDetailColumnButton(){
   b.classList.toggle('active',!hidden);
   b.textContent=hidden?'상세 항목 표시':'상세 항목 숨기기';
   b.setAttribute('aria-pressed',hidden?'false':'true');
-  b.title='전투력 · 버스트 · 속성 · 돌파 · 코강 · 옵션 · 큐브 항목을 표시/숨김';
+  b.title='전투력 · 버스트 · 속성 · 돌파 · 코강 · 스킬 항목을 표시/숨김';
 }
 function toggleDetailColumns(){
   if(hiddenColumns.size) hiddenColumns.clear();
