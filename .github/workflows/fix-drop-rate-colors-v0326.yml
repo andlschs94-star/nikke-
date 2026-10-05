@@ -1,4 +1,4 @@
-name: Fix drop rate inner colors v0.326
+name: Fix drop rate inner colors v0.326 retry
 on:
   push:
     paths:
