@@ -221,14 +221,25 @@ async function callNikkeGameApi(api, body, session){
 
 function extractIntlOpenId(decodedOpenId){
   const value = String(decodedOpenId || '').trim();
-  const m = value.match(/^29080-(\\d+)$/);
+  const m = value.match(/^(\\d+)-(\\d+)$/);
   if(!m){
-    const err = new Error('프로필 URL의 openid가 NIKKE 글로벌 게임 계정 형식이 아닙니다.');
+    const err = new Error('프로필 URL의 openid 형식을 해석하지 못했습니다.');
     err.sync_type = 'invalid_intl_openid';
     err.status = 400;
     throw err;
   }
-  return m[1];
+
+  const gameId = m[1];
+  const intlOpenId = m[2];
+
+  if(gameId !== '29080'){
+    const err = new Error('지원하지 않는 NIKKE 게임 ID입니다.');
+    err.sync_type = 'unsupported_game_id';
+    err.status = 400;
+    throw err;
+  }
+
+  return intlOpenId;
 }
 
 async function syncPublicNikkeProfile(profileUrl, env){
