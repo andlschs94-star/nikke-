@@ -1,4 +1,4 @@
-name: Fix old GitHub username reference
+name: Fix old GitHub username references
 
 on:
   push:
@@ -16,13 +16,20 @@ jobs:
 
       - name: Replace old username
         run: |
-          if grep -RIl --exclude-dir=.git 'andlschs94-star' . | grep -q '^./index.html$'; then
-            sed -i 's/andlschs94-star/nikkegear885/g' index.html
+          set -e
+          changed=0
+          for file in index.html blablalink-sync-v1.0.23.user.js; do
+            if [ -f "$file" ] && grep -q 'andlschs94-star' "$file"; then
+              sed -i 's/andlschs94-star/nikkegear885/g' "$file"
+              git add "$file"
+              changed=1
+            fi
+          done
+          if [ "$changed" -eq 1 ]; then
             git config user.name 'github-actions[bot]'
             git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-            git add index.html
-            git commit -m 'Fix GitHub username reference after account rename'
+            git commit -m 'Fix old GitHub username references'
             git push
           else
-            echo 'No old username reference found in index.html.'
+            echo 'No old username references found.'
           fi
