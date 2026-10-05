@@ -3827,7 +3827,63 @@ html.dark-theme .blsync-top-btn:hover{
 }
 </style><script>
 window.addEventListener('DOMContentLoaded',()=>{try{applyThemeMode()}catch(e){}});
-</script><style id="v0376-theme-toggle-final">.account-switcher{display:flex!important;align-items:center!important;gap:8px!important}.blsync-top-btn{background:#fff1dc!important;border:1px solid #e5a14f!important;color:#a85f16!important;box-shadow:0 2px 8px rgba(214,142,50,.16)!important}.blsync-top-btn:hover{background:#ffe5bf!important;border-color:#d4872c!important;color:#8f4d0d!important}.theme-toggle-btn{width:40px!important;height:40px!important;min-width:40px!important;padding:0!important;margin:0!important;font-size:20px!important;line-height:1!important;display:inline-grid!important;place-items:center!important}html.dark-theme .theme-toggle-btn{background:#101827!important;border-color:#344660!important;color:#dbe7f3!important;box-shadow:none!important}html.dark-theme .theme-toggle-btn:hover{background:#18253a!important;border-color:#55708f!important;color:#fff!important}</style></head><body>
+</script><style id="v0376-theme-toggle-final">.account-switcher{display:flex!important;align-items:center!important;gap:8px!important}.blsync-top-btn{background:#fff1dc!important;border:1px solid #e5a14f!important;color:#a85f16!important;box-shadow:0 2px 8px rgba(214,142,50,.16)!important}.blsync-top-btn:hover{background:#ffe5bf!important;border-color:#d4872c!important;color:#8f4d0d!important}.theme-toggle-btn{width:40px!important;height:40px!important;min-width:40px!important;padding:0!important;margin:0!important;font-size:20px!important;line-height:1!important;display:inline-grid!important;place-items:center!important}html.dark-theme .theme-toggle-btn{background:#101827!important;border-color:#344660!important;color:#dbe7f3!important;box-shadow:none!important}html.dark-theme .theme-toggle-btn:hover{background:#18253a!important;border-color:#55708f!important;color:#fff!important}</style><style id="dark-gear-contrast-fix">
+/* Dark theme gear contrast: make status blocks clearly separated from the page background. */
+html.dark-theme .gear-part {
+  background:#182338!important;
+  border-color:#52627f!important;
+  color:#f1f5ff!important;
+}
+html.dark-theme .gear-part .part-name {
+  color:#f1f5ff!important;
+}
+html.dark-theme .gear-part .part-state {
+  color:#dce7f8!important;
+}
+html.dark-theme .gear-part.equipped {
+  background:#1a2940!important;
+  border-color:#5c6f8d!important;
+}
+html.dark-theme .gear-part.equipped .part-state {
+  color:#d7e4f5!important;
+}
+html.dark-theme .gear-part.missing {
+  background:#202b3e!important;
+  border-color:#66748d!important;
+  border-style:dashed!important;
+  opacity:1!important;
+}
+html.dark-theme .gear-part.missing .part-name,
+html.dark-theme .gear-part.missing .part-state {
+  color:#dbe5f3!important;
+}
+html.dark-theme .gear-part.overload {
+  background:#302650!important;
+  border-color:#a98cff!important;
+  box-shadow:inset 0 0 0 1px rgba(203,188,255,.22),0 0 8px rgba(155,124,255,.12)!important;
+}
+html.dark-theme .gear-part.overload .part-name,
+html.dark-theme .gear-part.overload .part-state {
+  color:#e4d9ff!important;
+}
+html.dark-theme .gear-part.company {
+  background:#1c3a2b!important;
+  border-color:#69bd8a!important;
+}
+html.dark-theme .gear-part.company .part-name,
+html.dark-theme .gear-part.company .part-state {
+  color:#b9f0cd!important;
+}
+html.dark-theme .gear-part.other {
+  background:#3a222b!important;
+  border-color:#db7d8d!important;
+}
+html.dark-theme .gear-part.other .part-name,
+html.dark-theme .gear-part.other .part-state {
+  color:#ffd1d8!important;
+}
+</style>
+</head><body>
 <div class="site-version-corner">VERSION 0.377</div><div class="sidebar-hitarea" id="sidebarHitarea" aria-label="메뉴 열기" title="왼쪽 메뉴 열기"></div>
 <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
 <div class="app"><aside class="sidebar" id="sidebar"><div class="brand"><div class="logo">N</div><div><h1>NIKKE Gear Manager</h1><p>장비·성장 현황 관리</p></div></div><div class="nav"><button type="button" class="active main-view-nav" data-view="characters" onclick="switchMainView('characters')">캐릭터 관리</button><button type="button" class="main-view-nav" data-view="outpost" onclick="switchMainView('outpost')">전초기지 생산량</button><button type="button" class="main-view-nav" data-view="sole" onclick="switchMainView('sole')">솔레점수기록</button></div><div class="section" style="font-size:11px;color:#6f7b96;line-height:1.6">현재는 캐릭터 관리 기능을 제공합니다.<br>다른 관리 기능은 설정 메뉴에서 사용할 수 있습니다.</div></aside>
