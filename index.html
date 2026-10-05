@@ -3757,4 +3757,15 @@ document.addEventListener('keydown',function(e){if(e.key==='Escape')closeSoleRew
   setTimeout(fix,500); setTimeout(fix,1500);
 })();
 </script>
+<script>
+/* hide stray literal comment text v1 */
+(function(){
+  var re = /^\s*(?:\\n)?\s*\/\*\s*\*\/\s*(?:\\n)?\s*$/;
+  var w = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+  var n;
+  while (n = w.nextNode()) {
+    if (re.test(n.nodeValue || '')) n.nodeValue = '';
+  }
+})();
+</script>
 </body></html>
