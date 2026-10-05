@@ -1,4 +1,4 @@
-name: Cleanup malformed version text
+name: Finalize NIKKE version display
 
 on:
   push:
@@ -13,38 +13,40 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Repair visible malformed text
+      - name: Repair version display
+        shell: python
         run: |
-          python3 - <<'PY'
           from pathlib import Path
           import re
           p = Path('index.html')
           s = p.read_text(encoding='utf-8')
-          s = s.replace('VERSION 0.330', 'VERSION 0.331')
-          marker = '</body>'
-          script = r'''<script>
-(function(){
-  function clean(node){
-    const w=document.createTreeWalker(node,NodeFilter.SHOW_TEXT);
-    const remove=[];
-    let n;
-    while(n=w.nextNode()){
-      const t=n.nodeValue||'';
-      if(/^[\\s\\n]*(?:\\/\\*|\\*\\/|\\*)[\\s\\n]*$/.test(t) || /^(?:\\/\\*|\\*\\/)[\\s\\n]+$/.test(t)) remove.push(n);
-    }
-    remove.forEach(x=>x.parentNode&&x.parentNode.removeChild(x));
-  }
-  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',()=>clean(document.body)); else clean(document.body);
-})();
-</script>'''
-          if 'function clean(node)' not in s:
-              s=s.replace(marker, script+'\n'+marker)
-          p.write_text(s,encoding='utf-8')
-          PY
-      - name: Commit repair
+
+          # Remove the accidentally visible patch/comment text near the version label.
+          s = re.sub(r'/\*+\s*\*/?\s*', '', s)
+          s = re.sub(r'\*/+\s*', '', s)
+          s = s.replace(r'\n', '')
+          s = re.sub(r'v0\.327\s+light\s+window\s+surfaces', '', s, flags=re.I)
+          s = re.sub(r'0\.327', '0.331', s)
+          s = re.sub(r'v0\.330', 'v0.331', s)
+          s = re.sub(r'0\.330', '0.331', s)
+
+          # Remove the temporary DOM cleaner if a previous repair inserted it.
+          s = re.sub(r'<script>\s*\(function\(\)\{\s*function clean\(node\).*?</script>\s*', '', s, flags=re.S)
+
+          p.write_text(s, encoding='utf-8')
+
+          # Remove the temporary repair workflows so they cannot rewrite the site again.
+          for wf in [
+              '.github/workflows/cleanup-malformed-version-text.yml',
+              '.github/workflows/repair-site-version.yml',
+          ]:
+              q = Path(wf)
+              if q.exists() and q.name != Path(__file__).name:
+                  q.unlink()
+      - name: Commit final repair
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add index.html
-          git diff --cached --quiet || git commit -m 'Fix malformed text next to version display (v0.331)'
+          git add -A
+          git diff --cached --quiet || git commit -m 'Finalize version display v0.331'
           git push
