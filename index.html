@@ -4151,6 +4151,13 @@ html:not(.dark-theme) #unusedGearTransferPanel .unused-gear-transfer-title:hover
 }
 .sidebar-hitarea:hover{background:rgba(146,125,255,.06)!important}
 .sidebar-hitarea.open{width:228px!important}
+</style><style id="sidebar-menu-click-fix-v0406">
+/* v0.406: 메뉴가 열린 뒤 좌측 hit area가 메뉴 위를 덮어 버튼 클릭을 막는 문제 수정 */
+.sidebar-hitarea{z-index:100001!important;pointer-events:auto!important}
+.sidebar-hitarea.open{pointer-events:none!important}
+.sidebar{z-index:100002!important;pointer-events:auto!important}
+.sidebar .nav,
+.sidebar .nav button{pointer-events:auto!important}
 </style></head><body>
 <div class="site-version-corner">VERSION 0.404</div><div class="sidebar-hitarea" id="sidebarHitarea" aria-label="메뉴 열기" title="왼쪽 메뉴 열기"></div>
 <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
