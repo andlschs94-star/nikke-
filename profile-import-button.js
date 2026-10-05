@@ -7,6 +7,13 @@
   const esc=(v)=>String(v==null?'':v).replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]));
   const text=(v)=>String(v==null?'':v);
 
+  function getAccounts(){
+    try{
+      if(typeof ACCOUNTS!=='undefined' && Array.isArray(ACCOUNTS)) return ACCOUNTS.slice();
+    }catch(_){}
+    return [...document.querySelectorAll('.account-switch-btn')].map(b=>text(b.textContent).trim()).filter(Boolean).slice(0,2);
+  }
+
   function injectStyle(){
     if(document.getElementById('bl-direct-sync-style')) return;
     const s=document.createElement('style');
@@ -90,7 +97,7 @@
     overlay.querySelectorAll('.bl-direct-account').forEach(btn=>{
       btn.onclick=()=>{
         const idx=Number(btn.dataset.slot||0);
-        const accounts=Array.isArray(window.ACCOUNTS)?window.ACCOUNTS:globalThis.ACCOUNTS||['계정1','계정2'];
+        const accounts=getAccounts();
         targetAccount=accounts[idx]||accounts[0]||'계정1';
         overlay.querySelectorAll('.bl-direct-account').forEach(x=>x.classList.remove('active'));
         btn.classList.add('active');
@@ -100,7 +107,7 @@
     overlay.querySelector('.bl-direct-primary').onclick=async()=>{
       if(working) return;
       const url=overlay.querySelector('#blDirectUrl').value.trim();
-      const accounts=Array.isArray(window.ACCOUNTS)?window.ACCOUNTS:globalThis.ACCOUNTS||['계정1','계정2'];
+      const accounts=getAccounts();
       targetAccount=targetAccount||accounts[0]||'계정1';
       const status=overlay.querySelector('#blDirectStatus');
       const primary=overlay.querySelector('.bl-direct-primary');
@@ -131,6 +138,7 @@
           throw new Error(payload.message||'BlaBlaLink 동기화에 실패했습니다.');
         }
 
+        try{localStorage.setItem('nikke_bl_profile_url_'+encodeURIComponent(targetAccount),url)}catch(_){}
         const apply=window.__NIKKE_GM_APPLY_SYNC__;
         if(typeof apply!=='function') throw new Error('사이트 동기화 기능을 불러오지 못했습니다. 페이지를 새로고침해 주세요.');
 
@@ -160,7 +168,7 @@
   }
 
   function refreshLabels(){
-    const accounts=Array.isArray(window.ACCOUNTS)?window.ACCOUNTS:globalThis.ACCOUNTS||['계정1','계정2'];
+    const accounts=getAccounts();
     const a=overlay.querySelector('#blDirectA1'),b=overlay.querySelector('#blDirectA2');
     if(a)a.textContent=accounts[0]||'계정1';
     if(b)b.textContent=accounts[1]||'계정2';
@@ -174,6 +182,12 @@
     const accounts=Array.isArray(window.ACCOUNTS)?window.ACCOUNTS:globalThis.ACCOUNTS||['계정1','계정2'];
     if(!targetAccount) targetAccount=accounts[0]||'계정1';
     refreshLabels();
+    const savedKey='nikke_bl_profile_url_'+encodeURIComponent(targetAccount);
+    try{
+      const saved=localStorage.getItem(savedKey)||'';
+      const input=m.querySelector('#blDirectUrl');
+      if(input && !input.value.trim()) input.value=saved;
+    }catch(_){}
     m.classList.add('open');
     setTimeout(()=>m.querySelector('#blDirectUrl')?.focus(),0);
   };
