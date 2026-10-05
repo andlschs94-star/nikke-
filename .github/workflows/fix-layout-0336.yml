@@ -1,0 +1,56 @@
+name: Fix NIKKE screen alignment 0.336
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+
+jobs:
+  fix-layout:
+    runs-on: ubuntu-latest
+    if: "!contains(github.event.head_commit.message, '[layout-fix]')"
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Normalize full-width alignment
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re
+
+          p = Path('index.html')
+          s = p.read_text(encoding='utf-8')
+
+          css = '''
+          /* layout normalization 0.336 */
+          html,body{width:100vw!important;max-width:100vw!important;margin:0!important;padding:0!important;overflow-x:hidden!important}
+          .app{display:flex!important;width:100vw!important;max-width:100vw!important;min-width:0!important;margin:0!important;padding:0!important;justify-content:flex-start!important;transform:none!important;position:relative!important;left:0!important}
+          .main{display:block!important;width:100vw!important;max-width:none!important;min-width:0!important;flex:1 1 auto!important;margin:0!important;padding:0!important;transform:none!important;position:relative!important;left:0!important;box-sizing:border-box!important}
+          .topbar,.panel,#characterPanel,#kpis,#outpostPanel,.drop-rate-wrap,.sole-score-panel{width:auto!important;max-width:none!important;box-sizing:border-box!important}
+          .topbar,.panel{margin-left:0!important;margin-right:0!important}
+          #characterPanel,#kpis{margin-left:0!important;margin-right:0!important}
+          '''
+          marker = '/* layout normalization 0.336 */'
+          if marker not in s:
+              s = s.replace('</style>', css + '\n</style>', 1)
+
+          s = re.sub(r'(?i)(VERSION\s*)0\.33[0-5]', r'\g<1>0.336', s, count=1)
+          p.write_text(s, encoding='utf-8')
+          PY
+
+      - name: Commit alignment fix
+        shell: bash
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add index.html
+          if git diff --cached --quiet; then
+            echo 'No changes needed'
+            exit 0
+          fi
+          git commit -m 'Fix full screen alignment v0.336 [layout-fix]'
+          git push
