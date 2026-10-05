@@ -2366,8 +2366,122 @@ body.drop-rate-view #kpis{
   color:#405b6c!important;
   font-weight:900!important;
 }
+</style><style id="v0362-sync-settings-light">
+/* v0.362: 계정 동기화 창·톱니바퀴 설정창을 최신 연청색 UI로 통일 */
+.blsync-modal{
+  background:#f8fcfe!important;
+  border:1px solid #bfd5df!important;
+  box-shadow:0 18px 55px rgba(61,105,130,.18)!important;
+}
+.blsync-head{
+  background:#edf7fb!important;
+  border-bottom:1px solid #cfe1eb!important;
+}
+.blsync-head h3{
+  color:#294b5e!important;
+}
+.blsync-head>div>div{
+  color:#6b8291!important;
+}
+.blsync-body{
+  background:#f8fcfe!important;
+  color:#405b6c!important;
+}
+.blsync-body b{
+  color:#294b5e!important;
+}
+.blsync-link{
+  color:#347fa7!important;
+}
+.blsync-link:hover{
+  color:#2b7197!important;
+}
+.blsync-note{
+  background:#edf7fb!important;
+  border-color:#cfe1eb!important;
+  color:#5d7383!important;
+}
+.blsync-actions .btn{
+  background:#fff!important;
+  border:1px solid #bfd5df!important;
+  color:#405b6c!important;
+  box-shadow:none!important;
+}
+.blsync-actions .btn:hover{
+  background:#eaf6fb!important;
+  border-color:#8fc3d9!important;
+  color:#2f6f8e!important;
+}
+.blsync-actions .btn.primary{
+  background:#dff1fb!important;
+  border-color:#7db5d1!important;
+  color:#2f6078!important;
+}
+.blsync-actions .btn.primary:hover{
+  background:#cdebf8!important;
+  border-color:#5fa5c7!important;
+  color:#24536b!important;
+}
+.blsync-status{
+  color:#607989!important;
+}
+.settings-popover{
+  background:#f8fcfe!important;
+  border:1px solid #bfd5df!important;
+  box-shadow:0 14px 38px rgba(61,105,130,.16)!important;
+}
+.settings-popover h4{
+  color:#294b5e!important;
+}
+.settings-popover .settings-section-title{
+  color:#6b8291!important;
+}
+.settings-popover .settings-action{
+  background:#fff!important;
+  border-color:#bfd5df!important;
+  color:#405b6c!important;
+}
+.settings-popover .settings-action:hover{
+  border-color:#8fc3d9!important;
+  background:#eaf6fb!important;
+  color:#2f6f8e!important;
+}
+.settings-popover .settings-action.danger{
+  background:#fff0f2!important;
+  border-color:#dfa4b1!important;
+  color:#a44d61!important;
+}
+.settings-popover .settings-action.danger:hover{
+  background:#ffe5ea!important;
+  border-color:#d78395!important;
+  color:#923d53!important;
+}
+.settings-popover .settings-info{
+  background:#edf7fb!important;
+  border-color:#cfe1eb!important;
+  color:#607989!important;
+}
+.settings-popover .settings-info b{
+  color:#294b5e!important;
+}
+.settings-popover .settings-divider{
+  background:#cfe1eb!important;
+}
+.account-name-editor label{
+  color:#5d7383!important;
+}
+.account-name-editor input{
+  background:#fff!important;
+  border-color:#bfd5df!important;
+  color:#405b6c!important;
+}
+.account-name-editor input:focus{
+  border-color:#8fc3d9!important;
+  box-shadow:0 0 0 2px rgba(74,168,216,.10)!important;
+  outline:none!important;
+}
 </style></head><body>
-<div class="site-version-corner">VERSION 0.361</div><div class="sidebar-hitarea" id="sidebarHitarea" aria-label="메뉴 열기" title="왼쪽 메뉴 열기"></div>
+<div class="site-version-corner">VERSION 0.362</div><div class="sidebar-hitarea" id="sidebarHitarea" aria-label="메뉴 열기" title="왼쪽 메뉴 열기"></div>
 <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
 <div class="app"><aside class="sidebar" id="sidebar"><div class="brand"><div class="logo">N</div><div><h1>NIKKE Gear Manager</h1><p>장비·성장 현황 관리</p></div></div><div class="nav"><button type="button" class="active main-view-nav" data-view="characters" onclick="switchMainView('characters')">캐릭터 관리</button><button type="button" class="main-view-nav" data-view="outpost" onclick="switchMainView('outpost')">전초기지 생산량</button><button type="button" class="main-view-nav" data-view="sole" onclick="switchMainView('sole')">솔레점수기록</button></div><div class="section" style="font-size:11px;color:#6f7b96;line-height:1.6">현재는 캐릭터 관리 기능을 제공합니다.<br>다른 관리 기능은 설정 메뉴에서 사용할 수 있습니다.</div></aside>
 <main class="main"><div class="topbar"><div><div class="eyebrow">NIKKE / INVENTORY</div><h2 id="pageTitle">캐릭터 장비 현황</h2></div><div class="actions account-switcher"><button type="button" class="btn blsync-top-btn" onclick="openBlablalinkSyncGuide()">계정 동기화</button><button type="button" class="btn account-switch-btn active" data-account="계정1" onclick="switchAccount(ACCOUNTS[0])">계정1</button><button type="button" class="btn account-switch-btn" data-account="계정2" onclick="switchAccount(ACCOUNTS[1])">계정2</button><div class="settings-wrap"><button type="button" class="settings-btn" id="settingsBtn" aria-label="설정" title="설정" onclick="toggleSettingsMenu(event)">⚙</button></div></div></div><div class="settings-popover" id="settingsPopover" hidden>
