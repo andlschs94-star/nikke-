@@ -1,54 +1,18 @@
 name: Fix sidebar white screen
-on:
-  push:
-    branches:
-      - main
+on: push
 permissions:
   contents: write
 jobs:
   fix:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-      - name: Patch sidebar and version
+      - uses: actions/checkout@v4
+      - name: Patch site
         run: |
-          python - <<'PY'
-          from pathlib import Path
-          import re
-          p = Path('index.html')
-          s = p.read_text(encoding='utf-8')
-          marker = 'sidebar-white-screen-fix-v0387'
-          patch = '''<style id="sidebar-white-screen-fix-v0387">
-/* Sidebar floats over the existing page. Never hide, whiten, or dim the page behind it. */
-.sidebar{z-index:99999!important;position:fixed!important;top:0!important;left:0!important;height:100vh!important}
-.sidebar.open{transform:translateX(0)!important;pointer-events:auto!important}
-.sidebar-backdrop,[class*="sidebar-backdrop"]{display:none!important;visibility:hidden!important;opacity:0!important;pointer-events:none!important;background:transparent!important}
-.main{display:block!important;visibility:visible!important;opacity:1!important;filter:none!important;min-height:100vh!important;background:var(--bg)!important}
-.app{min-height:100vh!important;background:var(--bg)!important}
-body{background:radial-gradient(circle at 20% 0,#182240 0,#0a0f1d 42%,#070b14 100%)!important}
-</style>
-<script id="sidebar-white-screen-fix-js-v0387">
-(function(){
-  function fix(){
-    document.querySelectorAll('.sidebar-backdrop,[class*="sidebar-backdrop"]').forEach(function(e){e.remove();});
-    var m=document.querySelector('.main');
-    if(m){m.style.display='block';m.style.visibility='visible';m.style.opacity='1';m.style.filter='none';}
-  }
-  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',fix); else fix();
-})();
-</script>'''
-          if marker not in s:
-              s = s.replace('</head>', patch + '</head>', 1)
-          s = re.sub(r'(?<![0-9])0\\.386(?![0-9])', '0.387', s)
-          p.write_text(s, encoding='utf-8')
-          Path('VERSION').write_text('0.387\n', encoding='utf-8')
-          PY
-      - name: Commit site change
-        run: |
+          python3 -c "from pathlib import Path; p=Path('index.html'); s=p.read_text(encoding='utf-8'); marker='sidebar-white-screen-fix-v0387'; patch='<style id=\"sidebar-white-screen-fix-v0387\">.sidebar{z-index:99999!important;position:fixed!important;top:0!important;left:0!important;height:100vh!important}.sidebar.open{transform:translateX(0)!important;pointer-events:auto!important}.sidebar-backdrop,[class*=\"sidebar-backdrop\"]{display:none!important;visibility:hidden!important;opacity:0!important;pointer-events:none!important;background:transparent!important}.main{display:block!important;visibility:visible!important;opacity:1!important;filter:none!important;min-height:100vh!important;background:var(--bg)!important}.app{min-height:100vh!important;background:var(--bg)!important}</style>'; s=s if marker in s else s.replace('</head>',patch+'</head>',1); p.write_text(s,encoding='utf-8')"
+          printf '0.387\n' > VERSION
           git config user.name github-actions[bot]
           git config user.email 41898282+github-actions[bot]@users.noreply.github.com
           git add index.html VERSION
-          git diff --cached --quiet && exit 0
-          git commit -m "fix: sidebar overlay without white page and bump to 0.387"
+          git diff --cached --quiet || git commit -m "fix: sidebar overlay and version 0.387"
           git push
