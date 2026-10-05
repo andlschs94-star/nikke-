@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="ko"><head><!-- GitHub Pages deployment refresh 0.321 --><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<html lang="ko"><head><!-- GitHub Pages deployment refresh 0.322 --><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>NIKKE Gear Manager</title>
 <style>
 :root{--bg:#080d19;--panel:#0f1729;--panel2:#111c32;--line:#26324b;--text:#edf2ff;--muted:#8490aa;--accent:#927dff;--good:#47d7c7;--danger:#ff6c86}
@@ -1471,8 +1471,215 @@ tbody tr:hover td{
   .searchbar input{width:100%!important}
   #characterPanel .table-wrap{min-height:calc(100vh - 350px)!important}
 }
+
+/* v0.322 color refinement — soft navy / powder blue */
+:root{
+  --bg:#dcecf7!important;
+  --bg2:#eef7fc!important;
+  --panel:#f4f9fc!important;
+  --panel2:#e7f2f9!important;
+  --line:#bdd3e1!important;
+  --line2:#99b9cc!important;
+  --text:#24394b!important;
+  --muted:#6d8292!important;
+  --accent:#438fbc!important;
+  --accent2:#6d83d8!important;
+  --good:#2f9f94!important;
+  --warning:#b78331!important;
+  --danger:#c85c73!important;
+}
+body{
+  color:#253b4d!important;
+  background:
+    radial-gradient(900px 560px at 82% -8%,rgba(121,183,224,.20),transparent 60%),
+    radial-gradient(760px 480px at 4% 18%,rgba(181,215,237,.26),transparent 64%),
+    linear-gradient(180deg,#f1f8fc 0%,#e4f1f8 52%,#d8eaf4 100%)!important;
+}
+body::before{
+  background:
+    linear-gradient(180deg,rgba(255,255,255,.52),rgba(255,255,255,0) 30%),
+    repeating-linear-gradient(0deg,rgba(65,111,138,.018) 0 1px,transparent 1px 10px)!important;
+}
+body::after{display:none!important}
+
+.sidebar{
+  background:linear-gradient(180deg,#f7fbfe 0%,#eaf4fa 100%)!important;
+  border-right-color:#c0d6e3!important;
+  box-shadow:8px 0 26px rgba(62,105,129,.10)!important;
+}
+.brand{border-bottom-color:#d0e1ea!important}
+.logo{
+  background:linear-gradient(145deg,#4e9fc9,#6d86de)!important;
+  box-shadow:0 7px 18px rgba(73,145,188,.18)!important;
+}
+.brand h1{color:#294458!important}
+.brand p{color:#7b91a1!important}
+.nav button{color:#688092!important}
+.nav button:hover{
+  background:#e7f3fa!important;border-color:#c3dce9!important;color:#35566b!important;
+}
+.nav button.active{
+  background:linear-gradient(90deg,#d6edf9,#edf8fd)!important;
+  border-color:#a9d1e5!important;color:#28739a!important;
+  box-shadow:inset 3px 0 0 #4e9fc9,0 5px 13px rgba(61,121,155,.08)!important;
+}
+.nav button.active::after{
+  background:#5ca9d3!important;box-shadow:0 0 8px rgba(92,169,211,.4)!important;
+}
+.sidebar .section{
+  border-top-color:#cddfe8!important;color:#8095a4!important;
+}
+
+.topbar{
+  background:rgba(239,247,251,.92)!important;
+  border-bottom-color:#bfd5e2!important;
+  box-shadow:0 4px 16px rgba(71,111,136,.05)!important;
+}
+.eyebrow{color:#7590a2!important}
+.topbar h2{color:#263f52!important}
+
+.actions .btn,.manage-btn,.detail-column-btn,.unused-view-btn,.unowned-view-btn,.common-unused-btn{
+  background:#f8fcfe!important;
+  border-color:#b9d1df!important;
+  color:#587184!important;
+  box-shadow:0 2px 7px rgba(61,101,126,.05)!important;
+}
+.actions .btn:hover,.manage-btn:hover,.detail-column-btn:hover,.unused-view-btn:hover,.unowned-view-btn:hover,.common-unused-btn:hover{
+  background:#eef8fc!important;border-color:#7db5d1!important;color:#35677f!important;
+}
+.account-switch-btn.active{
+  background:linear-gradient(180deg,#d9eef9,#c7e5f4)!important;
+  border-color:#7fb8d5!important;color:#286b8f!important;
+}
+
+.kpi{
+  background:linear-gradient(180deg,#fbfdff,#edf6fa)!important;
+  border-color:#c1d7e3!important;
+  box-shadow:0 7px 18px rgba(66,105,128,.06)!important;
+}
+.kpi .label{color:#748b9b!important}
+.kpi .value{color:#29475c!important}
+
+.panel,#outpostPanel{
+  background:#f7fbfd!important;
+  border-color:#bdd4e1!important;
+  box-shadow:0 9px 24px rgba(67,105,129,.07)!important;
+}
+.panel-head{
+  background:linear-gradient(180deg,#edf7fc,#e5f1f7)!important;
+  border-bottom-color:#cbdfe9!important;
+}
+.panel-head-title{border-left-color:#57a6cf!important}
+.panel-head-title h3{color:#355166!important}
+.panel-head-title small{color:#7c92a1!important}
+
+.searchbar input{
+  background:#ffffff!important;
+  border-color:#bed5e2!important;
+  color:#31495a!important;
+  box-shadow:inset 0 1px 3px rgba(64,103,126,.035)!important;
+}
+.searchbar input:focus{
+  border-color:#67afd3!important;
+  box-shadow:0 0 0 3px rgba(78,159,201,.10)!important;
+}
+.quick-filter-bar{
+  background:#eef7fb!important;
+  border-bottom-color:#d0e2eb!important;
+}
+.quick-filter-title{color:#7a91a0!important}
+.quick-filter-btn{
+  background:#fbfdfe!important;
+  border-color:#c0d7e3!important;
+  color:#6a8191!important;
+}
+.quick-filter-btn:hover{background:#e9f6fc!important;border-color:#8fc1d9!important}
+.quick-filter-btn.active{
+  background:#d9effa!important;border-color:#74b5d2!important;color:#2e789d!important;
+}
+
+.table-wrap{background:#fafdff!important}
+th{
+  background:#e6f2f8!important;
+  color:#61798a!important;
+  border-bottom-color:#c1d7e3!important;
+}
+td{color:#344c5e!important;border-bottom-color:#dbe8ef!important}
+tbody tr:nth-child(even) td{background:#f5fafc!important}
+tbody tr:hover td{
+  background:#e8f6fc!important;border-bottom-color:#b9d8e6!important;
+}
+.name-btn{color:#2f485a!important}
+.name-btn:hover{color:#3385b1!important}
+.tag{
+  background:#edf5f9!important;
+  border-color:#c6dce7!important;
+  color:#5b7282!important;
+}
+
+.gear-part{
+  background:#f2f8fb!important;
+  border-color:#c2d7e3!important;
+  color:#40596a!important;
+}
+.gear-part:hover{
+  background:#e7f5fb!important;border-color:#7cb6d2!important;
+}
+.valid-toggle{
+  color:#547183!important;
+  border-color:#bfd7e3!important;
+  background:#f6fbfd!important;
+}
+.valid-toggle.active{
+  background:#dff3ee!important;border-color:#79bfb5!important;color:#2b8177!important;
+}
+.unused-status-toggle.active,.unused-view-btn.active{
+  background:#fff0f3!important;border-color:#dfa0ad!important;color:#ae5368!important;
+}
+.unowned-status-toggle,.unowned-view-btn.active{
+  background:#fff7e9!important;border-color:#dbb56c!important;color:#976d24!important;
+}
+.common-unused-btn{
+  background:#eaf0ff!important;border-color:#aebce8!important;color:#52639d!important;
+}
+.common-unused-btn:hover{background:#e3ebff!important;border-color:#8799dc!important;color:#465a98!important}
+.column-filter-popover,.settings-popover,.filter-modal-card,.drawer-card,.exclude-modal,.backup-code-card{
+  background:#f7fbfd!important;
+  border-color:#bdd4e1!important;
+  color:#385163!important;
+  box-shadow:0 18px 45px rgba(56,92,113,.18)!important;
+}
+.column-filter-option{
+  background:#ffffff!important;border-color:#c3d9e4!important;color:#5d7484!important;
+}
+.column-filter-option:hover{background:#eaf6fb!important}
+.column-filter-option.active{
+  background:#dceffa!important;border-color:#78b7d4!important;color:#367b9e!important;
+}
+.settings-action{color:#567082!important}
+.sole-score-card,.outpost-calc,.outpost-production-collapse{
+  background:#f8fcfe!important;
+  border-color:#c1d8e4!important;
+  box-shadow:0 8px 20px rgba(67,105,129,.06)!important;
+}
+.sole-score-card-head,.outpost-calc-head,.outpost-production-toggle{
+  background:#eaf5fa!important;
+  border-bottom-color:#cfE1ea!important;
+}
+.outpost-calc-title,.outpost-calc-section-label{color:#4c82a0!important}
+.outpost-level-card{
+  background:#edf8fd!important;border-color:#9cc9df!important;
+}
+.outpost-level-label{color:#4288b0!important}
+.outpost-current-production-item{
+  background:#f5fbfd!important;border-color:#c8dbe5!important;
+}
+.site-version-corner{color:#6d8798!important;opacity:.55!important;text-shadow:none!important}
+@media(max-width:650px){
+  .topbar{background:rgba(244,250,253,.96)!important}
+}
 </style></head><body>
-<div class="site-version-corner">VERSION 0.321</div><div class="sidebar-hitarea" id="sidebarHitarea" aria-label="메뉴 열기" title="왼쪽 메뉴 열기"></div>
+<div class="site-version-corner">VERSION 0.322</div><div class="sidebar-hitarea" id="sidebarHitarea" aria-label="메뉴 열기" title="왼쪽 메뉴 열기"></div>
 <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
 <div class="app"><aside class="sidebar" id="sidebar"><div class="brand"><div class="logo">N</div><div><h1>NIKKE Gear Manager</h1><p>장비·성장 현황 관리</p></div></div><div class="nav"><button type="button" class="active main-view-nav" data-view="characters" onclick="switchMainView('characters')">캐릭터 관리</button><button type="button" class="main-view-nav" data-view="outpost" onclick="switchMainView('outpost')">전초기지 생산량</button><button type="button" class="main-view-nav" data-view="sole" onclick="switchMainView('sole')">솔레점수기록</button></div><div class="section" style="font-size:11px;color:#6f7b96;line-height:1.6">현재는 캐릭터 관리 기능을 제공합니다.<br>다른 관리 기능은 설정 메뉴에서 사용할 수 있습니다.</div></aside>
 <main class="main"><div class="topbar"><div><div class="eyebrow">NIKKE / INVENTORY</div><h2 id="pageTitle">캐릭터 장비 현황</h2></div><div class="actions account-switcher"><button type="button" class="btn blsync-top-btn" onclick="openBlablalinkSyncGuide()">계정 동기화</button><button type="button" class="btn account-switch-btn active" data-account="계정1" onclick="switchAccount(ACCOUNTS[0])">계정1</button><button type="button" class="btn account-switch-btn" data-account="계정2" onclick="switchAccount(ACCOUNTS[1])">계정2</button><div class="settings-wrap"><button type="button" class="settings-btn" id="settingsBtn" aria-label="설정" title="설정" onclick="toggleSettingsMenu(event)">⚙</button></div></div></div><div class="settings-popover" id="settingsPopover" hidden>
