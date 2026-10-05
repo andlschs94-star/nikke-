@@ -1,0 +1,41 @@
+name: Apply v0.326 UI fix
+on:
+  push:
+    paths:
+      - '.github/workflows/fix-v0326.yml'
+permissions:
+  contents: write
+jobs:
+  fix:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Patch index.html
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          p=Path('index.html')
+          s=p.read_text(encoding='utf-8')
+          s=s.replace('<!-- GitHub Pages deployment refresh 0.325 -->','<!-- GitHub Pages deployment refresh 0.326 -->')
+          s=s.replace('VERSION 0.325','VERSION 0.326')
+          s=s.replace('VERSION 0.324','VERSION 0.326')
+          marker='</style>'
+          css='''\n/* v0.326: light surfaces for drop-rate controls only */\n.drop-rate-panel .drop-rate-stage, .drop-rate-panel .drop-rate-percent, .drop-rate-panel .drop-rate-detail, .drop-rate-panel .drop-rate-detail button, .drop-rate-panel .drop-rate-detail summary, .drop-rate-panel .drop-rate-card, .drop-rate-panel .drop-rate-body { background:#f5fafc !important; color:#263746 !important; border-color:#bfd5df !important; }\n.drop-rate-panel .drop-rate-stage:hover, .drop-rate-panel .drop-rate-detail button:hover, .drop-rate-panel .drop-rate-detail summary:hover { background:#e8f4f8 !important; }\n.drop-rate-panel .drop-rate-percent { font-weight:900; }\n'''
+          if 'v0.326: light surfaces for drop-rate controls only' not in s:
+              s=s.replace(marker,css+marker,1)
+          p.write_text(s,encoding='utf-8')
+          PY
+      - name: Commit changes
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add index.html VERSION
+          git commit -m 'Apply v0.326 UI and version fix' || exit 0
+          git push
+      - name: Remove temporary workflow
+        if: success()
+        run: |
+          rm -f .github/workflows/fix-v0326.yml
+          git add -A
+          git commit -m 'Remove temporary v0.326 workflow' || exit 0
+          git push
