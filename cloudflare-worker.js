@@ -197,10 +197,6 @@ export default {
       return json({ok:false,message:'POST 요청만 사용할 수 있습니다.'}, 405);
     }
 
-    if(!env.VERIFY_SECRET){
-      return json({ok:false,message:'프로필 인증 서버가 아직 설정되지 않았습니다.'}, 500);
-    }
-
     let body;
     try{
       body = await request.json();
@@ -216,31 +212,20 @@ export default {
         const intlOpenId = decodeOpenIdFromProfileUrl(profileUrl);
 
         const profile = await getProfile(profileUrl, intlOpenId);
-        const code = randomCode();
-        const now = Math.floor(Date.now()/1000);
-        const exp = now + TOKEN_TTL_SECONDS;
-
-        const token = await signToken({
-          v:1,
-          intl_openid:intlOpenId,
-          code,
-          iat:now,
-          exp
-        }, env.VERIFY_SECRET);
 
         return json({
           ok:true,
           profile:{
             ...profile,
             profile_url:profileUrl
-          },
-          code,
-          token,
-          expires_at:exp * 1000
+          }
         });
       }
 
       if(action === '/verify'){
+        if(!env.VERIFY_SECRET){
+          throw new Error('소유권 인증 서버의 VERIFY_SECRET이 설정되지 않았습니다.');
+        }
         const profileUrl = String(body?.profile_url || '').trim();
         const token = String(body?.token || '').trim();
         const pending = await verifyToken(token, env.VERIFY_SECRET);
