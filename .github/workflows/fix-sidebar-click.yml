@@ -1,0 +1,43 @@
+name: Fix sidebar click and version
+on:
+  push:
+    branches: [main]
+permissions:
+  contents: write
+jobs:
+  fix:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Fix sidebar pointer events and bump version
+        shell: python
+        run: |
+          from pathlib import Path
+          import re
+          p = Path('index.html')
+          s = p.read_text(encoding='utf-8')
+          css = '''<style id="sidebar-click-final-v0386">
+/* v0.386: closed sidebar's visible 14px strip must remain clickable; open sidebar must accept menu clicks. */
+.sidebar:not(.open){pointer-events:auto!important;transform:translateX(calc(-100% + 14px))!important;}
+.sidebar.open{pointer-events:auto!important;transform:translateX(0)!important;z-index:1000!important;}
+.sidebar:hover{transform:translateX(calc(-100% + 14px))!important;}
+.sidebar.open:hover{transform:translateX(0)!important;}
+.sidebar-hitarea{z-index:950!important;}
+.sidebar-hitarea.open{width:14px!important;z-index:950!important;}
+.sidebar .sidebar-peek-tab{pointer-events:auto!important;}
+</style>'''
+          if 'sidebar-click-final-v0386' not in s:
+              s = s.replace('</head>', css + '</head>', 1)
+          s = re.sub(r'VERSION 0\\.385', 'VERSION 0.386', s)
+          p.write_text(s, encoding='utf-8')
+          Path('VERSION').write_text('0.386\n', encoding='utf-8')
+      - name: Commit and remove workflow
+        shell: bash
+        run: |
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add index.html VERSION
+          git rm .github/workflows/fix-sidebar-click.yml
+          git commit -m "Fix sidebar menu clicks and bump version to 0.386"
+          git push
