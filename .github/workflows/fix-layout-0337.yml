@@ -1,0 +1,37 @@
+name: Fix main layout 0.337
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+
+jobs:
+  fix-layout:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Fix layout and version
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          p = Path('index.html')
+          s = p.read_text(encoding='utf-8')
+          marker = '/* layout alignment fix 0.337 */'
+          if marker not in s:
+              css = '''\n<style>\n/* layout alignment fix 0.337 */\n.app{display:block!important;width:100%!important;max-width:none!important;margin:0!important;padding:0!important;overflow:visible!important}\n.sidebar{position:fixed!important;left:0!important;top:0!important;bottom:0!important;width:228px!important;min-width:228px!important;height:100vh!important;margin:0!important;transform:translateX(-105%)!important}\n.sidebar.open{transform:translateX(0)!important}\n.main{display:block!important;width:100%!important;max-width:none!important;min-width:0!important;margin:0!important;padding:0!important;transform:none!important;position:relative!important;left:0!important}\n</style>\n'''
+              s = s.replace('</head>', css + '</head>', 1)
+              s = s.replace('VERSION 0.336', 'VERSION 0.337')
+              p.write_text(s, encoding='utf-8')
+          v = Path('VERSION')
+          v.write_text('0.337\n', encoding='utf-8')
+          PY
+      - name: Commit changes
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add index.html VERSION
+          git diff --cached --quiet && exit 0
+          git commit -m 'Fix main layout alignment and bump version to 0.337'
+          git push
