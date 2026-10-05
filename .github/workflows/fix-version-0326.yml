@@ -1,7 +1,5 @@
 name: Apply v0.327 drop-rate control colors
-on:
-  push:
-    branches: [main]
+on: push
 permissions:
   contents: write
 jobs:
@@ -9,33 +7,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Patch drop-rate controls
+      - name: Patch index
         run: |
-          python - <<'PY'
-          from pathlib import Path
-          import re
-          p=Path('index.html')
-          s=p.read_text(encoding='utf-8')
-          marker='id="v0327-drop-rate-controls"'
-          if marker in s:
-              print('already patched')
-              raise SystemExit(0)
-          css='''<style id="v0327-drop-rate-controls">
-#dropRatePanel .drop-rate-pool input,#dropRatePanel .drop-stage-btn,#dropRatePanel .drop-rate-details-toggle{background:#f8fcfe!important;color:#405b6c!important;border:1px solid #bfd5df!important;box-shadow:none!important}
-#dropRatePanel .drop-stage-btn:hover,#dropRatePanel .drop-rate-details-toggle:hover{background:#eaf6fb!important;color:#2f5368!important;border-color:#8fc3d9!important}
-#dropRatePanel .drop-rate-details-toggle{font-weight:900!important}
-#dropRatePanel .drop-rate-value{color:#405b6c!important}
-#dropRatePanel .drop-rate-sub,#dropRatePanel .drop-rate-result,#dropRatePanel .drop-rate-footnote{color:#6f8796!important}
-#dropRatePanel .drop-rate-result b,#dropRatePanel .drop-rate-footnote b{color:#36596d!important}
-#dropRatePanel .drop-rate-secondary b{color:#47758b!important}
-</style>'''
-          s=s.replace('</head>',css+'</head>',1)
-          s=re.sub(r'(site-version-corner[^>]*>\s*VERSION\s+)0\.326',r'\g<1>0.327',s,count=1)
-          p.write_text(s,encoding='utf-8')
-          PY
+          python -c 'from pathlib import Path; p=Path("index.html"); s=p.read_text(encoding="utf-8"); marker="v0327-drop-rate-controls"; css="<style id=\"v0327-drop-rate-controls\">#dropRatePanel .drop-rate-pool input,#dropRatePanel .drop-stage-btn,#dropRatePanel .drop-rate-details-toggle{background:#f8fcfe!important;color:#405b6c!important;border:1px solid #bfd5df!important;box-shadow:none!important}#dropRatePanel .drop-stage-btn:hover,#dropRatePanel .drop-rate-details-toggle:hover{background:#eaf6fb!important;color:#2f5368!important;border-color:#8fc3d9!important}#dropRatePanel .drop-rate-value{color:#405b6c!important}</style>"; s=s if marker in s else s.replace("</head>",css+"</head>",1); p.write_text(s,encoding="utf-8")'
+      - name: Commit patched site
+        run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add index.html
           git diff --cached --quiet && exit 0
-          git commit -m "Fix drop-rate control colors (v0.327)"
+          git commit -m "Fix drop-rate control colors v0.327"
           git push
