@@ -6,7 +6,6 @@ on:
 
 jobs:
   patch:
-    if: "!contains(github.event.head_commit.message, 'Hide stray literal comment text')"
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -33,5 +32,5 @@ jobs:
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add index.html
           if git diff --cached --quiet; then exit 0; fi
-          git commit -m 'Hide stray literal comment text'
+          git commit -m 'Apply literal comment text visibility fix'
           git push
