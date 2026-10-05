@@ -51,6 +51,7 @@
       '.bl-direct-modal{width:min(590px,96vw);max-height:92vh;overflow:auto;border:1px solid #c7d9e5;border-radius:16px;background:#f8fcfe;color:#334e60;box-shadow:0 28px 90px rgba(0,0,0,.38)}',
       'html.dark-theme .bl-direct-modal{background:#101827;color:#e7edf9;border-color:#30415e}',
       '.bl-direct-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:15px 16px;border-bottom:1px solid #d4e4ec;background:#edf7fb}',
+      '.bl-direct-help-link{margin-left:auto;white-space:nowrap;color:#1976d2!important;text-decoration:underline!important;text-underline-offset:2px;font-size:10px;font-weight:900}',
       'html.dark-theme .bl-direct-head{background:#141f32;border-bottom-color:#293952}',
       '.bl-direct-head h3{margin:0;font-size:16px}',
       '.bl-direct-head small{display:block;margin-top:3px;color:#718797;font-size:10px}',
@@ -106,7 +107,10 @@
       '<div class="bl-direct-modal" role="dialog" aria-modal="true" aria-labelledby="blDirectTitle">' +
         '<div class="bl-direct-head">' +
           '<div><h3 id="blDirectTitle">BlaBlaLink 계정 동기화</h3><small>공개 프로필 URL만 입력하면 장비 현황을 불러옵니다.</small></div>' +
-          '<button type="button" class="bl-direct-close" aria-label="닫기">×</button>' +
+          '<div style="display:flex;align-items:center;gap:8px;margin-left:auto">' +
+            '<a class="bl-direct-help-link" href="https://gall.dcinside.com/mgallery/board/view?id=gov&no=5423342" target="_blank" rel="noopener noreferrer">블라링크 계정주소 확인법</a>' +
+            '<button type="button" class="bl-direct-close" aria-label="닫기">×</button>' +
+          '</div>' +
         '</div>' +
         '<div class="bl-direct-body">' +
           '<label class="bl-direct-label" for="blDirectUrl">공개 BlaBlaLink 프로필 URL</label>' +
