@@ -1,0 +1,41 @@
+name: Fix character row background
+on:
+  push:
+    branches: [main]
+permissions:
+  contents: write
+jobs:
+  fix:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Apply fix
+        shell: python
+        run: |
+          from pathlib import Path
+          import re
+          wf=Path('.github/workflows/pages.yml')
+          w=wf.read_text(encoding='utf-8')
+          w=w.replace('background:#1b2a42!important;','background:transparent!important;')
+          w=w.replace('background:#162238!important;','background:transparent!important;')
+          w=re.sub(r'\n          git config user\.name .*?\n          if ! git diff --cached --quiet; then\n            git commit -m .*?\n            git push\n          fi\n','\n',w,flags=re.S)
+          wf.write_text(w,encoding='utf-8')
+          p=Path('index.html')
+          s=p.read_text(encoding='utf-8')
+          css='''<style id="v0380-character-row-background">
+          html.dark-theme #characterPanel table tbody td:nth-child(2),html.dark-mode #characterPanel table tbody td:nth-child(2),body.dark-theme #characterPanel table tbody td:nth-child(2),body.dark-mode #characterPanel table tbody td:nth-child(2),body.theme-dark #characterPanel table tbody td:nth-child(2),html[data-theme="dark"] #characterPanel table tbody td:nth-child(2),body[data-theme="dark"] #characterPanel table tbody td:nth-child(2),html.dark #characterPanel table tbody td:nth-child(2),body.dark #characterPanel table tbody td:nth-child(2),html.js-dark-detected #characterPanel table tbody td:nth-child(2),body.js-dark-detected #characterPanel table tbody td:nth-child(2){background:transparent!important;box-shadow:none!important;border-left-color:#26324b!important;border-right-color:#26324b!important}
+          </style>'''
+          s=re.sub(r'<style id="v0380-character-row-background">.*?</style>','',s,flags=re.S)
+          s=s.replace('</head>',css+'</head>',1)
+          p.write_text(s,encoding='utf-8')
+          Path('VERSION').write_text('0.380\n',encoding='utf-8')
+      - name: Commit
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html VERSION .github/workflows/pages.yml
+          git rm .github/workflows/fix-character-row-background.yml
+          git commit -m "Fix character row background and bump version to 0.380"
+          git push
