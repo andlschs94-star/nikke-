@@ -1,0 +1,53 @@
+name: Fix sidebar white screen
+on:
+  push:
+    branches: [main]
+permissions:
+  contents: write
+jobs:
+  fix:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Patch index and version
+        shell: python
+        run: |
+          from pathlib import Path
+          import re
+          p = Path('index.html')
+          s = p.read_text(encoding='utf-8')
+          patch = r'''<style id="sidebar-white-screen-fix-v0387">
+/* v0.387: sidebar floats over the existing page; no page-covering backdrop */
+html,body{background:var(--bg)!important;color:var(--text)!important}
+.app{background:var(--bg)!important;min-height:100vh!important}
+.main{display:block!important;visibility:visible!important;opacity:1!important;filter:none!important;min-height:100vh!important;background:var(--bg)!important}
+.sidebar-backdrop{display:none!important;visibility:hidden!important;opacity:0!important;pointer-events:none!important;background:transparent!important}
+.sidebar{z-index:9999!important}
+.sidebar.open,.sidebar.open:hover,body.sidebar-open .sidebar,body.sidebar-open .sidebar:hover{z-index:9999!important;pointer-events:auto!important;transform:translateX(0)!important}
+</style>
+<script id="sidebar-white-screen-fix-js-v0387">
+(function(){
+  function removeBackdrop(){
+    document.querySelectorAll('.sidebar-backdrop').forEach(function(el){el.remove();});
+    var main=document.querySelector('.main');
+    if(main){main.style.display='block';main.style.visibility='visible';main.style.opacity='1';main.style.filter='none';}
+  }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',removeBackdrop);
+  else removeBackdrop();
+  new MutationObserver(removeBackdrop).observe(document.documentElement,{childList:true,subtree:true});
+})();
+</script>'''
+          if 'sidebar-white-screen-fix-v0387' not in s:
+            s = s.replace('</head>', patch + '</head>', 1)
+          s = re.sub(r'(?<![0-9])0\.386(?![0-9])', '0.387', s)
+          p.write_text(s, encoding='utf-8')
+          Path('VERSION').write_text('0.387\n', encoding='utf-8')
+      - name: Commit patched site
+        shell: bash
+        run: |
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add index.html VERSION
+          git commit -m "Fix sidebar white screen and bump version to 0.387"
+          git push
