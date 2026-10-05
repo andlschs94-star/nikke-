@@ -2143,7 +2143,7 @@ body.drop-rate-view #kpis{
 #commonUnusedModal .exclude-list{max-height:52vh}
 </style>
 </head><body>
-<div class="site-version-corner">VERSION 0.351</div><div class="sidebar-hitarea" id="sidebarHitarea" aria-label="메뉴 열기" title="왼쪽 메뉴 열기"></div>
+<div class="site-version-corner">VERSION 0.352</div><div class="sidebar-hitarea" id="sidebarHitarea" aria-label="메뉴 열기" title="왼쪽 메뉴 열기"></div>
 <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
 <div class="app"><aside class="sidebar" id="sidebar"><div class="brand"><div class="logo">N</div><div><h1>NIKKE Gear Manager</h1><p>장비·성장 현황 관리</p></div></div><div class="nav"><button type="button" class="active main-view-nav" data-view="characters" onclick="switchMainView('characters')">캐릭터 관리</button><button type="button" class="main-view-nav" data-view="outpost" onclick="switchMainView('outpost')">전초기지 생산량</button><button type="button" class="main-view-nav" data-view="sole" onclick="switchMainView('sole')">솔레점수기록</button></div><div class="section" style="font-size:11px;color:#6f7b96;line-height:1.6">현재는 캐릭터 관리 기능을 제공합니다.<br>다른 관리 기능은 설정 메뉴에서 사용할 수 있습니다.</div></aside>
 <main class="main"><div class="topbar"><div><div class="eyebrow">NIKKE / INVENTORY</div><h2 id="pageTitle">캐릭터 장비 현황</h2></div><div class="actions account-switcher"><button type="button" class="btn blsync-top-btn" onclick="openBlablalinkSyncGuide()">계정 동기화</button><button type="button" class="btn account-switch-btn active" data-account="계정1" onclick="switchAccount(ACCOUNTS[0])">계정1</button><button type="button" class="btn account-switch-btn" data-account="계정2" onclick="switchAccount(ACCOUNTS[1])">계정2</button><div class="settings-wrap"><button type="button" class="settings-btn" id="settingsBtn" aria-label="설정" title="설정" onclick="toggleSettingsMenu(event)">⚙</button></div></div></div><div class="settings-popover" id="settingsPopover" hidden>
@@ -3074,13 +3074,29 @@ function renderCommonUnusedQuickFilters(){
   if(!box)return;
   const companies=['엘리시온','미실리스','테트라','필그림','어브노멀'];
   const classes=['화력형','방어형','지원형'];
-  const make=(label,key,values)=>'<div class="quick-filter-group"><span class="quick-filter-title">'+label+'</span>'+
-    values.map(v=>'<button type="button" class="quick-filter-btn '+(key==='valid'?'valid-selected ':'')+(key==='company'?'company-'+v+' ':'')+(key==='class'?'class-'+v+' ':'')+(key==='valid'&&commonUnusedModalFilters.valid?'active':key!=='valid'&&commonUnusedModalFilters[key].has(v)?'active':'')+'" onclick="toggleCommonUnusedModalFilter('+JSON.stringify(key)+','+JSON.stringify(v)+')">'+esc(v==='selected'?'유효만':v)+'</button>').join('')+
-    '</div>';
+  const make=(label,key,values)=>{
+    const buttons=values.map(v=>{
+      const active=key==='valid' ? commonUnusedModalFilters.valid : commonUnusedModalFilters[key].has(v);
+      return '<button type="button" class="quick-filter-btn '+(key==='valid'?'valid-selected ':'')+(key==='company'?'company-'+v+' ':'')+(key==='class'?'class-'+v+' ':'')+(active?'active':'')+'" data-common-unused-key="'+esc(key)+'" data-common-unused-value="'+esc(v)+'">'+esc(v==='selected'?'유효만':v)+'</button>';
+    }).join('');
+    return '<div class="quick-filter-group"><span class="quick-filter-title">'+esc(label)+'</span>'+buttons+'</div>';
+  };
   box.innerHTML=make('유효','valid',['selected'])+
     '<span class="quick-filter-divider"></span>'+make('기업','company',companies)+
     '<span class="quick-filter-divider"></span>'+make('클래스','class',classes)+
-    '<span class="quick-filter-divider"></span><button type="button" class="quick-filter-btn" onclick="resetCommonUnusedModalFilters()">필터 초기화</button>';
+    '<span class="quick-filter-divider"></span><button type="button" class="quick-filter-btn" id="commonUnusedFilterResetBtn">필터 초기화</button>';
+  box.querySelectorAll('[data-common-unused-key]').forEach(btn=>{
+    btn.addEventListener('click',e=>{
+      e.preventDefault();
+      e.stopPropagation();
+      toggleCommonUnusedModalFilter(btn.dataset.commonUnusedKey,btn.dataset.commonUnusedValue);
+    });
+  });
+  document.getElementById('commonUnusedFilterResetBtn')?.addEventListener('click',e=>{
+    e.preventDefault();
+    e.stopPropagation();
+    resetCommonUnusedModalFilters();
+  });
 }
 function toggleCommonUnusedModalFilter(key,value){
   if(key==='valid'){
