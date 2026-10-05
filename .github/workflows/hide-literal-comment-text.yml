@@ -1,0 +1,37 @@
+name: Hide stray literal comment text
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  patch:
+    if: "!contains(github.event.head_commit.message, 'Hide stray literal comment text')"
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - name: Hide only the stray visible text
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          p = Path('index.html')
+          s = p.read_text(encoding='utf-8')
+          marker = '/* hide stray literal comment text v1 */'
+          if marker not in s:
+              injection = '''<script>\n/* hide stray literal comment text v1 */\n(function(){\n  var re = /^\\s*(?:\\\\n)?\\s*\\/\\*\\s*\\*\\/\\s*(?:\\\\n)?\\s*$/;\n  var w = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);\n  var n;\n  while (n = w.nextNode()) {\n    if (re.test(n.nodeValue || '')) n.nodeValue = '';\n  }\n})();\n</script>'''
+              if '</body>' in s:
+                  s = s.replace('</body>', injection + '\n</body>', 1)
+              else:
+                  s += '\n' + injection + '\n'
+              p.write_text(s, encoding='utf-8')
+          PY
+      - name: Commit patch
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add index.html
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m 'Hide stray literal comment text'
+          git push
