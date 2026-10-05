@@ -1,0 +1,90 @@
+name: Fix dark gear contrast
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+
+jobs:
+  fix:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Inject stronger dark gear colors
+        shell: python
+        run: |
+          from pathlib import Path
+          p = Path('index.html')
+          s = p.read_text(encoding='utf-8')
+          css = '''<style id="dark-gear-contrast-fix">
+          /* Dark theme gear contrast: make status blocks clearly separated from the page background. */
+          html.dark-theme .gear-part {
+            background:#182338!important;
+            border-color:#52627f!important;
+            color:#f1f5ff!important;
+          }
+          html.dark-theme .gear-part .part-name {
+            color:#f1f5ff!important;
+          }
+          html.dark-theme .gear-part .part-state {
+            color:#dce7f8!important;
+          }
+          html.dark-theme .gear-part.equipped {
+            background:#1a2940!important;
+            border-color:#5c6f8d!important;
+          }
+          html.dark-theme .gear-part.equipped .part-state {
+            color:#d7e4f5!important;
+          }
+          html.dark-theme .gear-part.missing {
+            background:#202b3e!important;
+            border-color:#66748d!important;
+            border-style:dashed!important;
+            opacity:1!important;
+          }
+          html.dark-theme .gear-part.missing .part-name,
+          html.dark-theme .gear-part.missing .part-state {
+            color:#dbe5f3!important;
+          }
+          html.dark-theme .gear-part.overload {
+            background:#302650!important;
+            border-color:#a98cff!important;
+            box-shadow:inset 0 0 0 1px rgba(203,188,255,.22),0 0 8px rgba(155,124,255,.12)!important;
+          }
+          html.dark-theme .gear-part.overload .part-name,
+          html.dark-theme .gear-part.overload .part-state {
+            color:#e4d9ff!important;
+          }
+          html.dark-theme .gear-part.company {
+            background:#1c3a2b!important;
+            border-color:#69bd8a!important;
+          }
+          html.dark-theme .gear-part.company .part-name,
+          html.dark-theme .gear-part.company .part-state {
+            color:#b9f0cd!important;
+          }
+          html.dark-theme .gear-part.other {
+            background:#3a222b!important;
+            border-color:#db7d8d!important;
+          }
+          html.dark-theme .gear-part.other .part-name,
+          html.dark-theme .gear-part.other .part-state {
+            color:#ffd1d8!important;
+          }
+          </style>'''
+          if 'id="dark-gear-contrast-fix"' not in s:
+              s = s.replace('</head>', css + '\n</head>', 1)
+          p.write_text(s, encoding='utf-8')
+      - name: Commit and remove workflow
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html
+          git rm .github/workflows/fix-dark-gear-contrast.yml
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m "Fix dark theme gear contrast"
+          git push
