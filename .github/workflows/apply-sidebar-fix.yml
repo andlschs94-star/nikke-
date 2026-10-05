@@ -1,0 +1,63 @@
+name: Apply sidebar fix
+on:
+  push:
+    branches: [main]
+permissions:
+  contents: write
+jobs:
+  fix:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Apply fix and bump version
+        shell: python
+        run: |
+          from pathlib import Path
+          import re
+          p=Path('index.html')
+          s=p.read_text(encoding='utf-8')
+          css='''<style id="sidebar-final-fix-v0386">
+          /* v0.386: sidebar is click-only; never react to mouse movement */
+          .sidebar{pointer-events:auto!important;}
+          .sidebar:hover{transform:translateX(calc(-100% + 14px))!important;}
+          .sidebar.sidebar-open{transform:translateX(0)!important;pointer-events:auto!important;}
+          .sidebar.open{transform:translateX(0)!important;pointer-events:auto!important;}
+          .sidebar-peek-tab{pointer-events:auto!important;position:absolute!important;right:-14px!important;z-index:2000!important;}
+          </style>
+          <script>
+          (function(){
+            function initSidebar(){
+              const sb=document.querySelector('.sidebar');
+              if(!sb||sb.dataset.clickOnlyFixed==='1')return;
+              sb.dataset.clickOnlyFixed='1';
+              let tab=sb.querySelector('.sidebar-peek-tab');
+              if(!tab){
+                tab=document.createElement('button');
+                tab.type='button'; tab.className='sidebar-peek-tab'; tab.textContent='☰';
+                sb.appendChild(tab);
+              }
+              function open(){sb.classList.add('sidebar-open');}
+              function close(){sb.classList.remove('sidebar-open');}
+              tab.addEventListener('click',function(e){e.preventDefault();e.stopPropagation(); if(sb.classList.contains('sidebar-open')||sb.classList.contains('open')) close(); else open();});
+              document.addEventListener('click',function(e){if(sb.classList.contains('sidebar-open')&&!sb.contains(e.target))close();});
+            }
+            if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',initSidebar);else initSidebar();
+          })();
+          </script>'''
+          if 'sidebar-final-fix-v0386' not in s:
+              s=s.replace('</body>',css+'</body>',1)
+          s=re.sub(r'VERSION\s+0\.385','VERSION 0.386',s, count=1)
+          # Keep any visible v0.xxx marker in source synchronized.
+          s=re.sub(r'v0\.385','v0.386',s)
+          p.write_text(s,encoding='utf-8')
+          Path('VERSION').write_text('0.386\n',encoding='utf-8')
+      - name: Commit
+        shell: bash
+        run: |
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add index.html VERSION
+          git diff --cached --quiet && exit 0
+          git commit -m "Fix sidebar click behavior and bump version to 0.386"
+          git push
