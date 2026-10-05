@@ -1,18 +1,53 @@
-name: Fix sidebar white screen
+name: Fix sidebar and light mode colors
 on: push
 permissions:
   contents: write
 jobs:
   fix:
+    if: github.actor != 'github-actions[bot]'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - name: Patch site
+        shell: bash
         run: |
-          python3 -c "from pathlib import Path; p=Path('index.html'); s=p.read_text(encoding='utf-8'); marker='sidebar-white-screen-fix-v0387'; patch='<style id=\"sidebar-white-screen-fix-v0387\">.sidebar{z-index:99999!important;position:fixed!important;top:0!important;left:0!important;height:100vh!important}.sidebar.open{transform:translateX(0)!important;pointer-events:auto!important}.sidebar-backdrop,[class*=\"sidebar-backdrop\"]{display:none!important;visibility:hidden!important;opacity:0!important;pointer-events:none!important;background:transparent!important}.main{display:block!important;visibility:visible!important;opacity:1!important;filter:none!important;min-height:100vh!important;background:var(--bg)!important}.app{min-height:100vh!important;background:var(--bg)!important}</style>'; s=s if marker in s else s.replace('</head>',patch+'</head>',1); p.write_text(s,encoding='utf-8')"
-          printf '0.387\n' > VERSION
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+          p=Path('index.html')
+          s=p.read_text(encoding='utf-8')
+          marker='sidebar-white-screen-fix-v0388'
+          patch='''<style id="sidebar-white-screen-fix-v0388">
+          .sidebar{z-index:99999!important;position:fixed!important;top:0!important;left:0!important;height:100vh!important}
+          .sidebar.open{transform:translateX(0)!important;pointer-events:auto!important}
+          .sidebar-backdrop,[class*="sidebar-backdrop"]{display:none!important;visibility:hidden!important;opacity:0!important;pointer-events:none!important;background:transparent!important}
+          .main{display:block!important;visibility:visible!important;opacity:1!important;filter:none!important;min-height:100vh!important;background:var(--bg)!important}
+          .app{min-height:100vh!important;background:var(--bg)!important}
+          body.drop-rate-view:not(.dark-theme) #app,
+          body.drop-rate-view:not(.dark-theme) .app,
+          body.drop-rate-view:not(.dark-theme) .main,
+          body.drop-rate-view:not(.dark-theme) main,
+          body.drop-rate-view:not(.dark-theme) .content,
+          body.drop-rate-view:not(.dark-theme) .section,
+          body.drop-rate-view:not(.dark-theme) .drop-rate-accordion,
+          body.drop-rate-view:not(.dark-theme) .drop-rate-panel,
+          body.drop-rate-view:not(.dark-theme) .drop-rate-section{background:#dcecf7!important}
+          </style>'''
+          if marker not in s:
+              s=s.replace('</head>',patch+'</head>',1)
+          p.write_text(s,encoding='utf-8')
+          vf=Path('VERSION')
+          old=vf.read_text(encoding='utf-8').strip() if vf.exists() else '0.387'
+          m=re.fullmatch(r'(\d+)\.(\d+)',old)
+          new=f'{m.group(1)}.{int(m.group(2))+1:03d}' if m else '0.388'
+          vf.write_text(new+'\n',encoding='utf-8')
+          # Synchronize hard-coded visible version only when it is the previous version.
+          s=re.sub(r'(?<![0-9])0\.387(?![0-9])',new,s)
+          p.write_text(s,encoding='utf-8')
+          print('version',old,'->',new)
+          PY
           git config user.name github-actions[bot]
           git config user.email 41898282+github-actions[bot]@users.noreply.github.com
           git add index.html VERSION
-          git diff --cached --quiet || git commit -m "fix: sidebar overlay and version 0.387"
+          git diff --cached --quiet || git commit -m "fix: light mode section colors and sidebar overlay"
           git push
