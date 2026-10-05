@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="ko"><head><!-- GitHub Pages deployment refresh 0.317 --><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<html lang="ko"><head><!-- GitHub Pages deployment refresh 0.318 --><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>NIKKE Gear Manager</title>
 <style>
 :root{--bg:#080d19;--panel:#0f1729;--panel2:#111c32;--line:#26324b;--text:#edf2ff;--muted:#8490aa;--accent:#927dff;--good:#47d7c7;--danger:#ff6c86}
@@ -450,8 +450,289 @@ tbody tr:hover td{background:rgba(155,135,255,.045)!important}
   .panel-head{padding:10px 11px}
   .searchbar input{width:100%!important}
 }
+
+/* v0.318 major visual redesign — soft glass game-inventory dashboard */
+:root{
+  --bg:#080b14;
+  --panel:rgba(17,24,40,.72);
+  --panel-solid:#10182a;
+  --panel-soft:rgba(24,33,53,.58);
+  --line:rgba(94,112,148,.24);
+  --line-strong:rgba(121,139,177,.34);
+  --text:#f4f6ff;
+  --muted:#8995ad;
+  --accent:#aa98ff;
+  --accent-deep:#6f5dd3;
+  --good:#6edbd0;
+  --warning:#f3c66e;
+  --danger:#ff7893;
+}
+html,body{min-height:100%;background:#080b14}
+body{
+  background:
+    radial-gradient(1000px 600px at 78% -12%,rgba(137,115,255,.18),transparent 60%),
+    radial-gradient(800px 520px at 0% 35%,rgba(77,211,200,.055),transparent 62%),
+    linear-gradient(180deg,#090c16 0%,#070910 100%);
+  color:var(--text);
+}
+body::before{
+  content:"";position:fixed;inset:0;pointer-events:none;
+  background:radial-gradient(circle at 50% 0,rgba(255,255,255,.025),transparent 42%);
+  z-index:-1;
+}
+.app{min-height:100vh;display:flex;gap:14px;padding:14px}
+.sidebar{
+  width:236px;min-width:236px;height:calc(100vh - 28px);
+  position:sticky;top:14px;
+  padding:18px 12px;
+  border:1px solid rgba(105,122,157,.24);
+  border-radius:22px;
+  background:
+    linear-gradient(180deg,rgba(18,26,44,.84),rgba(10,15,26,.92));
+  box-shadow:0 22px 60px rgba(0,0,0,.27),inset 0 1px 0 rgba(255,255,255,.025);
+  backdrop-filter:blur(24px);
+  -webkit-backdrop-filter:blur(24px);
+  overflow:hidden;
+}
+.sidebar::before{
+  content:"";position:absolute;left:18px;right:18px;top:0;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(183,167,255,.7),transparent);
+  opacity:.7;
+}
+.brand{padding:4px 5px;margin-bottom:26px;gap:11px}
+.logo{
+  width:44px;height:44px;border-radius:14px;
+  background:linear-gradient(145deg,#6e5be0,#ae9cff);
+  box-shadow:0 10px 28px rgba(125,102,238,.28),inset 0 1px 0 rgba(255,255,255,.25);
+}
+.brand h1{font-size:14px;letter-spacing:-.035em}
+.brand p{margin-top:3px;color:#737f98;font-size:9px}
+.nav{display:grid;gap:6px}
+.nav button{
+  position:relative;display:flex;align-items:center;
+  width:100%;height:44px;padding:0 13px;margin:0;
+  border:1px solid transparent;border-radius:12px;
+  background:transparent;color:#8e9ab2;
+  font-size:11px;font-weight:850;text-align:left;
+  transition:background .18s ease,border-color .18s ease,color .18s ease,transform .18s ease;
+}
+.nav button:hover{background:rgba(255,255,255,.035);border-color:rgba(114,131,167,.18);color:#e3e8f5;transform:translateX(1px)}
+.nav button.active{
+  background:linear-gradient(100deg,rgba(170,152,255,.19),rgba(170,152,255,.045));
+  border-color:rgba(154,136,235,.36);
+  color:#fff;
+  box-shadow:inset 3px 0 0 var(--accent),0 12px 28px rgba(0,0,0,.16);
+}
+.nav button.active::after{
+  content:"";position:absolute;right:13px;top:50%;
+  width:6px;height:6px;border-radius:50%;transform:translateY(-50%);
+  background:#b8a9ff;box-shadow:0 0 14px rgba(184,169,255,.8);
+}
+.sidebar .section{
+  margin-top:20px!important;padding:12px 8px;
+  border-top:1px solid rgba(93,108,140,.16);
+  color:#69758d!important;line-height:1.7!important;
+}
+.main{padding:0 6px 16px 0;min-width:0}
+.topbar{
+  margin:0 8px 14px 8px;
+  padding:18px 20px;
+  border:1px solid rgba(91,108,143,.2);
+  border-radius:18px;
+  background:rgba(13,19,32,.62);
+  box-shadow:0 16px 42px rgba(0,0,0,.18),inset 0 1px 0 rgba(255,255,255,.025);
+  backdrop-filter:blur(20px);
+  -webkit-backdrop-filter:blur(20px);
+}
+.topbar::after{display:none}
+.eyebrow{font-size:9px;font-weight:900;color:#78859e;letter-spacing:.19em}
+.topbar h2{margin-top:5px;font-size:27px;letter-spacing:-.055em}
+.actions{gap:6px}
+.actions .btn,.manage-btn,.detail-column-btn,.unused-view-btn,.unowned-view-btn,.common-unused-btn{
+  height:34px!important;padding:0 11px!important;
+  border-radius:10px!important;
+  border:1px solid rgba(93,111,149,.28)!important;
+  background:rgba(10,16,28,.6)!important;
+  color:#b9c4d8!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.02);
+}
+.actions .btn:hover,.manage-btn:hover,.detail-column-btn:hover,.unused-view-btn:hover,.unowned-view-btn:hover,.common-unused-btn:hover{
+  background:rgba(28,38,61,.78)!important;border-color:rgba(139,123,228,.46)!important;
+  color:#fff!important;
+}
+.account-switch-btn.active{
+  background:linear-gradient(180deg,rgba(89,72,161,.66),rgba(50,40,99,.64))!important;
+  border-color:rgba(166,148,255,.58)!important;color:#fff!important;
+  box-shadow:0 8px 22px rgba(63,48,139,.18),inset 0 1px 0 rgba(255,255,255,.08);
+}
+.kpis{
+  gap:12px;padding:0 14px 14px;
+}
+.kpi{
+  border:1px solid rgba(93,111,149,.22);
+  border-radius:16px;padding:15px 16px;
+  background:linear-gradient(180deg,rgba(19,28,47,.75),rgba(11,17,30,.78));
+  box-shadow:0 15px 38px rgba(0,0,0,.14),inset 0 1px 0 rgba(255,255,255,.025);
+  backdrop-filter:blur(18px);
+}
+.kpi .label{font-size:9px;color:#7e8aa3;letter-spacing:.07em}
+.kpi .value{margin-top:5px;font-size:25px;letter-spacing:-.04em}
+.panel{
+  margin:0 8px 20px;
+  border-radius:18px;
+  border:1px solid rgba(93,111,149,.24);
+  background:rgba(10,16,29,.72);
+  box-shadow:0 22px 62px rgba(0,0,0,.19),inset 0 1px 0 rgba(255,255,255,.018);
+  backdrop-filter:blur(18px);
+  -webkit-backdrop-filter:blur(18px);
+  overflow:hidden;
+}
+.panel-head{
+  min-height:62px;padding:12px 14px;
+  border-bottom:1px solid rgba(92,108,141,.18);
+  background:linear-gradient(180deg,rgba(22,32,52,.66),rgba(13,20,34,.52));
+}
+.panel-head-title h3{font-size:15px;letter-spacing:-.035em}
+.panel-head-title small{font-size:9px;color:#74809a}
+.panel-head-left-tools{gap:6px}
+.searchbar input{
+  width:280px!important;height:36px!important;padding:0 13px!important;
+  border:1px solid rgba(93,111,149,.26)!important;border-radius:11px!important;
+  background:rgba(7,12,21,.7)!important;color:#eef3ff!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.02);
+}
+.searchbar input:focus{
+  border-color:rgba(164,146,255,.62)!important;
+  box-shadow:0 0 0 3px rgba(151,133,245,.09)!important;
+}
+.quick-filter-bar{
+  padding:8px 12px;
+  background:rgba(7,12,21,.58);
+  border-bottom:1px solid rgba(92,108,141,.15);
+}
+.quick-filter-title{font-size:9px;color:#6e7a92}
+.quick-filter-btn{
+  padding:6px 9px;border-radius:8px;
+  background:rgba(11,18,31,.72);border-color:rgba(83,101,138,.28);color:#99a6bc;
+}
+.quick-filter-btn:hover{background:rgba(23,32,52,.82)}
+.quick-filter-btn.active{
+  background:linear-gradient(180deg,rgba(82,67,146,.52),rgba(47,39,87,.48));
+  border-color:rgba(158,141,245,.52);color:#fff;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.05),0 6px 16px rgba(0,0,0,.1);
+}
+.table-wrap{background:transparent}
+#characterPanel .table-wrap{min-height:calc(100vh - 300px)}
+table{min-width:1080px}
+th,td{padding:10px 9px;font-size:11px}
+th{
+  background:rgba(15,24,41,.9);color:#8b98b0;
+  border-bottom:1px solid rgba(99,118,155,.23);
+  box-shadow:0 1px 0 rgba(255,255,255,.02);
+}
+tbody tr{transition:transform .14s ease}
+tbody tr:nth-child(even) td{background:rgba(16,24,40,.15)}
+tbody tr:hover{transform:translateY(-1px)}
+tbody tr:hover td{background:rgba(154,137,246,.045)!important;border-bottom-color:rgba(119,105,187,.2)}
+.name-btn{font-size:11.5px}
+.tag{
+  padding:4px 8px;border-radius:999px;
+  background:rgba(18,28,46,.62);border-color:rgba(91,110,149,.3);
+  font-size:9px;
+}
+.gear-part{
+  min-height:34px!important;
+  border-color:rgba(80,99,137,.3)!important;
+  background:rgba(8,14,24,.62)!important;
+  border-radius:9px!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.015);
+}
+.gear-part:hover{
+  border-color:rgba(132,151,190,.55)!important;
+  background:rgba(20,29,47,.82)!important;
+}
+.valid-toggle,.unused-status-toggle{border-radius:8px!important}
+.unused-status-toggle.active{
+  background:linear-gradient(180deg,rgba(125,57,79,.6),rgba(74,34,49,.62))!important;
+  border-color:rgba(196,104,130,.66)!important;color:#ffdbe3!important;
+}
+.unused-status-toggle.unowned{
+  background:linear-gradient(180deg,rgba(116,84,36,.58),rgba(67,48,22,.64))!important;
+  border-color:rgba(210,161,81,.64)!important;color:#ffe3ad!important;
+}
+.common-unused-btn{
+  background:linear-gradient(180deg,rgba(55,44,101,.64),rgba(31,25,56,.64))!important;
+  border-color:rgba(131,113,209,.48)!important;color:#ded6ff!important;
+}
+.common-unused-btn::before{
+  width:5px;height:5px;background:#b7a7ff;
+  box-shadow:0 0 10px rgba(183,167,255,.8);
+}
+.unused-view-btn.active{
+  background:linear-gradient(180deg,rgba(121,54,78,.62),rgba(64,30,44,.68))!important;
+  border-color:rgba(195,101,129,.64)!important;color:#ffdce5!important;
+}
+.unowned-view-btn.active{
+  background:linear-gradient(180deg,rgba(119,88,38,.62),rgba(65,47,22,.7))!important;
+  border-color:rgba(211,165,88,.64)!important;color:#ffe5b2!important;
+}
+.column-filter-popover,.settings-popover,.filter-modal-card,.drawer-card,.exclude-modal,.backup-code-card{
+  background:rgba(13,21,37,.94);
+  border:1px solid rgba(89,109,148,.35);
+  border-radius:16px;
+  box-shadow:0 30px 90px rgba(0,0,0,.58),inset 0 1px 0 rgba(255,255,255,.025);
+  backdrop-filter:blur(26px);
+}
+.column-filter-option{
+  background:rgba(8,14,24,.66);border-color:rgba(83,102,140,.26);border-radius:9px;
+}
+.column-filter-option.active{
+  background:rgba(66,53,119,.54);border-color:rgba(159,140,244,.54);
+}
+.settings-action,.btn{border-radius:9px}
+.sole-score-card{
+  border-radius:16px;
+  border-color:rgba(91,110,149,.24);
+  background:linear-gradient(180deg,rgba(18,27,46,.72),rgba(10,16,28,.75));
+  box-shadow:0 14px 38px rgba(0,0,0,.14);
+}
+.sole-score-card-head{
+  background:linear-gradient(180deg,rgba(25,36,58,.68),rgba(14,22,37,.52));
+  border-bottom-color:rgba(92,108,141,.18);
+}
+.sole-score-add-btn{
+  border-radius:9px!important;
+  background:rgba(14,21,35,.72)!important;
+}
+.outpost-calc,.outpost-production-collapse{
+  border-radius:16px;
+  border-color:rgba(91,110,149,.24);
+  box-shadow:0 16px 42px rgba(0,0,0,.14);
+}
+.outpost-calc-head,.outpost-production-toggle{
+  background:linear-gradient(180deg,rgba(23,34,55,.68),rgba(14,22,37,.55));
+}
+.site-version-corner{opacity:.72}
+@media(max-width:1000px){
+  .app{padding:10px;gap:10px}.sidebar{width:220px;min-width:220px;height:calc(100vh - 20px);top:10px}
+  .main{padding-right:0}.topbar{margin-left:4px;margin-right:4px}
+  .panel{margin-left:4px;margin-right:4px}
+  .kpis{padding-left:8px;padding-right:8px}
+}
+@media(max-width:650px){
+  .app{display:block;padding:8px}.sidebar{position:fixed;left:8px;top:8px;height:calc(100vh - 16px);width:236px;min-width:236px;border-radius:20px;transform:translateX(-120%);transition:transform .22s ease;z-index:121}
+  .sidebar.open{transform:translateX(0)}
+  .main{padding:0}.topbar{margin:0 0 10px;padding:15px 14px;border-radius:15px}
+  .topbar h2{font-size:23px}.kpis{padding:0 0 10px;display:grid;grid-template-columns:1fr 1fr}
+  .panel{margin:0 0 12px;border-radius:14px}.panel-head{padding:10px 10px}
+  .searchbar input{width:100%!important}
+  #characterPanel .table-wrap{min-height:calc(100vh - 365px)}
+}
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{scroll-behavior:auto!important;transition-duration:.01ms!important}
+}
 </style></head><body>
-<div class="site-version-corner">VERSION 0.317</div><div class="sidebar-hitarea" id="sidebarHitarea" aria-label="메뉴 열기" title="왼쪽 메뉴 열기"></div>
+<div class="site-version-corner">VERSION 0.318</div><div class="sidebar-hitarea" id="sidebarHitarea" aria-label="메뉴 열기" title="왼쪽 메뉴 열기"></div>
 <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
 <div class="app"><aside class="sidebar" id="sidebar"><div class="brand"><div class="logo">N</div><div><h1>NIKKE Gear Manager</h1><p>장비·성장 현황 관리</p></div></div><div class="nav"><button type="button" class="active main-view-nav" data-view="characters" onclick="switchMainView('characters')">캐릭터 관리</button><button type="button" class="main-view-nav" data-view="outpost" onclick="switchMainView('outpost')">전초기지 생산량</button><button type="button" class="main-view-nav" data-view="sole" onclick="switchMainView('sole')">솔레점수기록</button></div><div class="section" style="font-size:11px;color:#6f7b96;line-height:1.6">현재는 캐릭터 관리 기능을 제공합니다.<br>다른 관리 기능은 설정 메뉴에서 사용할 수 있습니다.</div></aside>
 <main class="main"><div class="topbar"><div><div class="eyebrow">NIKKE / INVENTORY</div><h2 id="pageTitle">캐릭터 장비 현황</h2></div><div class="actions account-switcher"><button type="button" class="btn blsync-top-btn" onclick="openBlablalinkSyncGuide()">계정 동기화</button><button type="button" class="btn account-switch-btn active" data-account="계정1" onclick="switchAccount(ACCOUNTS[0])">계정1</button><button type="button" class="btn account-switch-btn" data-account="계정2" onclick="switchAccount(ACCOUNTS[1])">계정2</button><div class="settings-wrap"><button type="button" class="settings-btn" id="settingsBtn" aria-label="설정" title="설정" onclick="toggleSettingsMenu(event)">⚙</button></div></div></div><div class="settings-popover" id="settingsPopover" hidden>
