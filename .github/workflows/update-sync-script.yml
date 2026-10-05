@@ -1,0 +1,30 @@
+name: Update sync script metadata
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Update sync scripts
+        run: |
+          set -e
+          for file in blablalink-sync-v1.0.23.user.js blablalink-sync.user.js; do
+            if [ -f "$file" ]; then
+              sed -i 's/andlschs94-star/nikkegear885/g' "$file"
+              sed -i 's/@version      1\.0\.23/@version      1.0.24/' "$file"
+              git add "$file"
+            fi
+          done
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          if ! git diff --cached --quiet; then
+            git commit -m 'Update BlablaLink sync script for new username'
+            git push
+          fi
