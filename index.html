@@ -4485,20 +4485,7 @@ function startBlablalinkSync(targetAccount){
   },700);
   setTimeout(()=>{if(blSyncTimer){clearInterval(blSyncTimer);blSyncTimer=null}},120000);
 }
-window.addEventListener('message',e=>{
-  const d=e&&e.data;
-  if(!d||typeof d!=='object')return;
-  let host='';
-  try{host=new URL(e.origin).hostname}catch(_){}
-  const fromBlabla=host==='blablalink.com'||host.endsWith('.blablalink.com');
-  if(!fromBlabla||e.source!==blSyncPopup)return;
-  if(d.type==='NIKKE_GM_BL_READY'){
-    try{e.source.postMessage({type:'NIKKE_GM_BL_HELLO',token:blSyncToken,targetOrigin:BL_SYNC_SITE_ORIGIN},e.origin)}catch(_){}
-    setBlSyncStatus('BlablaLink 세션 확인 중…');
-    return;
-  }
-  if(d.type!=='NIKKE_GM_BL_SYNC_RESULT'||String(d.token||'')!==String(blSyncToken||''))return;
-  if(blSyncTimer){clearInterval(blSyncTimer);blSyncTimer=null}
+function applyBlablalinkSyncPayload(p,targetAccount){
   const p=d.payload||{};
   if(!p.ok){setBlSyncStatus('동기화 실패: '+String(p.error||'알 수 없는 오류'));return}
   // 동기화를 시작한 계정에만 결과를 적용합니다.
@@ -4630,6 +4617,24 @@ window.addEventListener('message',e=>{
   closeBlablalinkSyncGuide();
   const unresolved=Array.isArray(p.unresolved)?p.unresolved.length:0;
   toast('BlablaLink 동기화 완료 · '+matched+'명 반영 · '+changed+'개 부위 변경'+(unresolved?' · 미매칭 '+unresolved+'명':''));
+}
+window.__NIKKE_GM_APPLY_SYNC__=applyBlablalinkSyncPayload;
+
+window.addEventListener('message',e=>{
+  const d=e&&e.data;
+  if(!d||typeof d!=='object')return;
+  let host='';
+  try{host=new URL(e.origin).hostname}catch(_){}
+  const fromBlabla=host==='blablalink.com'||host.endsWith('.blablalink.com');
+  if(!fromBlabla||e.source!==blSyncPopup)return;
+  if(d.type==='NIKKE_GM_BL_READY'){
+    try{e.source.postMessage({type:'NIKKE_GM_BL_HELLO',token:blSyncToken,targetOrigin:BL_SYNC_SITE_ORIGIN},e.origin)}catch(_){}
+    setBlSyncStatus('BlablaLink 세션 확인 중…');
+    return;
+  }
+  if(d.type!=='NIKKE_GM_BL_SYNC_RESULT'||String(d.token||'')!==String(blSyncToken||''))return;
+  if(blSyncTimer){clearInterval(blSyncTimer);blSyncTimer=null}
+  applyBlablalinkSyncPayload(d.payload||{},blSyncAccount);
 });
 
 const DROP_RATES={1:35,2:36.5,3:51,4:53,5:55,6:70,7:85,8:90,9:100};
@@ -6434,7 +6439,7 @@ html.dark-theme #outpostPanel .outpost-final-stage-btn{
   object-position:center;
   border-radius:50%;
 }
-</style><script src="profile-import-button.js?v=1.005"></script></body></html>
+</style><script src="profile-import-button.js?v=1.006"></script></body></html>
 <style id="common-unused-power-sort-0356">
 /* v0.356: 미사용 일괄적용 창 바깥 클릭으로 닫기 지원 */
 </style>
