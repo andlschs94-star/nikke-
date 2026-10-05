@@ -1,0 +1,39 @@
+name: Fix drop rate inner colors v0.326
+on:
+  push:
+    paths:
+      - '.github/workflows/fix-drop-rate-colors-v0326.yml'
+permissions:
+  contents: write
+jobs:
+  fix:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Patch site
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          p=Path('index.html')
+          s=p.read_text(encoding='utf-8')
+          css=r'''
+/* v0.326: targeted light styling for corporate equipment acquisition probability controls */
+.drop-rate-accordion select,.drop-rate-accordion button,.drop-rate-accordion .btn,.drop-rate-accordion [role="button"]{background:#f8fcfe!important;color:#203247!important;border:1px solid #bdd6e3!important;box-shadow:none!important}
+.drop-rate-accordion select:hover,.drop-rate-accordion button:hover,.drop-rate-accordion .btn:hover,.drop-rate-accordion [role="button"]:hover{background:#eaf5fa!important;border-color:#8fbfd3!important}
+.drop-rate-accordion select:focus{outline:none;box-shadow:0 0 0 2px rgba(115,179,210,.22)!important}
+.drop-rate-accordion .stage-rate,.drop-rate-accordion .stage-rate-select,.drop-rate-accordion .rate-box,.drop-rate-accordion .drop-rate-detail,.drop-rate-accordion .drop-rate-details{background:#f8fcfe!important;color:#203247!important;border-color:#c4dbe6!important}
+.drop-rate-accordion .rate-value,.drop-rate-accordion .percent{color:#6877d8!important}
+'''
+          if 'v0.326: targeted light styling for corporate equipment acquisition probability controls' not in s:
+              s=s.replace('</style>',css+'\n</style>',1)
+          s=s.replace('0.325','0.326')
+          p.write_text(s,encoding='utf-8')
+          PY
+      - name: Commit site and remove workflow
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add index.html
+          git rm .github/workflows/fix-drop-rate-colors-v0326.yml
+          git commit -m 'Fix dark controls in acquisition probability (v0.326)'
+          git push
