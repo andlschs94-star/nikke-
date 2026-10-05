@@ -10,16 +10,47 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Patch index
-        env:
-          CSS_B64: LyogdjAuMzI2OiBjaGFuZ2UgZGFyayBJTk5FUiB3aW5kb3cvdGFibGUgc3VyZmFjZXMgKi9cbjpyb290e3ctYmctI2Y0ZjlmYztwYW5lbDojZjhmY2ZlO3BhbmVsMjojZWVmNmZhO2xpbmU6I2M4ZGNlNzt0ZXh0OiMxNzI2M2I7bXV0ZWQ6IzcxODQ5YXN9XG5odG1sLGJvZHl7YmFja2dyb3VuZDojZjRmOWZjI3Njc0aW50O2NvbG9yOnZhcigtLXRleHQpfVxuLyogSW5uZXIgdGFibGVzICovXG50YWJsZSx0aGVhZCx0Ym9keSx0cix0ZCx0aHtAYmFja2dyb3VuZDojZjhmY2ZlIWltcG9ydGFudDtjb2xvcjppbmhlcml0fVxuI3t9XG50aGVhZCx0aHtAYmFja2dyb3VuZDojZThmM2Y4IWltcG9ydGFudH1cblxuLm91dHBvc3QtcHJvZHVjdGlvbi1ib2R5LC5vdXRwb3N0LXRhYmxlLXdyYXAsLm91dHBvc3QtdGFibGUsLm91dHBvc3QtY2FsYyxvdXRwb3N0LWNhbGctcHJvZ3Jlc3MsLm91dHBvc3QtbGV2ZWwtY2FyZCwu b3V0cG9zdC1jdXJyZW50LXByb2R1Y3Rpb24sLm91dHBvc3QtY3VycmVudC1wcm9kdWN0aW9uLWl0ZW0sLm91dHBvc3QtY29yZS1oaW50LC5vdXRwb3N0LWNvcmUtYnJlYWtwb2ludC1saXN0LC5vdXRwb3N0LWNvcmUtYnJlYWtwb2ludC1yb3csLmRy b3AtcmF0ZS1ib2R5LC5kcm9wLXJhdGUtY29udGVudCwu b3duZWQtY29ycG9yYXRlLWJvZHksLm93bmVkLWNvcnBvcmF0ZS10YWJsZS13cmFwLC51bnVzZWQtdHJhbnNmZXItYm9keSwucmVxdWlyZWQtZ2Vhci1ib2R5LC5jaGFyYWN0ZXItbGlzdCwuY2hhcmFjdGVyLXRhYmxlLXdyYXAsLmdlYXItemdhcHRhYmxlLXdyYXAsLnBhbmVsLWJvZHksLmNhcmQtYm9keSwubW9kYWwtYm9keSwucG9wdXAtYm9keSwuZHJhd2VyLWJvZHl7YmFja2dyb3VuZDojZjhmY2ZlIWltcG9ydGFudDtjb2xvcjppbmhlcml0IWltcG9ydGFudH1cblxuLm91dHBvc3QtdGFibGUgdHIu b3V0cG9zdC1jb3JlLXRocmVzaG9sZCB0ZHtiYWNrZ3JvdW5kOnJnYmEoMTQ2LDEyNSwyNTUsLjE0KWltcG9ydGFudH1cgpzZWxlY3QsaW5wdXQsdGV4dGFyZWF7YmFja2dyb3VuZDojZmZmIWltcG9ydGFudDtjb2xvcjojMTcyNjNiIWltcG9ydGFudDti b3JkZXItY29sb3I6I2M1ZGJlNiFpbXBvcnRhbnR9
+      - name: Patch drop rate inner controls
         run: |
-          python3 -c "import os,base64;from pathlib import Path;p=Path('index.html');s=p.read_text(encoding='utf-8');css=base64.b64decode(os.environ['CSS_B64'].replace(' ','')).decode();s=s.replace('</style>',css+'</style>',1) if 'v0.326: change dark INNER window/table surfaces' not in s else s;s=s.replace('0.325','0.326');p.write_text(s,encoding='utf-8')"
+          python3 - <<'PY'
+          from pathlib import Path
+          p=Path('index.html')
+          s=p.read_text(encoding='utf-8')
+          css=r'''
+/* v0.326: light inner controls in corporate equipment acquisition probability */
+.drop-rate-accordion select,
+.drop-rate-accordion input,
+.drop-rate-accordion button,
+.drop-rate-accordion .btn,
+.drop-rate-accordion [role="button"]{background:#f8fcfe!important;color:#203247!important;border:1px solid #bdd6e3!important;box-shadow:none!important}
+.drop-rate-accordion select:hover,
+.drop-rate-accordion button:hover,
+.drop-rate-accordion .btn:hover,
+.drop-rate-accordion [role="button"]:hover{background:#eaf5fa!important;border-color:#8fbfd3!important}
+.drop-rate-accordion select:focus{outline:none;box-shadow:0 0 0 2px rgba(115,179,210,.22)!important}
+.drop-rate-accordion .drop-rate-detail,
+.drop-rate-accordion .drop-rate-details,
+.drop-rate-accordion .drop-rate-random-detail,
+.drop-rate-accordion .drop-rate-random-detail-button,
+.drop-rate-accordion .random-corporate-detail,
+.drop-rate-accordion .random-corporate-gear-detail,
+.drop-rate-accordion .stage-rate,
+.drop-rate-accordion .stage-rate-select,
+.drop-rate-accordion .rate-box{background:#f8fcfe!important;color:#203247!important;border-color:#c4dbe6!important}
+.drop-rate-accordion .stage-rate strong,
+.drop-rate-accordion .stage-rate .percent,
+.drop-rate-accordion .rate-value{color:#6877d8!important}
+'''
+          if 'v0.326: light inner controls in corporate equipment acquisition probability' not in s:
+              s=s.replace('</style>',css+'\n</style>',1)
+          s=s.replace('0.325','0.326')
+          p.write_text(s,encoding='utf-8')
+          PY
       - name: Commit and remove workflow
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add index.html
           git rm .github/workflows/fix-inner-dark-surfaces-v0326.yml
-          git commit -m 'Fix inner dark window surfaces (v0.326)'
+          git commit -m 'Fix dark inner controls in acquisition probability (v0.326)'
           git push
