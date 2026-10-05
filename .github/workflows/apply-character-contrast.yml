@@ -1,0 +1,110 @@
+name: Apply character contrast fix
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+
+jobs:
+  fix:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Apply character contrast and bump version
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+
+          p = Path('index.html')
+          s = p.read_text(encoding='utf-8')
+
+          css = r'''<style id="v0378-character-contrast-final">
+          /* v0.378: dark mode character/company/class contrast */
+          html.dark-theme #characterPanel table tbody td:nth-child(2),
+          html.dark-mode #characterPanel table tbody td:nth-child(2),
+          body.dark-theme #characterPanel table tbody td:nth-child(2),
+          body.dark-mode #characterPanel table tbody td:nth-child(2),
+          body.theme-dark #characterPanel table tbody td:nth-child(2),
+          html[data-theme="dark"] #characterPanel table tbody td:nth-child(2),
+          body[data-theme="dark"] #characterPanel table tbody td:nth-child(2),
+          html.dark #characterPanel table tbody td:nth-child(2),
+          body.dark #characterPanel table tbody td:nth-child(2),
+          html.js-dark-detected #characterPanel table tbody td:nth-child(2),
+          body.js-dark-detected #characterPanel table tbody td:nth-child(2) {
+            color:#f5f7ff!important;
+            font-weight:900!important;
+            text-shadow:0 1px 3px rgba(0,0,0,.9)!important;
+          }
+          html.dark-theme #characterPanel table tbody td:nth-child(3),
+          html.dark-mode #characterPanel table tbody td:nth-child(3),
+          body.dark-theme #characterPanel table tbody td:nth-child(3),
+          body.dark-mode #characterPanel table tbody td:nth-child(3),
+          body.theme-dark #characterPanel table tbody td:nth-child(3),
+          html[data-theme="dark"] #characterPanel table tbody td:nth-child(3),
+          body[data-theme="dark"] #characterPanel table tbody td:nth-child(3),
+          html.dark #characterPanel table tbody td:nth-child(3),
+          body.dark #characterPanel table tbody td:nth-child(3),
+          html.js-dark-detected #characterPanel table tbody td:nth-child(3),
+          body.js-dark-detected #characterPanel table tbody td:nth-child(3),
+          html.dark-theme #characterPanel table tbody td:nth-child(4),
+          html.dark-mode #characterPanel table tbody td:nth-child(4),
+          body.dark-theme #characterPanel table tbody td:nth-child(4),
+          body.dark-mode #characterPanel table tbody td:nth-child(4),
+          body.theme-dark #characterPanel table tbody td:nth-child(4),
+          html[data-theme="dark"] #characterPanel table tbody td:nth-child(4),
+          body[data-theme="dark"] #characterPanel table tbody td:nth-child(4),
+          html.dark #characterPanel table tbody td:nth-child(4),
+          body.dark #characterPanel table tbody td:nth-child(4),
+          html.js-dark-detected #characterPanel table tbody td:nth-child(4),
+          body.js-dark-detected #characterPanel table tbody td:nth-child(4) {
+            color:#e5ecfa!important;
+            font-weight:800!important;
+            text-shadow:0 1px 2px rgba(0,0,0,.85)!important;
+          }
+          </style>
+          <script>
+          (function(){
+            function markDark(){
+              var c=getComputedStyle(document.body).color;
+              var m=c.match(/rgba?\\(([^)]+)\\)/);
+              if(!m)return;
+              var p=m[1].split(',').map(Number);
+              var lum=(0.299*p[0]+0.587*p[1]+0.114*p[2]);
+              var dark=lum>150;
+              document.documentElement.classList.toggle('js-dark-detected',dark);
+              document.body.classList.toggle('js-dark-detected',dark);
+            }
+            function init(){markDark();new MutationObserver(markDark).observe(document.documentElement,{attributes:true,attributeFilter:['class','data-theme']});new MutationObserver(markDark).observe(document.body,{attributes:true,attributeFilter:['class','style','data-theme']});}
+            if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
+          })();
+          </script>'''
+
+          if 'v0378-character-contrast-final' not in s:
+              s = s.replace('</head>', css + '</head>', 1)
+
+          version = Path('VERSION').read_text(encoding='utf-8').strip()
+          major, minor = version.split('.')
+          new_version = f'{major}.{int(minor)+1:03d}'
+          s = s.replace('0.377', new_version)
+          s = s.replace('v0.377', 'v' + new_version)
+          p.write_text(s, encoding='utf-8')
+          Path('VERSION').write_text(new_version + '\n', encoding='utf-8')
+          print('VERSION', version, '->', new_version)
+          PY
+
+      - name: Commit changes
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html VERSION
+          git rm -f .github/workflows/apply-character-contrast.yml
+          git commit -m "Fix dark character contrast and bump version"
+          git push
