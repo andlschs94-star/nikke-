@@ -2143,7 +2143,7 @@ body.drop-rate-view #kpis{
 #commonUnusedModal .exclude-list{max-height:52vh}
 </style>
 </head><body>
-<div class="site-version-corner">VERSION 0.350</div><div class="sidebar-hitarea" id="sidebarHitarea" aria-label="메뉴 열기" title="왼쪽 메뉴 열기"></div>
+<div class="site-version-corner">VERSION 0.351</div><div class="sidebar-hitarea" id="sidebarHitarea" aria-label="메뉴 열기" title="왼쪽 메뉴 열기"></div>
 <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
 <div class="app"><aside class="sidebar" id="sidebar"><div class="brand"><div class="logo">N</div><div><h1>NIKKE Gear Manager</h1><p>장비·성장 현황 관리</p></div></div><div class="nav"><button type="button" class="active main-view-nav" data-view="characters" onclick="switchMainView('characters')">캐릭터 관리</button><button type="button" class="main-view-nav" data-view="outpost" onclick="switchMainView('outpost')">전초기지 생산량</button><button type="button" class="main-view-nav" data-view="sole" onclick="switchMainView('sole')">솔레점수기록</button></div><div class="section" style="font-size:11px;color:#6f7b96;line-height:1.6">현재는 캐릭터 관리 기능을 제공합니다.<br>다른 관리 기능은 설정 메뉴에서 사용할 수 있습니다.</div></aside>
 <main class="main"><div class="topbar"><div><div class="eyebrow">NIKKE / INVENTORY</div><h2 id="pageTitle">캐릭터 장비 현황</h2></div><div class="actions account-switcher"><button type="button" class="btn blsync-top-btn" onclick="openBlablalinkSyncGuide()">계정 동기화</button><button type="button" class="btn account-switch-btn active" data-account="계정1" onclick="switchAccount(ACCOUNTS[0])">계정1</button><button type="button" class="btn account-switch-btn" data-account="계정2" onclick="switchAccount(ACCOUNTS[1])">계정2</button><div class="settings-wrap"><button type="button" class="settings-btn" id="settingsBtn" aria-label="설정" title="설정" onclick="toggleSettingsMenu(event)">⚙</button></div></div></div><div class="settings-popover" id="settingsPopover" hidden>
@@ -3063,7 +3063,6 @@ function saveSelectedCharacters(){
   }catch(e){}
 }
 const COMMON_UNUSED_PRESET=["미하라","라피","벨로타","네베","미카","네온","에테르","클레어","파스칼","델타","루드밀라","앵커","아이기스","솔져 E.G.","iDoll 썬","iDoll 플라워","솔져 F.A.","프로덕트 23","프로덕트 12","솔져 O.W.","iDoll 오션","프로덕트 08","도라","키리","소라","앤","E.H.","노벨","메어리","엠마","프림","시그널","K","백학","킬로","N102","퀀시","라이","클레이","아비스타","사쿠라","길티","트로니","질","레오나","아스카","에피넬","토브","엑시아","베스티","니힐리스타","아리아","마스트","소다","에이드","맥","길로틴","율하","마르차나","모리","솔린","D","은화","길로틴 : 윈터 슬레이어","바이퍼","엠마 : 택티컬 업","율리아","레이","신","레이블","폴리","로산나 : 시크 오션","애드미","프리바티 : 언카인드 메이드","스노우 화이트 : 이노센트 데이즈","크로우","브리드","사쿠라 : 블룸 인 서머","일레그","코코아","앤 : 미라클 페어리","퀀시","모더니아","크러스트","메어리","하란","아니스","앨리스 : 원더랜드 바니","미사토","릴리","차임","라푼젤 : 퓨어 그레이스","디젤","유니","도로시","마리","쿠루미","얀","루피","폴크방","라푼젤","메이든","페퍼","노이즈","홍련","은화 : 택티컬 업","벨벳","누아르","델타 : 닌자 시프","네로","블랑","트리나","루마니","자칼","스노우 화이트","루주","에이드 : 에이전트 바니","라플라스","비스킷","아크레인저 블랙","로산나","마나","레이 (가칭)","맥스웰","밀크 : 블루밍 바니","티아","맥스웰 : 오디너리 미케닉","노아","나가","베이","D : 킬러 와이프","앨리스","밀크","볼륨"];
-let commonUnusedSelection=new Set();
 let commonUnusedSelection=new Set();
 let commonUnusedModalFilters={valid:false,company:new Set(),class:new Set()};
 function resetCommonUnusedModalFilters(){
