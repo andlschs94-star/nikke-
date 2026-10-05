@@ -41,3 +41,4 @@ body.sidebar-open .sidebar,body.sidebar-open .sidebar:hover{transform:translateX
           git rm .github/workflows/sidebar-patch-only.yml
           git commit -m "Fix sidebar preserving current page and bump version to 0.387"
           git push
+# retry trigger
