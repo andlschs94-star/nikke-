@@ -4086,6 +4086,30 @@ html.dark-theme #kpis,html.dark-theme .drop-rate-accordion-wrap,html.dark-theme 
 </style>
 <script id="accordion-cleanup-js-v0400">
 (function(){function clean(){if(document.documentElement.classList.contains('dark-theme'))return;var ns=['보유 중인 기업장비 개수','미사용 캐릭터 장비 이동 안내'];document.querySelectorAll('body *').forEach(function(el){if(el.children.length||!el.textContent)return;var t=el.textContent.replace(/\s+/g,' ').trim();if(!ns.some(function(n){return t.indexOf(n)>=0}))return;var p=el.parentElement;for(var i=0;i<6&&p;i++,p=p.parentElement){var b=getComputedStyle(p).backgroundColor;if(b==='rgb(255, 255, 255)'||b==='rgb(249, 252, 254)'||b==='rgb(248, 252, 255)'){p.style.setProperty('background','transparent','important');p.style.setProperty('border-color','transparent','important');p.style.setProperty('box-shadow','none','important')}}})}if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',clean);else clean();setTimeout(clean,200);setTimeout(clean,800)})();
+</script><meta name="pages-refresh-0402" content="force-pages-refresh">
+<script id="pages-version-sync-0402">
+(function(){
+  async function syncVersion(){
+    try{
+      const r=await fetch('VERSION?cb='+Date.now(),{cache:'no-store'});
+      const v=(await r.text()).trim();
+      if(!/^\d+\.\d{3}$/.test(v)) return;
+      document.querySelectorAll('body *').forEach(function(el){
+        if(el.children.length) return;
+        const t=(el.textContent||'').trim();
+        if(/^VERSION\s+\d+\.\d{3}$/.test(t)){
+          el.textContent='VERSION '+v;
+        }
+      });
+      document.title='NIKKE Gear Manager';
+    }catch(e){}
+  }
+  if(document.readyState==='loading'){
+    document.addEventListener('DOMContentLoaded',syncVersion,{once:true});
+  }else{
+    syncVersion();
+  }
+})();
 </script></head><body>
 <div class="site-version-corner">VERSION 0.401</div><div class="sidebar-hitarea" id="sidebarHitarea" aria-label="메뉴 열기" title="왼쪽 메뉴 열기"></div>
 <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
