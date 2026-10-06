@@ -1,3 +1,4 @@
+// GitHub Actions deploy test 2026-10-06
 const ALLOWED_ORIGIN = 'https://nikkegear885.github.io';
 const PROFILE_API = 'https://api.blablalink.com/api/ugc/direct/standalonesite/User/GetUserProfile';
 const TOKEN_TTL_SECONDS = 10 * 60;
