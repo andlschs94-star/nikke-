@@ -129,6 +129,80 @@ const NIKKE_DETAILS_API = 'https://api.blablalink.com/api/game/proxy/Game/GetUse
 const NIKKE_AREAS = Object.freeze([81, 82, 83, 84, 85]);
 const NIKKE_DETAIL_BATCH_SIZE = 40;
 const BLABLALINK_INVALID_TOKEN_CODE = 300001;
+const BL_CHARACTER_ROSTER_URL = 'https://sg-tools-cdn.blablalink.com/yl-57/hd-03/1bf030193826e243c2e195f951a4be00.json';
+const BL_RESOURCE_CDN = 'https://sg-tools-cdn.blablalink.com';
+const BL_RESOURCE_PRIMES = [224737,1000639,2654435761,2654435769,1000621,4294967291];
+
+function md5Hex(input){
+  const s=String(input);
+  const encoder=new TextEncoder();
+  const bytes=Array.from(encoder.encode(s));
+  const originalLength=bytes.length;
+  bytes.push(0x80);
+  while(bytes.length%64!==56) bytes.push(0);
+  const bitLength=originalLength*8;
+  for(let i=0;i<4;i++) bytes.push((bitLength>>>((i)*8))&255);
+  for(let i=0;i<4;i++) bytes.push((Math.floor(bitLength/0x100000000)>>>((i)*8))&255);
+  let a0=0x67452301,b0=0xefcdab89,c0=0x98badcfe,d0=0x10325476;
+  const K=new Array(64);
+  for(let i=0;i<64;i++) K[i]=Math.floor(Math.abs(Math.sin(i+1))*4294967296)>>>0;
+  const S=[
+    7,12,17,22,7,12,17,22,7,12,17,22,7,12,17,22,
+    5,9,14,20,5,9,14,20,5,9,14,20,5,9,14,20,
+    4,11,16,23,4,11,16,23,4,11,16,23,4,11,16,23,
+    6,10,15,21,6,10,15,21,6,10,15,21,6,10,15,21
+  ];
+  const rol=(x,n)=>((x<<n)|(x>>>(32-n)))>>>0;
+  for(let off=0;off<bytes.length;off+=64){
+    const M=new Array(16);
+    for(let i=0;i<16;i++){
+      const p=off+i*4;
+      M[i]=(bytes[p]|(bytes[p+1]<<8)|(bytes[p+2]<<16)|(bytes[p+3]<<24))>>>0;
+    }
+    let A=a0,B=b0,C=c0,D=d0;
+    for(let i=0;i<64;i++){
+      let F,g;
+      if(i<16){F=(B&C)|((~B)&D);g=i}
+      else if(i<32){F=(D&B)|((~D)&C);g=(5*i+1)%16}
+      else if(i<48){F=B^C^D;g=(3*i+5)%16}
+      else{F=C^(B|(~D));g=(7*i)%16}
+      const oldD=D;
+      D=C;
+      C=B;
+      B=(B+rol((A+F+K[i]+M[g])>>>0,S[i]))>>>0;
+      A=oldD;
+    }
+    a0=(a0+A)>>>0;b0=(b0+B)>>>0;c0=(c0+C)>>>0;d0=(d0+D)>>>0;
+  }
+  const le=x=>[0,8,16,24].map(n=>((x>>>n)&255).toString(16).padStart(2,'0')).join('');
+  return le(a0)+le(b0)+le(c0)+le(d0);
+}
+function blDjb2Hash(text,seed){
+  let hash=seed|0;
+  const value=String(text);
+  for(let i=0;i<value.length;i++) hash=(Math.imul(hash,33)+value.charCodeAt(i))|0;
+  return hash;
+}
+function blResourceUrl(logicalPath){
+  const clean=String(logicalPath||'').replace(/^\//,'');
+  const parts=clean.split('/').filter(Boolean);
+  const buckets=parts.slice(0,-1).map((_,i)=>{
+    const prime=BL_RESOURCE_PRIMES[i] ?? 1;
+    const raw=((blDjb2Hash(clean,prime)%prime)+prime)%prime;
+    const letters=String.fromCharCode(97+(Math.floor(raw/26)%26),97+(raw%26));
+    const digits=String(raw%99).padStart(2,'0');
+    return letters+'-'+digits;
+  });
+  const file=parts[parts.length-1];
+  const dot=file.lastIndexOf('.');
+  const ext=dot>=0?file.slice(dot):'';
+  return BL_RESOURCE_CDN+'/'+[...buckets,md5Hex(clean)+ext].join('/');
+}
+function blCharacterIconUrl(resourceId,skinIndex=0){
+  const rid=String(resourceId).padStart(3,'0');
+  const skin=String(skinIndex).padStart(2,'0');
+  return blResourceUrl('/character/si/si_c'+rid+'_'+skin+'_s.png');
+}
 
 // BlablaLink name_code -> NIKKE Gear Manager character name mapping.
 const BUILTIN_NAME_CODES=Object.freeze({"1007":"D","1010":"라플라스","1012":"사쿠라","1013":"솔져 E.G.","1014":"솔져 F.A.","1015":"프로덕트 08","1016":"프로덕트 12","1017":"iDoll 플라워","1018":"iDoll 오션","1019":"마나","1020":"자칼","1021":"목단","1022":"바이퍼","1023":"iDoll 썬","1024":"프로덕트 23","1025":"솔져 O.W.","3001":"라피","3002":"네온","3003":"델타","3004":"루마니","3005":"아니스","3006":"미하라","3007":"벨로타","3008":"미카","3009":"N102","3010":"에테르","3011":"네베","3012":"히메노","3013":"람","3014":"미사토","3015":"사쿠라 (SR)","3016":"릴리","3017":"클레어","3018":"쿠루미","3019":"아이기스","5001":"맥스웰","5002":"슈가","5003":"엑시아","5004":"앨리스","5005":"엠마","5006":"유니","5007":"프리바티","5008":"블랑","5009":"누아르","5010":"프림","5011":"리타","5012":"스노우 화이트","5013":"이사벨","5014":"율리아","5015":"시그널","5016":"폴리","5017":"미란다","5018":"브리드","5019":"솔린","5020":"디젤","5021":"센티","5022":"베스티","5023":"은화","5024":"드레이크","5025":"크로우","5026":"메어리","5027":"페퍼","5028":"밀크","5029":"율하","5030":"애드미","5031":"길로틴","5032":"메이든","5033":"루드밀라","5034":"루피","5035":"얀","5036":"도라","5037":"노벨","5038":"에피넬","5039":"폴크방","5040":"라푼젤","5041":"홍련","5042":"하란","5043":"노아","5044":"모더니아","5045":"로산나","5046":"에이드","5048":"마르차나","5049":"루주","5050":"코코아","5051":"소다","5053":"킬로","5054":"비스킷","5055":"길티","5056":"니힐리스타","5059":"신","5061":"도로시","5063":"앵커","5064":"메어리 : 베이 갓데스","5065":"크라운","5066":"헬름","5068":"네로","5069":"라이","5070":"아리아","5071":"네온 : 블루 오션","5074":"노이즈","5075":"볼륨","5077":"아인","5078":"퀀시","5079":"마스트","5081":"토브","5082":"키리","5085":"앤 : 미라클 페어리","5087":"루피 : 윈터 쇼퍼","5088":"츠바이","5089":"마키마","5090":"파워","5092":"레오나","5094":"2B","5095":"A2","5096":"파스칼","5097":"아니스 : 스파클링 서머","5098":"헬름 : 아쿠아마린","5099":"나가","5100":"티아","5101":"레드 후드","5102":"스노우 화이트 : 이노센트 데이즈","5103":"루드밀라 : 윈터 오너","5104":"미카 : 스노우 버디","5105":"홍련 : 흑영","5106":"프리바티 : 언카인드 메이드","5107":"일레그","5108":"렘","5109":"에밀리아","5110":"D : 킬러 와이프","5111":"베이","5112":"트로니","5113":"소다 : 트윙클링 바니","5114":"앨리스 : 원더랜드 바니","5115":"클레이","5116":"로산나 : 시크 오션","5117":"사쿠라 : 블룸 인 서머","5118":"아스카","5119":"레이","5120":"마리","5121":"퀀시 : 이스케이프 퀸","5122":"팬텀","5123":"라푼젤 : 퓨어 그레이스","5124":"신데렐라","5125":"그레이브","5126":"플로라","5127":"메이든 : 아이스 로즈","5128":"길로틴 : 윈터 슬레이어","5129":"라피 : 레드 후드","5130":"마스트 : 로망틱 메이드","5131":"앵커 : 이노센트 메이드","5132":"레이 (가칭)","5133":"아스카 : WILLE","5134":"트리나","5135":"브래디","5136":"크러스트","5137":"리틀 머메이드","5138":"미하라 : 본딩 체인","5139":"모리","5140":"아르카나","5141":"K","5142":"이브","5143":"레이븐","5144":"소라","5145":"도로시 : 세렌디피티","5146":"일레그 : 붐 앤 쇼크","5147":"엠마 : 택티컬 업","5148":"베스티 : 택티컬 업","5149":"은화 : 택티컬 업","5150":"밀크 : 블루밍 바니","5151":"에이드 : 에이전트 바니","5152":"에이다","5153":"질","5154":"델타 : 닌자 시프","5155":"나유타","5156":"리버렐리오","5157":"차임","5158":"솔린 : 프로스트 티켓","5159":"디젤 : 윈터 스위츠","5160":"브리드 : 사일런트 트랙","5161":"스노우 화이트 : 헤비암즈","5162":"레이블","5163":"벨벳","5164":"치사토","5165":"타키나","5166":"E.H.","5167":"아르카나 : 포츈 메이트","5168":"백학","5169":"아니스 : 스타","5170":"네온 : 비전 아이","5171":"아비스타","5172":"민트","5173":"프리카","5174":"아크레인저 블랙","5175":"신데렐라 : 크리스탈 웨이브","5176":"마르차나 : 마린 스터디","5177":"라플라스 : 얼티밋 히어로","5178":"맥스웰 : 오디너리 미케닉","5179":"퀸(마코토)","5180":"유키코","5181":"드레이크 : 그레이트 빌런","5182":"길티 : 마이티 바니","5183":"신 : 스위프트 바니"})
@@ -536,6 +610,29 @@ async function syncPublicNikkeProfile(profileUrl, env){
       updates.push({name,name_code:code,parts});
     }
   }
+
+  // BlaBlaLink 공개 캐릭터 리소스에서 resource_id를 보강합니다.
+  // 실패하더라도 기존 동기화 결과는 그대로 반환합니다.
+  try{
+    const rosterResponse = await fetch(BL_CHARACTER_ROSTER_URL, {
+      headers:{'Accept':'application/json'}
+    });
+    if(rosterResponse.ok){
+      const rosterRows = await rosterResponse.json();
+      const resourceByCode = new Map(
+        (Array.isArray(rosterRows)?rosterRows:[])
+          .filter(row=>row && row.name_code!=null && row.resource_id!=null)
+          .map(row=>[String(row.name_code),Number(row.resource_id)])
+      );
+      for(const update of updates){
+        const resourceId = resourceByCode.get(String(update.name_code));
+        if(Number.isFinite(resourceId)){
+          update.resource_id = resourceId;
+          update.icon_url = blCharacterIconUrl(resourceId,0);
+        }
+      }
+    }
+  }catch(_){}
 
   return {
     ok:true,
