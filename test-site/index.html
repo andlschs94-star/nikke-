@@ -1,66 +1,5 @@
 <!doctype html>
-<html lang="ko"><head><script id="test-storage-isolation">
-(function(){
-  'use strict';
-  const PREFIX='__nikke_test__';
-  const real=window.localStorage;
-  const mapKey=(k)=>PREFIX+String(k);
-  const api={
-    get length(){
-      let n=0;
-      for(let i=0;i<real.length;i++){if(real.key(i).indexOf(PREFIX)===0)n++;}
-      return n;
-    },
-    key(i){
-      const keys=[];
-      for(let j=0;j<real.length;j++){
-        const k=real.key(j);
-        if(k && k.indexOf(PREFIX)===0) keys.push(k.slice(PREFIX.length));
-      }
-      return keys[Number(i)] ?? null;
-    },
-    getItem(k){return real.getItem(mapKey(k));},
-    setItem(k,v){return real.setItem(mapKey(k),String(v));},
-    removeItem(k){return real.removeItem(mapKey(k));},
-    clear(){
-      const keys=[];
-      for(let i=0;i<real.length;i++){
-        const k=real.key(i);
-        if(k && k.indexOf(PREFIX)===0) keys.push(k);
-      }
-      keys.forEach(k=>real.removeItem(k));
-    }
-  };
-  const proxy=new Proxy(api,{
-    get(target,prop){
-      if(prop in target){
-        const v=target[prop];
-        return typeof v==='function'?v.bind(target):v;
-      }
-      if(typeof prop==='string') return target.getItem(prop);
-      return undefined;
-    },
-    set(target,prop,value){
-      if(typeof prop==='string'){target.setItem(prop,value);return true;}
-      return false;
-    },
-    deleteProperty(target,prop){target.removeItem(prop);return true;},
-    ownKeys(){
-      const out=[];
-      for(let i=0;i<target.length;i++){const k=target.key(i);if(k!==null)out.push(k);}
-      return out;
-    },
-    getOwnPropertyDescriptor(target,prop){
-      if(typeof prop==='string' && target.getItem(prop)!==null){
-        return {configurable:true,enumerable:true,writable:true,value:target.getItem(prop)};
-      }
-      return undefined;
-    }
-  });
-  try{Object.defineProperty(window,'localStorage',{configurable:true,value:proxy});}
-  catch(_){window.__NIKKE_TEST_STORAGE__=proxy;}
-})();
-</script><!-- GitHub Pages deployment refresh 0.355 --><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="icon" type="image/webp" href="https://nikkegear885.github.io/nikke-/assets/nikke-manager-icon.webp?v=0439">
+<html lang="ko"><head><!-- GitHub Pages deployment refresh 0.355 --><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="icon" type="image/webp" href="https://nikkegear885.github.io/nikke-/assets/nikke-manager-icon.webp?v=0439">
 <title>니케 장비관리test</title>
 <style>
 :root{--bg:#080d19;--panel:#0f1729;--panel2:#111c32;--line:#26324b;--text:#edf2ff;--muted:#8490aa;--accent:#927dff;--good:#47d7c7;--danger:#ff6c86}
@@ -6500,7 +6439,7 @@ html.dark-theme #outpostPanel .outpost-final-stage-btn{
   object-position:center;
   border-radius:50%;
 }
-</style><script src="https://nikkegear885.github.io/nikke-/./profile-import-button.js?v=test1"></script><script src="./nikke-icons-test.js?v=6"></script></body></html>
+</style><script src="https://nikkegear885.github.io/nikke-/./profile-import-button.js?v=test1"></script></body></html>
 <style id="common-unused-power-sort-0356">
 /* v0.356: 미사용 일괄적용 창 바깥 클릭으로 닫기 지원 */
 </style>
