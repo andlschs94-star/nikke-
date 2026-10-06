@@ -5122,7 +5122,7 @@ function renderTable(){
       옵션:`${opts}개`,
       큐브:r['큐브']?esc(r['큐브'])+' '+esc(r['큐브_레벨']??''): '<span class="muted">없음</span>'
     };
-    return `<tr>${visibleColumnOrder().map(k=>`<td class="${gearParts.includes(k)?'gear-single-cell':''}">${cells[k]??''}</td>`).join('')}</tr>`;
+    return `<tr>${visibleColumnOrder().map(k=>`<td class="${gearParts.includes(k)?'gear-single-cell ':''}${k==='아이콘'?'character-icon-column':''}">${cells[k]??''}</td>`).join('')}</tr>`;
   }).join('');
   updateFilterUI();
   const selectAll=document.querySelector('.row-select-all');
