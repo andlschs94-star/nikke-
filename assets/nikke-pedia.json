@@ -1,0 +1,754 @@
+[
+  {
+    "name": "신데렐라",
+    "image": "https://raw.githubusercontent.com/Mi2O-nikke/Nikke-db/main/public/assets/images/sprite/si_c511_00_s.png"
+  },
+  {
+    "name": "메이든 : 아이스 로즈",
+    "image": "https://raw.githubusercontent.com/Mi2O-nikke/Nikke-db/main/public/assets/images/sprite/si_c183_00_s.png"
+  },
+  {
+    "name": "앵커",
+    "image": "https://raw.githubusercontent.com/Mi2O-nikke/Nikke-db/main/public/assets/images/sprite/si_c351_00_s.png"
+  },
+  {
+    "name": "그레이브",
+    "image": "https://raw.githubusercontent.com/Mi2O-nikke/Nikke-db/main/public/assets/images/sprite/si_c514_00_s.png"
+  },
+  {
+    "name": "에피넬",
+    "image": "https://raw.githubusercontent.com/Mi2O-nikke/Nikke-db/main/public/assets/images/sprite/si_c241_00_s.png"
+  },
+  {
+    "name": "라푼젤",
+    "image": "https://raw.githubusercontent.com/Mi2O-nikke/Nikke-db/main/public/assets/images/sprite/si_c221_00_s.png"
+  },
+  {
+    "name": "스노우 화이트 : 헤비암즈",
+    "image": "https://raw.githubusercontent.com/Mi2O-nikke/Nikke-db/main/public/assets/images/sprite/si_c471_00_s.png"
+  },
+  {
+    "name": "아이기스",
+    "image": "https://raw.githubusercontent.com/Mi2O-nikke/Nikke-db/main/public/assets/images/sprite/si_c872_00_s.png"
+  },
+  {
+    "name": "레오나",
+    "image": "https://raw.githubusercontent.com/Mi2O-nikke/Nikke-db/main/public/assets/images/sprite/si_c382_00_s.png"
+  },
+  {
+    "name": "길티 : 마이티 바니",
+    "image": "https://raw.githubusercontent.com/Mi2O-nikke/Nikke-db/main/public/assets/images/sprite/si_c400_00_s.png"
+  },
+  {
+    "name": "센티",
+    "image": "https://raw.githubusercontent.com/Mi2O-nikke/Nikke-db/main/public/assets/images/sprite/si_c080_00_s.png"
+  },
+  {
+    "name": "리타",
+    "image": "https://raw.githubusercontent.com/Mi2O-nikke/Nikke-db/main/public/assets/images/sprite/si_c082_00_s.png"
+  },
+  {
+    "name": "노이즈",
+    "image": "https://raw.githubusercontent.com/Mi2O-nikke/Nikke-db/main/public/assets/images/sprite/si_c430_00_s.png"
+  },
+  {
+    "name": "브래디",
+    "image": "https://raw.githubusercontent.com/Mi2O-nikke/Nikke-db/main/public/assets/images/sprite/si_c520_00_s.png"
+  },
+  {
+    "name": "루드밀라",
+    "image": "https://raw.githubusercontent.com/Mi2O-nikke/Nikke-db/main/public/assets/images/sprite/si_c190_00_s.png"
+  },
+  {
+    "name": "쿠루미",
+    "image": "https://raw.githubusercontent.com/Mi2O-nikke/Nikke-db/main/public/assets/images/sprite/si_c862_00_s.png"
+  },
+  {
+    "name": "트로니",
+    "image": "https://raw.githubusercontent.com/Mi2O-nikke/Nikke-db/main/public/assets/images/sprite/si_c501_00_s.png"
+  },
+  {
+    "name": "노벨",
+    "image": "https://raw.githubusercontent.com/Mi2O-nikke/Nikke-db/main/public/assets/images/sprite/si_c212_00_s.png"
+  },
+  {
+    "name": "홍련",
+    "image": "https://raw.githubusercontent.com/Mi2O-nikke/Nikke-db/main/public/assets/images/sprite/si_c222_00_s.png"
+  },
+  {
+    "name": "아르카나",
+    "image": "https://raw.githubusercontent.com/Mi2O-nikke/Nikke-db/main/public/assets/images/sprite/si_c581_00_s.png"
+  },
+  {
+    "name": "이브",
+    "image": "https://raw.githubusercontent.com/Mi2O-nikke/Nikke-db/main/public/assets/images/sprite/si_c850_00_s.png"
+  },
+  {
+    "name": "일레그",
+    "image": "https://raw.githubusercontent.com/Mi2O-nikke/Nikke-db/main/public/assets/images/sprite/si_c500_00_s.png"
+  },
+  {
+    "name": "슈가",
+    "image": "https://raw.githubusercontent.com/Mi2O-nikke/Nikke-db/main/public/assets/images/sprite/si_c140_00_s.png"
+  },
+  {
+    "name": "헬름",
+    "image": "https://raw.githubusercontent.com/Mi2O-nikke/Nikke-db/main/public/assets/images/sprite/si_c352_00_s.png"
+  },
+  {
+    "name": "길로틴",
+    "image": "https://raw.githubusercontent.com/Mi2O-nikke/Nikke-db/main/public/assets/images/sprite/si_c180_00_s.png"
+  },
+  {
+    "name": "은화 : 택티컬 업",
+    "image": "https://raw.githubusercontent.com/Mi2O-nikke/Nikke-db/main/public/assets/images/sprite/si_c092_00_s.png"
+  },
+  {
+    "name": "나유타",
+    "image": "https://raw.githubusercontent.com/Mi2O-nikke/Nikke-db/main/public/assets/images/sprite/si_c223_00_s.png"
+  },
+  {
+    "name": "키리",
+    "image": "https://raw.githubusercontent.com/Mi2O-nikke/Nikke-db/main/public/assets/images/sprite/si_c033_00_s.png"
+  },
+  {
+    "name": "벨벳",
+    "image": "https://raw.githubusercontent.com/Mi2O-nikke/Nikke-db/main/public/assets/images/sprite/si_c316_00_s.png"
+  },
+  {
+    "name": "브리드 : 사일런트 트랙",
+    "image": "https://raw.githubusercontent.com/Mi2O-nikke/Nikke-db/main/public/assets/images/sprite/si_c073_00_s.png"
+  },
+  {
+    "name": "율하",
+    "image": "https://raw.githubusercontent.com/Mi2O-nikke/Nikke-db/main/public/assets/images/sprite/si_c171_00_s.png"
+  },
+  {
+    "name": "레이븐",
+    "image": "https://raw.githubusercontent.com/Mi2O-nikke/Nikke-db/main/public/assets/images/sprite/si_c851_00_s.png"
+  },
+  {
+    "name": "엑시아",
+    "image": "https://raw.githubusercontent.com/Mi2O-nikke/Nikke-db/main/public/assets/images/sprite/si_c210_00_s.png"
+  },
+  {
+    "name": "드레이크 : 그레이트 빌런",
+    "image": "https://raw.githubusercontent.com/Mi2O-nikke/Nikke-db/main/public/assets/images/sprite/si_c101_00_s.png"
+  },
+  {
+    "name": "솔져 E.G.",
+    "image": "https://raw.githubusercontent.com/Mi2O-nikke/Nikke-db/main/public/assets/images/sprite/si_c300_00_s.png"
+  },
+  {
+    "name": "누아르",
+    "image": "https://raw.githubusercontent.com/Mi2O-nikke/Nikke-db/main/public/assets/images/sprite/si_c271_00_s.png"
+  },
+  {
+    "name": "율리아",
+    "image": "https://raw.githubusercontent.com/Mi2O-nikke/Nikke-db/main/public/assets/images/sprite/si_c150_00_s.png"
+  },
+  {
+    "name": "디젤 : 윈터 스위츠",
+    "image": "https://raw.githubusercontent.com/Mi2O-nikke/Nikke-db/main/public/assets/images/sprite/si_c075_00_s.png"
+  },
+  {
+    "name": "베스티",
+    "image": "https://raw.githubusercontent.com/Mi2O-nikke/Nikke-db/main/public/assets/images/sprite/si_c091_00_s.png"
+  },
+  {
+    "name": "델타 : 닌자 시프",
+    "image": "https://raw.githubusercontent.com/Mi2O-nikke/Nikke-db/main/public/assets/images/sprite/si_c023_00_s.png"
+  },
+  {
+    "name": "시그널",
+    "image": "https://raw.githubusercontent.com/Mi2O-nikke/Nikke-db/main/public/assets/images/sprite/si_c060_00_s.png"
+  },
+  {
+    "name": "루드밀라 : 윈터 오너",
+    "image": "https://raw.githubusercontent.com/Mi2O-nikke/Nikke-db/main/public/assets/images/sprite/si_c194_00_s.png"
+  },
+  {
+    "name": "라피 : 레드 후드",
+    "image": "https://raw.githubusercontent.com/Mi2O-nikke/Nikke-db/main/public/assets/images/sprite/si_c016_00_s.png"
+  },
+  {
+    "name": "네로",
+    "image": "https://raw.githubusercontent.com/Mi2O-nikke/Nikke-db/main/public/assets/images/sprite/si_c380_00_s.png"
+  },
+  {
+    "name": "네온 : 비전 아이",
+    "image": "https://raw.githubusercontent.com/Mi2O-nikke/Nikke-db/main/public/assets/images/sprite/si_c014_00_s.png"
+  },
+  {
+    "name": "베스티 : 택티컬 업",
+    "image": "https://raw.githubusercontent.com/Mi2O-nikke/Nikke-db/main/public/assets/images/sprite/si_c094_00_s.png"
+  },
+  {
+    "name": "길티",
+    "image": "https://raw.githubusercontent.com/Mi2O-nikke/Nikke-db/main/public/assets/images/sprite/si_c400_00_s.png"
+  },
+  {
+    "name": "앵커 : 이노센트 메이드",
+    "image": "https://raw.githubusercontent.com/Mi2O-nikke/Nikke-db/main/public/assets/images/sprite/si_c355_00_s.png"
+  },
+  {
+    "name": "클레어",
+    "image": "https://raw.githubusercontent.com/Mi2O-nikke/Nikke-db/main/public/assets/images/sprite/si_c842_00_s.png"
+  },
+  {
+    "name": "에테르",
+    "image": "https://raw.githubusercontent.com/Mi2O-nikke/Nikke-db/main/public/assets/images/sprite/si_c291_00_s.png"
+  },
+  {
+    "name": "릴리",
+    "image": "https://raw.githubusercontent.com/Mi2O-nikke/Nikke-db/main/public/assets/images/sprite/si_c852_00_s.png"
+  },
+  {
+    "name": "솔린",
+    "image": "https://raw.githubusercontent.com/Mi2O-nikke/Nikke-db/main/public/assets/images/sprite/si_c071_00_s.png"
+  },
+  {
+    "name": "프로덕트 23",
+    "image": "https://raw.githubusercontent.com/Mi2O-nikke/Nikke-db/main/public/assets/images/sprite/si_c307_00_s.png"
+  },
+  {
+    "name": "사쿠라",
+    "image": "https://raw.githubusercontent.com/Mi2O-nikke/Nikke-db/main/public/assets/images/sprite/si_c282_00_s.png"
+  },
+  {
+    "name": "퀀시 : 이스케이프 퀸",
+    "image": "https://raw.githubusercontent.com/Mi2O-nikke/Nikke-db/main/public/assets/images/sprite/si_c403_00_s.png"
+  },
+  {
+    "name": "마스트 : 로망틱 메이드",
+    "image": "https://raw.githubusercontent.com/Mi2O-nikke/Nikke-db/main/public/assets/images/sprite/si_c354_00_s.png"
+  },
+  {
+    "name": "블랑",
+    "image": "https://raw.githubusercontent.com/Mi2O-nikke/Nikke-db/main/public/assets/images/sprite/si_c270_00_s.png"
+  },
+  {
+    "name": "D",
+    "image": "https://raw.githubusercontent.com/Mi2O-nikke/Nikke-db/main/public/assets/images/sprite/si_c040_00_s.png"
+  },
+  {
+    "name": "크라운",
+    "image": "https://raw.githubusercontent.com/Mi2O-nikke/Nikke-db/main/public/assets/images/sprite/si_c330_00_s.png"
+  },
+  {
+    "name": "타키나",
+    "image": "https://raw.githubusercontent.com/Mi2O-nikke/Nikke-db/main/public/assets/images/sprite/si_c861_00_s.png"
+  },
+  {
+    "name": "팬텀",
+    "image": "https://raw.githubusercontent.com/Mi2O-nikke/Nikke-db/main/public/assets/images/sprite/si_c580_00_s.png"
+  },
+  {
+    "name": "미하라 : 본딩 체인",
+    "image": "https://raw.githubusercontent.com/Mi2O-nikke/Nikke-db/main/public/assets/images/sprite/si_c162_00_s.png"
+  },
+  {
+    "name": "트리나",
+    "image": "https://raw.githubusercontent.com/Mi2O-nikke/Nikke-db/main/public/assets/images/sprite/si_c412_00_s.png"
+  },
+  {
+    "name": "루마니",
+    "image": "https://raw.githubusercontent.com/Mi2O-nikke/Nikke-db/main/public/assets/images/sprite/si_c240_00_s.png"
+  },
+  {
+    "name": "차임",
+    "image": "https://raw.githubusercontent.com/Mi2O-nikke/Nikke-db/main/public/assets/images/sprite/si_c331_00_s.png"
+  },
+  {
+    "name": "크러스트",
+    "image": "https://raw.githubusercontent.com/Mi2O-nikke/Nikke-db/main/public/assets/images/sprite/si_c521_00_s.png"
+  },
+  {
+    "name": "목단",
+    "image": "https://raw.githubusercontent.com/Mi2O-nikke/Nikke-db/main/public/assets/images/sprite/si_c281_00_s.png"
+  },
+  {
+    "name": "E.H.",
+    "image": "https://raw.githubusercontent.com/Mi2O-nikke/Nikke-db/main/public/assets/images/sprite/si_c113_00_s.png"
+  },
+  {
+    "name": "브리드",
+    "image": "https://raw.githubusercontent.com/Mi2O-nikke/Nikke-db/main/public/assets/images/sprite/si_c070_00_s.png"
+  },
+  {
+    "name": "자칼",
+    "image": "https://raw.githubusercontent.com/Mi2O-nikke/Nikke-db/main/public/assets/images/sprite/si_c111_00_s.png"
+  },
+  {
+    "name": "소다",
+    "image": "https://raw.githubusercontent.com/Mi2O-nikke/Nikke-db/main/public/assets/images/sprite/si_c312_00_s.png"
+  },
+  {
+    "name": "폴크방",
+    "image": "https://raw.githubusercontent.com/Mi2O-nikke/Nikke-db/main/public/assets/images/sprite/si_c242_00_s.png"
+  },
+  {
+    "name": "스노우 화이트",
+    "image": "https://raw.githubusercontent.com/Mi2O-nikke/Nikke-db/main/public/assets/images/sprite/si_c220_00_s.png"
+  },
+  {
+    "name": "홍련 : 흑영",
+    "image": "https://raw.githubusercontent.com/Mi2O-nikke/Nikke-db/main/public/assets/images/sprite/si_c225_00_s.png"
+  },
+  {
+    "name": "치사토",
+    "image": "https://raw.githubusercontent.com/Mi2O-nikke/Nikke-db/main/public/assets/images/sprite/si_c860_00_s.png"
+  },
+  {
+    "name": "바이퍼",
+    "image": "https://raw.githubusercontent.com/Mi2O-nikke/Nikke-db/main/public/assets/images/sprite/si_c112_00_s.png"
+  },
+  {
+    "name": "루주",
+    "image": "https://raw.githubusercontent.com/Mi2O-nikke/Nikke-db/main/public/assets/images/sprite/si_c272_00_s.png"
+  },
+  {
+    "name": "아르카나 : 포츈 메이트",
+    "image": "https://raw.githubusercontent.com/Mi2O-nikke/Nikke-db/main/public/assets/images/sprite/si_c581_00_s.png"
+  },
+  {
+    "name": "얀",
+    "image": "https://raw.githubusercontent.com/Mi2O-nikke/Nikke-db/main/public/assets/images/sprite/si_c201_00_s.png"
+  },
+  {
+    "name": "유키코",
+    "image": "https://raw.githubusercontent.com/Mi2O-nikke/Nikke-db/main/public/assets/images/sprite/si_c871_00_s.png"
+  },
+  {
+    "name": "라플라스 : 얼티밋 히어로",
+    "image": "https://raw.githubusercontent.com/Mi2O-nikke/Nikke-db/main/public/assets/images/sprite/si_c100_00_s.png"
+  },
+  {
+    "name": "미란다",
+    "image": "https://raw.githubusercontent.com/Mi2O-nikke/Nikke-db/main/public/assets/images/sprite/si_c032_00_s.png"
+  },
+  {
+    "name": "네베",
+    "image": "https://raw.githubusercontent.com/Mi2O-nikke/Nikke-db/main/public/assets/images/sprite/si_c193_00_s.png"
+  },
+  {
+    "name": "솔린 : 프로스트 티켓",
+    "image": "https://raw.githubusercontent.com/Mi2O-nikke/Nikke-db/main/public/assets/images/sprite/si_c074_00_s.png"
+  },
+  {
+    "name": "벨로타",
+    "image": "https://raw.githubusercontent.com/Mi2O-nikke/Nikke-db/main/public/assets/images/sprite/si_c060_00_s.png"
+  },
+  {
+    "name": "프리바티 : 언카인드 메이드",
+    "image": "https://raw.githubusercontent.com/Mi2O-nikke/Nikke-db/main/public/assets/images/sprite/si_c313_00_s.png"
+  },
+  {
+    "name": "에이드 : 에이전트 바니",
+    "image": "https://raw.githubusercontent.com/Mi2O-nikke/Nikke-db/main/public/assets/images/sprite/si_c310_00_s.png"
+  },
+  {
+    "name": "사쿠라 : 블룸 인 서머",
+    "image": "https://raw.githubusercontent.com/Mi2O-nikke/Nikke-db/main/public/assets/images/sprite/si_c284_00_s.png"
+  },
+  {
+    "name": "마스트",
+    "image": "https://raw.githubusercontent.com/Mi2O-nikke/Nikke-db/main/public/assets/images/sprite/si_c350_00_s.png"
+  },
+  {
+    "name": "헬름 : 아쿠아마린",
+    "image": "https://raw.githubusercontent.com/Mi2O-nikke/Nikke-db/main/public/assets/images/sprite/si_c353_00_s.png"
+  },
+  {
+    "name": "미사토",
+    "image": "https://raw.githubusercontent.com/Mi2O-nikke/Nikke-db/main/public/assets/images/sprite/si_c802_00_s.png"
+  },
+  {
+    "name": "코코아",
+    "image": "https://raw.githubusercontent.com/Mi2O-nikke/Nikke-db/main/public/assets/images/sprite/si_c311_00_s.png"
+  },
+  {
+    "name": "유니",
+    "image": "https://raw.githubusercontent.com/Mi2O-nikke/Nikke-db/main/public/assets/images/sprite/si_c160_00_s.png"
+  },
+  {
+    "name": "마르차나 : 마린 스터디",
+    "image": "https://raw.githubusercontent.com/Mi2O-nikke/Nikke-db/main/public/assets/images/sprite/si_c321_00_s.png"
+  },
+  {
+    "name": "파스칼",
+    "image": "https://raw.githubusercontent.com/Mi2O-nikke/Nikke-db/main/public/assets/images/sprite/si_c812_00_s.png"
+  },
+  {
+    "name": "클레이",
+    "image": "https://raw.githubusercontent.com/Mi2O-nikke/Nikke-db/main/public/assets/images/sprite/si_c551_00_s.png"
+  },
+  {
+    "name": "도라",
+    "image": "https://raw.githubusercontent.com/Mi2O-nikke/Nikke-db/main/public/assets/images/sprite/si_c202_00_s.png"
+  },
+  {
+    "name": "델타",
+    "image": "https://raw.githubusercontent.com/Mi2O-nikke/Nikke-db/main/public/assets/images/sprite/si_c020_00_s.png"
+  },
+  {
+    "name": "프림",
+    "image": "https://raw.githubusercontent.com/Mi2O-nikke/Nikke-db/main/public/assets/images/sprite/si_c142_00_s.png"
+  },
+  {
+    "name": "토브",
+    "image": "https://raw.githubusercontent.com/Mi2O-nikke/Nikke-db/main/public/assets/images/sprite/si_c192_00_s.png"
+  },
+  {
+    "name": "길로틴 : 윈터 슬레이어",
+    "image": "https://raw.githubusercontent.com/Mi2O-nikke/Nikke-db/main/public/assets/images/sprite/si_c182_00_s.png"
+  },
+  {
+    "name": "플로라",
+    "image": "https://raw.githubusercontent.com/Mi2O-nikke/Nikke-db/main/public/assets/images/sprite/si_c411_00_s.png"
+  },
+  {
+    "name": "로산나 : 시크 오션",
+    "image": "https://raw.githubusercontent.com/Mi2O-nikke/Nikke-db/main/public/assets/images/sprite/si_c283_00_s.png"
+  },
+  {
+    "name": "라플라스",
+    "image": "https://raw.githubusercontent.com/Mi2O-nikke/Nikke-db/main/public/assets/images/sprite/si_c100_00_s.png"
+  },
+  {
+    "name": "아니스 : 스파클링 서머",
+    "image": "https://raw.githubusercontent.com/Mi2O-nikke/Nikke-db/main/public/assets/images/sprite/si_c015_00_s.png"
+  },
+  {
+    "name": "크로우",
+    "image": "https://raw.githubusercontent.com/Mi2O-nikke/Nikke-db/main/public/assets/images/sprite/si_c110_00_s.png"
+  },
+  {
+    "name": "라푼젤 : 퓨어 그레이스",
+    "image": "https://raw.githubusercontent.com/Mi2O-nikke/Nikke-db/main/public/assets/images/sprite/si_c226_00_s.png"
+  },
+  {
+    "name": "드레이크",
+    "image": "https://raw.githubusercontent.com/Mi2O-nikke/Nikke-db/main/public/assets/images/sprite/si_c101_00_s.png"
+  },
+  {
+    "name": "프리카",
+    "image": "https://raw.githubusercontent.com/Mi2O-nikke/Nikke-db/main/public/assets/images/sprite/si_c601_00_s.png"
+  },
+  {
+    "name": "비스킷",
+    "image": "https://raw.githubusercontent.com/Mi2O-nikke/Nikke-db/main/public/assets/images/sprite/si_c381_00_s.png"
+  },
+  {
+    "name": "아크레인저 블랙",
+    "image": "https://raw.githubusercontent.com/Mi2O-nikke/Nikke-db/main/public/assets/images/sprite/si_c570_00_s.png"
+  },
+  {
+    "name": "로산나",
+    "image": "https://raw.githubusercontent.com/Mi2O-nikke/Nikke-db/main/public/assets/images/sprite/si_c280_00_s.png"
+  },
+  {
+    "name": "모더니아",
+    "image": "https://raw.githubusercontent.com/Mi2O-nikke/Nikke-db/main/public/assets/images/sprite/si_c260_00_s.png"
+  },
+  {
+    "name": "아니스",
+    "image": "https://raw.githubusercontent.com/Mi2O-nikke/Nikke-db/main/public/assets/images/sprite/si_c012_00_s.png"
+  },
+  {
+    "name": "프로덕트 12",
+    "image": "https://raw.githubusercontent.com/Mi2O-nikke/Nikke-db/main/public/assets/images/sprite/si_c303_00_s.png"
+  },
+  {
+    "name": "도로시",
+    "image": "https://raw.githubusercontent.com/Mi2O-nikke/Nikke-db/main/public/assets/images/sprite/si_c233_00_s.png"
+  },
+  {
+    "name": "퀸(마코토)",
+    "image": "https://raw.githubusercontent.com/Mi2O-nikke/Nikke-db/main/public/assets/images/sprite/si_c870_00_s.png"
+  },
+  {
+    "name": "민트",
+    "image": "https://raw.githubusercontent.com/Mi2O-nikke/Nikke-db/main/public/assets/images/sprite/si_c600_00_s.png"
+  },
+  {
+    "name": "디젤",
+    "image": "https://raw.githubusercontent.com/Mi2O-nikke/Nikke-db/main/public/assets/images/sprite/si_c072_00_s.png"
+  },
+  {
+    "name": "iDoll 플라워",
+    "image": "https://raw.githubusercontent.com/Mi2O-nikke/Nikke-db/main/public/assets/images/sprite/si_c304_00_s.png"
+  },
+  {
+    "name": "츠바이",
+    "image": "https://raw.githubusercontent.com/Mi2O-nikke/Nikke-db/main/public/assets/images/sprite/si_c390_00_s.png"
+  },
+  {
+    "name": "도로시 : 세렌디피티",
+    "image": "https://raw.githubusercontent.com/Mi2O-nikke/Nikke-db/main/public/assets/images/sprite/si_c234_00_s.png"
+  },
+  {
+    "name": "레이블",
+    "image": "https://raw.githubusercontent.com/Mi2O-nikke/Nikke-db/main/public/assets/images/sprite/si_c582_00_s.png"
+  },
+  {
+    "name": "아니스 : 스타",
+    "image": "https://raw.githubusercontent.com/Mi2O-nikke/Nikke-db/main/public/assets/images/sprite/si_c017_00_s.png"
+  },
+  {
+    "name": "백학",
+    "image": "https://raw.githubusercontent.com/Mi2O-nikke/Nikke-db/main/public/assets/images/sprite/si_c620_00_s.png"
+  },
+  {
+    "name": "마나",
+    "image": "https://raw.githubusercontent.com/Mi2O-nikke/Nikke-db/main/public/assets/images/sprite/si_c290_00_s.png"
+  },
+  {
+    "name": "에이드",
+    "image": "https://raw.githubusercontent.com/Mi2O-nikke/Nikke-db/main/public/assets/images/sprite/si_c310_00_s.png"
+  },
+  {
+    "name": "리버렐리오",
+    "image": "https://raw.githubusercontent.com/Mi2O-nikke/Nikke-db/main/public/assets/images/sprite/si_c262_00_s.png"
+  },
+  {
+    "name": "리틀 머메이드",
+    "image": "https://raw.githubusercontent.com/Mi2O-nikke/Nikke-db/main/public/assets/images/sprite/si_c513_00_s.png"
+  },
+  {
+    "name": "iDoll 오션",
+    "image": "https://raw.githubusercontent.com/Mi2O-nikke/Nikke-db/main/public/assets/images/sprite/si_c305_00_s.png"
+  },
+  {
+    "name": "레이 (가칭)",
+    "image": "https://raw.githubusercontent.com/Mi2O-nikke/Nikke-db/main/public/assets/images/sprite/si_c834_00_s.png"
+  },
+  {
+    "name": "프로덕트 08",
+    "image": "https://raw.githubusercontent.com/Mi2O-nikke/Nikke-db/main/public/assets/images/sprite/si_c302_00_s.png"
+  },
+  {
+    "name": "맥스웰",
+    "image": "https://raw.githubusercontent.com/Mi2O-nikke/Nikke-db/main/public/assets/images/sprite/si_c102_00_s.png"
+  },
+  {
+    "name": "아리아",
+    "image": "https://raw.githubusercontent.com/Mi2O-nikke/Nikke-db/main/public/assets/images/sprite/si_c432_00_s.png"
+  },
+  {
+    "name": "밀크 : 블루밍 바니",
+    "image": "https://raw.githubusercontent.com/Mi2O-nikke/Nikke-db/main/public/assets/images/sprite/si_c141_00_s.png"
+  },
+  {
+    "name": "티아",
+    "image": "https://raw.githubusercontent.com/Mi2O-nikke/Nikke-db/main/public/assets/images/sprite/si_c451_00_s.png"
+  },
+  {
+    "name": "레드 후드",
+    "image": "https://raw.githubusercontent.com/Mi2O-nikke/Nikke-db/main/public/assets/images/sprite/si_c470_00_s.png"
+  },
+  {
+    "name": "K",
+    "image": "https://raw.githubusercontent.com/Mi2O-nikke/Nikke-db/main/public/assets/images/sprite/si_c041_00_s.png"
+  },
+  {
+    "name": "맥스웰 : 오디너리 미케닉",
+    "image": "https://raw.githubusercontent.com/Mi2O-nikke/Nikke-db/main/public/assets/images/sprite/si_c102_00_s.png"
+  },
+  {
+    "name": "애드미",
+    "image": "https://raw.githubusercontent.com/Mi2O-nikke/Nikke-db/main/public/assets/images/sprite/si_c172_00_s.png"
+  },
+  {
+    "name": "하란",
+    "image": "https://raw.githubusercontent.com/Mi2O-nikke/Nikke-db/main/public/assets/images/sprite/si_c230_00_s.png"
+  },
+  {
+    "name": "노아",
+    "image": "https://raw.githubusercontent.com/Mi2O-nikke/Nikke-db/main/public/assets/images/sprite/si_c232_00_s.png"
+  },
+  {
+    "name": "메어리",
+    "image": "https://raw.githubusercontent.com/Mi2O-nikke/Nikke-db/main/public/assets/images/sprite/si_c130_00_s.png"
+  },
+  {
+    "name": "네온",
+    "image": "https://raw.githubusercontent.com/Mi2O-nikke/Nikke-db/main/public/assets/images/sprite/si_c011_00_s.png"
+  },
+  {
+    "name": "메이든",
+    "image": "https://raw.githubusercontent.com/Mi2O-nikke/Nikke-db/main/public/assets/images/sprite/si_c181_00_s.png"
+  },
+  {
+    "name": "소다 : 트윙클링 바니",
+    "image": "https://raw.githubusercontent.com/Mi2O-nikke/Nikke-db/main/public/assets/images/sprite/si_c314_00_s.png"
+  },
+  {
+    "name": "일레그 : 붐 앤 쇼크",
+    "image": "https://raw.githubusercontent.com/Mi2O-nikke/Nikke-db/main/public/assets/images/sprite/si_c502_00_s.png"
+  },
+  {
+    "name": "폴리",
+    "image": "https://raw.githubusercontent.com/Mi2O-nikke/Nikke-db/main/public/assets/images/sprite/si_c030_00_s.png"
+  },
+  {
+    "name": "마리",
+    "image": "https://raw.githubusercontent.com/Mi2O-nikke/Nikke-db/main/public/assets/images/sprite/si_c832_00_s.png"
+  },
+  {
+    "name": "소라",
+    "image": "https://raw.githubusercontent.com/Mi2O-nikke/Nikke-db/main/public/assets/images/sprite/si_c532_00_s.png"
+  },
+  {
+    "name": "미카",
+    "image": "https://raw.githubusercontent.com/Mi2O-nikke/Nikke-db/main/public/assets/images/sprite/si_c061_00_s.png"
+  },
+  {
+    "name": "솔져 O.W.",
+    "image": "https://raw.githubusercontent.com/Mi2O-nikke/Nikke-db/main/public/assets/images/sprite/si_c306_00_s.png"
+  },
+  {
+    "name": "마르차나",
+    "image": "https://raw.githubusercontent.com/Mi2O-nikke/Nikke-db/main/public/assets/images/sprite/si_c321_00_s.png"
+  },
+  {
+    "name": "프리바티",
+    "image": "https://raw.githubusercontent.com/Mi2O-nikke/Nikke-db/main/public/assets/images/sprite/si_c170_00_s.png"
+  },
+  {
+    "name": "나가",
+    "image": "https://raw.githubusercontent.com/Mi2O-nikke/Nikke-db/main/public/assets/images/sprite/si_c450_00_s.png"
+  },
+  {
+    "name": "신",
+    "image": "https://raw.githubusercontent.com/Mi2O-nikke/Nikke-db/main/public/assets/images/sprite/si_c401_00_s.png"
+  },
+  {
+    "name": "퀀시",
+    "image": "https://raw.githubusercontent.com/Mi2O-nikke/Nikke-db/main/public/assets/images/sprite/si_c402_00_s.png"
+  },
+  {
+    "name": "엠마 : 택티컬 업",
+    "image": "https://raw.githubusercontent.com/Mi2O-nikke/Nikke-db/main/public/assets/images/sprite/si_c093_00_s.png"
+  },
+  {
+    "name": "킬로",
+    "image": "https://raw.githubusercontent.com/Mi2O-nikke/Nikke-db/main/public/assets/images/sprite/si_c361_00_s.png"
+  },
+  {
+    "name": "미하라",
+    "image": "https://raw.githubusercontent.com/Mi2O-nikke/Nikke-db/main/public/assets/images/sprite/si_c161_00_s.png"
+  },
+  {
+    "name": "베이",
+    "image": "https://raw.githubusercontent.com/Mi2O-nikke/Nikke-db/main/public/assets/images/sprite/si_c550_00_s.png"
+  },
+  {
+    "name": "아비스타",
+    "image": "https://raw.githubusercontent.com/Mi2O-nikke/Nikke-db/main/public/assets/images/sprite/si_c441_00_s.png"
+  },
+  {
+    "name": "아스카 : WILLE",
+    "image": "https://raw.githubusercontent.com/Mi2O-nikke/Nikke-db/main/public/assets/images/sprite/si_c835_00_s.png"
+  },
+  {
+    "name": "모리",
+    "image": "https://raw.githubusercontent.com/Mi2O-nikke/Nikke-db/main/public/assets/images/sprite/si_c590_00_s.png"
+  },
+  {
+    "name": "아스카",
+    "image": "https://raw.githubusercontent.com/Mi2O-nikke/Nikke-db/main/public/assets/images/sprite/si_c830_00_s.png"
+  },
+  {
+    "name": "라이",
+    "image": "https://raw.githubusercontent.com/Mi2O-nikke/Nikke-db/main/public/assets/images/sprite/si_c392_00_s.png"
+  },
+  {
+    "name": "에이다",
+    "image": "https://raw.githubusercontent.com/Mi2O-nikke/Nikke-db/main/public/assets/images/sprite/si_c840_00_s.png"
+  },
+  {
+    "name": "앤 : 미라클 페어리",
+    "image": "https://raw.githubusercontent.com/Mi2O-nikke/Nikke-db/main/public/assets/images/sprite/si_c121_00_s.png"
+  },
+  {
+    "name": "앨리스 : 원더랜드 바니",
+    "image": "https://raw.githubusercontent.com/Mi2O-nikke/Nikke-db/main/public/assets/images/sprite/si_c195_00_s.png"
+  },
+  {
+    "name": "엠마",
+    "image": "https://raw.githubusercontent.com/Mi2O-nikke/Nikke-db/main/public/assets/images/sprite/si_c090_00_s.png"
+  },
+  {
+    "name": "아인",
+    "image": "https://raw.githubusercontent.com/Mi2O-nikke/Nikke-db/main/public/assets/images/sprite/si_c391_00_s.png"
+  },
+  {
+    "name": "N102",
+    "image": "https://raw.githubusercontent.com/Mi2O-nikke/Nikke-db/main/public/assets/images/sprite/si_c120_00_s.png"
+  },
+  {
+    "name": "이사벨",
+    "image": "https://raw.githubusercontent.com/Mi2O-nikke/Nikke-db/main/public/assets/images/sprite/si_c231_00_s.png"
+  },
+  {
+    "name": "루피",
+    "image": "https://raw.githubusercontent.com/Mi2O-nikke/Nikke-db/main/public/assets/images/sprite/si_c200_00_s.png"
+  },
+  {
+    "name": "레이",
+    "image": "https://raw.githubusercontent.com/Mi2O-nikke/Nikke-db/main/public/assets/images/sprite/si_c831_00_s.png"
+  },
+  {
+    "name": "D : 킬러 와이프",
+    "image": "https://raw.githubusercontent.com/Mi2O-nikke/Nikke-db/main/public/assets/images/sprite/si_c043_00_s.png"
+  },
+  {
+    "name": "솔져 F.A.",
+    "image": "https://raw.githubusercontent.com/Mi2O-nikke/Nikke-db/main/public/assets/images/sprite/si_c301_00_s.png"
+  },
+  {
+    "name": "신데렐라 : 크리스탈 웨이브",
+    "image": "https://raw.githubusercontent.com/Mi2O-nikke/Nikke-db/main/public/assets/images/sprite/si_c511_00_s.png"
+  },
+  {
+    "name": "은화",
+    "image": "https://raw.githubusercontent.com/Mi2O-nikke/Nikke-db/main/public/assets/images/sprite/si_c092_00_s.png"
+  },
+  {
+    "name": "앨리스",
+    "image": "https://raw.githubusercontent.com/Mi2O-nikke/Nikke-db/main/public/assets/images/sprite/si_c191_00_s.png"
+  },
+  {
+    "name": "밀크",
+    "image": "https://raw.githubusercontent.com/Mi2O-nikke/Nikke-db/main/public/assets/images/sprite/si_c141_00_s.png"
+  },
+  {
+    "name": "스노우 화이트 : 이노센트 데이즈",
+    "image": "https://raw.githubusercontent.com/Mi2O-nikke/Nikke-db/main/public/assets/images/sprite/si_c224_00_s.png"
+  },
+  {
+    "name": "볼륨",
+    "image": "https://raw.githubusercontent.com/Mi2O-nikke/Nikke-db/main/public/assets/images/sprite/si_c431_00_s.png"
+  },
+  {
+    "name": "질",
+    "image": "https://raw.githubusercontent.com/Mi2O-nikke/Nikke-db/main/public/assets/images/sprite/si_c841_00_s.png"
+  },
+  {
+    "name": "페퍼",
+    "image": "https://raw.githubusercontent.com/Mi2O-nikke/Nikke-db/main/public/assets/images/sprite/si_c131_00_s.png"
+  },
+  {
+    "name": "iDoll 썬",
+    "image": "https://raw.githubusercontent.com/Mi2O-nikke/Nikke-db/main/public/assets/images/sprite/si_c308_00_s.png"
+  },
+  {
+    "name": "라피",
+    "image": "https://raw.githubusercontent.com/Mi2O-nikke/Nikke-db/main/public/assets/images/sprite/si_c010_00_s.png"
+  },
+  {
+    "name": "니힐리스타",
+    "image": "https://raw.githubusercontent.com/Mi2O-nikke/Nikke-db/main/public/assets/images/sprite/si_c261_00_s.png"
+  }
+]
