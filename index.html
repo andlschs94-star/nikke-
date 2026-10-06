@@ -2765,7 +2765,14 @@ html.dark-theme .kpi{
   background:#101827!important;
 }
 </style>
-<script>(function(){try{if(localStorage.getItem('nikke_theme_v1')==='dark')document.documentElement.classList.add('dark-theme')}catch(e){}})();</script><style id="v0369-dark-theme-complete">
+<script>(function(){try{
+  if(localStorage.getItem('nikke_theme_v1')==='dark')document.documentElement.classList.add('dark-theme');
+  const bg=localStorage.getItem('nikke_custom_background_v1');
+  if(bg){
+    document.documentElement.classList.add('custom-photo-bg');
+    document.documentElement.style.setProperty('--nikke-custom-bg-image','url("'+bg+'")');
+  }
+}catch(e){}})();</script><style id="v0369-dark-theme-complete">
 /* v0.369: 다크 모드 내부 요소 전체 보강 */
 html.dark-theme .nav button{
   background:#111b2b!important;
@@ -4242,6 +4249,88 @@ html.dark-theme .drop-stage-option.active .drop-stage-rate{color:#c9bdff!importa
 #profileImportBtn{width:auto!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;border:1px solid #d77b1d!important;background:#f39a2f!important;color:#fff!important;border-radius:8px!important;padding:6px 10px!important;margin:0 6px 0 0!important;font-size:11px!important;font-weight:900!important;line-height:1.1!important;white-space:nowrap!important;box-shadow:0 2px 6px rgba(210,122,25,.18)!important}#profileImportBtn:hover{background:#e88920!important;border-color:#c86f14!important}#profileImportBtn.profile-verified{background:#e88a20!important;border-color:#c96e13!important}
 .profile-verify-overlay{position:fixed;inset:0;z-index:100000;display:none;align-items:center;justify-content:center;padding:18px;background:rgba(37,55,70,.30);backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px)}.profile-verify-overlay.open{display:flex}.profile-verify-modal{width:min(560px,96vw);max-height:min(720px,92vh);overflow:auto;background:#f8fcfe;color:#385163;border:1px solid #bfd7e4;border-radius:16px;box-shadow:0 24px 70px rgba(36,70,91,.24)}.profile-verify-head{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:14px 16px;background:#eaf5fa;border-bottom:1px solid #d0e2eb}.profile-verify-head small{display:block;margin-top:3px;font-size:11px;color:#718797;line-height:1.45}.profile-verify-close{flex:0 0 auto;width:32px;height:32px;padding:0;border:1px solid #c3dce8;border-radius:8px;background:#fff;color:#60798a;font-size:22px;line-height:1;cursor:pointer}.profile-verify-body{padding:16px}.profile-verify-body label{display:block;margin-bottom:6px;font-size:12px;font-weight:900;color:#456477}.profile-verify-url-row{display:flex;gap:7px}.profile-verify-input{min-width:0;flex:1;box-sizing:border-box;padding:9px 10px;border:1px solid #c1d9e5;border-radius:8px;background:#fff;color:#344d5d;outline:none;font-size:12px}.profile-verify-input:focus{border-color:#7fb7d0;box-shadow:0 0 0 2px rgba(127,183,208,.14)}.profile-verify-btn{flex:0 0 auto;padding:8px 11px;border:1px solid #c4dbe6;border-radius:8px;background:#fff;color:#587181;font-size:11px;font-weight:900;cursor:pointer}.profile-verify-btn:hover{background:#edf7fb;border-color:#93c4d9}.profile-verify-btn.primary{border-color:#d77b1d;background:#f39a2f;color:#fff}.profile-verify-btn.primary:hover{background:#e88920}.profile-verify-btn:disabled{opacity:.55;cursor:not-allowed}.profile-verify-status{margin-top:10px;padding:9px 10px;border:1px solid #d3e3ea;border-radius:8px;background:#f2f8fb;color:#667f8e;font-size:11px;line-height:1.45}.profile-verify-status.success{border-color:#b9dfcf;background:#effaf5;color:#2f8064}.profile-verify-status.error{border-color:#efc8c8;background:#fff4f4;color:#b55a5a}.profile-verify-card{margin-top:10px;padding:11px;border:1px solid #c9dfe8;border-radius:11px;background:#fff}.profile-verify-profile{display:flex;align-items:center;gap:10px}.profile-verify-avatar{width:46px;height:46px;border-radius:50%;object-fit:cover;border:1px solid #c7dce6;background:#edf5f8}.profile-verify-avatar[hidden]{display:none}.profile-verify-code-box{margin-top:11px;padding:11px;border:1px dashed #e0a05a;border-radius:10px;background:#fff9f1}.profile-verify-code-label{font-size:10px;font-weight:900;color:#9a6a34}.profile-verify-code-row{display:flex;align-items:center;gap:8px;margin-top:5px}.profile-verify-code{flex:1;min-width:0;padding:7px 8px;border:1px solid #ead0b0;border-radius:7px;background:#fff;color:#9a5c15;font-size:16px;font-weight:1000;letter-spacing:1px;text-align:center}.profile-verify-help,.profile-verify-instruction{font-size:10px;line-height:1.6}.profile-verify-help{display:block;margin-top:6px;color:#8f8376}.profile-verify-instruction{margin-top:11px;padding:10px 11px;border:1px solid #d3e3ea;border-radius:9px;background:#f6fafc;color:#667d8b}.profile-verify-instruction strong{display:block;color:#3f5d6d;margin-bottom:2px}.profile-verify-actions{display:flex;justify-content:flex-end;margin-top:11px}.profile-verify-success{margin-top:10px;padding:10px 11px;border:1px solid #b9dfcf;border-radius:9px;background:#effaf5;color:#397d66;font-size:11px;line-height:1.5}.profile-verify-success-title{font-weight:900;color:#287256}
 html.dark-theme .profile-verify-overlay{background:rgba(0,0,0,.52)}html.dark-theme .profile-verify-modal{background:#101827;color:#dce6f3;border-color:#34445e;box-shadow:0 24px 70px rgba(0,0,0,.50)}html.dark-theme .profile-verify-head{background:#141f31;border-color:#2d3d58}html.dark-theme .profile-verify-head b{color:#edf3ff}html.dark-theme .profile-verify-head small{color:#93a3b8}html.dark-theme .profile-verify-close,html.dark-theme .profile-verify-btn:not(.primary){background:#111b2b;color:#cbd7e8;border-color:#344660}html.dark-theme .profile-verify-input,html.dark-theme .profile-verify-card,html.dark-theme .profile-verify-code{background:#0b1421;color:#edf3ff;border-color:#354761}html.dark-theme .profile-verify-body label{color:#aec0d0}html.dark-theme .profile-verify-status{background:#141f31;border-color:#2d3d58;color:#94a6b8}html.dark-theme .profile-verify-status.success{background:#10271f;border-color:#2c6a55;color:#8fd0b5}html.dark-theme .profile-verify-status.error{background:#2a1518;border-color:#6a3a41;color:#e3a2aa}html.dark-theme .profile-verify-code-box{background:#241c13;border-color:#73522b}html.dark-theme .profile-verify-code{color:#ffc57c;border-color:#6e502f}html.dark-theme .profile-verify-help{color:#a8957c}html.dark-theme .profile-verify-instruction{background:#141f31;border-color:#2d3d58;color:#9aabbc}html.dark-theme .profile-verify-instruction strong{color:#d9e5f0}html.dark-theme .profile-verify-success{background:#10271f;border-color:#2c6a55;color:#8fd0b5}html.dark-theme .profile-verify-success-title{color:#a8e1c8}
+</style>
+<style id="custom-background-photo-v0440">
+/* v0.440 TEST: 사용자 지정 배경 사진 */
+html.custom-photo-bg body,
+html.dark-theme.custom-photo-bg body{
+  background-image:
+    linear-gradient(rgba(255,255,255,.16),rgba(255,255,255,.16)),
+    var(--nikke-custom-bg-image),
+    linear-gradient(180deg,#f1f8fc 0%,#e4f1f8 52%,#d8eaf4 100%) !important;
+  background-position:center center,center center,center center !important;
+  background-size:cover,cover,cover !important;
+  background-repeat:no-repeat,no-repeat,no-repeat !important;
+  background-attachment:fixed,fixed,fixed !important;
+  background-color:#d8eaf4 !important;
+}
+html.dark-theme.custom-photo-bg body{
+  background-image:
+    linear-gradient(rgba(5,9,16,.48),rgba(5,9,16,.48)),
+    var(--nikke-custom-bg-image),
+    linear-gradient(180deg,#0a101b 0%,#080d16 55%,#070b13 100%) !important;
+  background-color:#070b13 !important;
+}
+html.custom-photo-bg body::before,
+html.custom-photo-bg body::after,
+html.dark-theme.custom-photo-bg body::before,
+html.dark-theme.custom-photo-bg body::after{
+  opacity:.12 !important;
+}
+.custom-bg-section{display:flex;flex-direction:column;gap:9px}
+.custom-bg-preview{
+  position:relative;
+  width:100%;
+  height:92px;
+  border:1px solid #bfd5df;
+  border-radius:10px;
+  overflow:hidden;
+  background:linear-gradient(135deg,#eef7fb,#dcecf5);
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.22);
+}
+.custom-bg-preview img{
+  width:100%;
+  height:100%;
+  display:block;
+  object-fit:cover;
+}
+.custom-bg-preview-empty{
+  width:100%;
+  height:100%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:#72879a;
+  font-size:11px;
+  font-weight:800;
+}
+.custom-bg-actions{display:flex;gap:7px}
+.custom-bg-actions .settings-action{
+  flex:1;
+  margin:0 !important;
+}
+.custom-bg-note{
+  margin:0;
+  color:#7a8e9e;
+  font-size:9px;
+  line-height:1.45;
+}
+html.dark-theme .custom-bg-preview{
+  border-color:#344660;
+  background:linear-gradient(135deg,#162135,#0d1522);
+}
+html.dark-theme .custom-bg-preview-empty,
+html.dark-theme .custom-bg-note{
+  color:#8b9ab4;
+}
+html.dark-theme .custom-bg-section .settings-action{
+  background:#0f1827 !important;
+  color:#dce6f3 !important;
+  border-color:#344660 !important;
+}
+html.dark-theme .custom-bg-section .settings-action:hover{
+  background:#18253a !important;
+}
 </style></head><body>
 <div class="site-version-corner" id="siteVersionCorner">VERSION 1.009</div><div class="sidebar-hitarea" id="sidebarHitarea" aria-label="메뉴 열기" title="왼쪽 메뉴 열기"></div>
 <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
@@ -4253,6 +4342,20 @@ html.dark-theme .profile-verify-overlay{background:rgba(0,0,0,.52)}html.dark-the
     <div><label>계정1</label><input id="accountName1" type="text" maxlength="20"></div>
     <div><label>계정2</label><input id="accountName2" type="text" maxlength="20"></div>
     <button type="button" class="settings-action" onclick="saveAccountNames()">계정 이름 저장</button>
+  </div>
+  <div class="settings-divider"></div>
+  <div class="settings-section-title">배경 사진</div>
+  <div class="custom-bg-section">
+    <div class="custom-bg-preview" id="customBgPreview">
+      <div class="custom-bg-preview-empty" id="customBgPreviewEmpty">기본 배경 사용 중</div>
+      <img id="customBgPreviewImage" alt="현재 배경 사진 미리보기" hidden>
+    </div>
+    <input id="customBgFileInput" type="file" accept="image/png,image/jpeg,image/webp,image/gif" hidden>
+    <div class="custom-bg-actions">
+      <button type="button" class="settings-action" onclick="chooseCustomBackgroundImage()">사진 선택</button>
+      <button type="button" class="settings-action" onclick="clearCustomBackgroundImage()">기본 배경</button>
+    </div>
+    <p class="custom-bg-note">선택한 사진은 이 브라우저에만 저장됩니다. 장비 데이터 및 계정 정보에는 포함되지 않습니다.</p>
   </div>
   <div class="settings-divider"></div>
   <div class="settings-section-title">데이터 관리</div>
@@ -6438,7 +6541,99 @@ html.dark-theme #outpostPanel .outpost-final-stage-btn{
   object-position:center;
   border-radius:50%;
 }
-</style><script src="profile-import-button.js?v=1.009"></script></body></html>
+</style>
+<script id="custom-background-photo-js-v0440">
+const CUSTOM_BACKGROUND_STORAGE='nikke_custom_background_v1';
+function applyCustomBackgroundImage(dataUrl,showToast=true){
+  const root=document.documentElement;
+  if(dataUrl){
+    root.classList.add('custom-photo-bg');
+    root.style.setProperty('--nikke-custom-bg-image','url("'+dataUrl+'")');
+    try{localStorage.setItem(CUSTOM_BACKGROUND_STORAGE,dataUrl)}
+    catch(e){
+      root.classList.remove('custom-photo-bg');
+      root.style.removeProperty('--nikke-custom-bg-image');
+      if(showToast)toast('사진을 저장할 공간이 부족합니다. 더 작은 사진으로 다시 시도해주세요.');
+      return false;
+    }
+  }else{
+    root.classList.remove('custom-photo-bg');
+    root.style.removeProperty('--nikke-custom-bg-image');
+    try{localStorage.removeItem(CUSTOM_BACKGROUND_STORAGE)}catch(e){}
+  }
+  updateCustomBackgroundUI(dataUrl||'');
+  if(showToast)toast(dataUrl?'배경 사진이 적용되었습니다.':'기본 배경으로 복원되었습니다.');
+  return true;
+}
+function updateCustomBackgroundUI(dataUrl){
+  const img=document.getElementById('customBgPreviewImage');
+  const empty=document.getElementById('customBgPreviewEmpty');
+  if(img){
+    if(dataUrl){img.src=dataUrl;img.hidden=false}
+    else{img.removeAttribute('src');img.hidden=true}
+  }
+  if(empty)empty.hidden=!!dataUrl;
+}
+function chooseCustomBackgroundImage(){
+  const input=document.getElementById('customBgFileInput');
+  if(input){input.value='';input.click()}
+}
+function clearCustomBackgroundImage(){
+  applyCustomBackgroundImage('');
+}
+function resizeBackgroundImage(file){
+  return new Promise((resolve,reject)=>{
+    const reader=new FileReader();
+    reader.onerror=()=>reject(new Error('사진을 읽지 못했습니다.'));
+    reader.onload=()=>{
+      const img=new Image();
+      img.onload=()=>{
+        try{
+          const maxSide=1920;
+          const scale=Math.min(1,maxSide/Math.max(img.naturalWidth||img.width,img.naturalHeight||img.height));
+          const w=Math.max(1,Math.round((img.naturalWidth||img.width)*scale));
+          const h=Math.max(1,Math.round((img.naturalHeight||img.height)*scale));
+          const canvas=document.createElement('canvas');
+          canvas.width=w;canvas.height=h;
+          const ctx=canvas.getContext('2d',{alpha:false});
+          if(!ctx)throw new Error('사진 처리 기능을 사용할 수 없습니다.');
+          ctx.fillStyle='#ffffff';
+          ctx.fillRect(0,0,w,h);
+          ctx.drawImage(img,0,0,w,h);
+          let quality=.82,data=canvas.toDataURL('image/jpeg',quality);
+          while(data.length>3800000&&quality>.55){
+            quality-=.07;
+            data=canvas.toDataURL('image/jpeg',quality);
+          }
+          if(data.length>4200000)throw new Error('사진 용량이 너무 큽니다.');
+          resolve(data);
+        }catch(e){reject(e)}
+      };
+      img.onerror=()=>reject(new Error('지원하지 않는 사진 형식입니다.'));
+      img.src=reader.result;
+    };
+    reader.readAsDataURL(file);
+  });
+}
+document.getElementById('customBgFileInput')?.addEventListener('change',async e=>{
+  const file=e.target.files?.[0];
+  if(!file)return;
+  if(!file.type.startsWith('image/')){
+    toast('이미지 파일만 선택할 수 있습니다.');
+    return;
+  }
+  try{
+    toast('배경 사진을 준비하는 중…');
+    const dataUrl=await resizeBackgroundImage(file);
+    applyCustomBackgroundImage(dataUrl);
+  }catch(err){
+    toast(String(err?.message||'배경 사진을 적용하지 못했습니다.'));
+  }
+});
+window.addEventListener('DOMContentLoaded',()=>{
+  try{updateCustomBackgroundUI(localStorage.getItem(CUSTOM_BACKGROUND_STORAGE)||'')}catch(e){}
+});
+</script><script src="profile-import-button.js?v=1.009"></script></body></html>
 <style id="common-unused-power-sort-0356">
 /* v0.356: 미사용 일괄적용 창 바깥 클릭으로 닫기 지원 */
 </style>
