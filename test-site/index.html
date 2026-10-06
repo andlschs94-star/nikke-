@@ -2,47 +2,63 @@
 <html lang="ko"><head><script id="test-storage-isolation">
 (function(){
   'use strict';
-  // test-site와 본사이트가 같은 GitHub Pages origin을 사용하므로
-  // 테스트 데이터만 별도 prefix로 저장합니다.
   const PREFIX='__nikke_test__';
-  try{
-    const p=Storage.prototype;
-    if(p.__nikkeTestPatched) return;
-    const origGet=p.getItem;
-    const origSet=p.setItem;
-    const origRemove=p.removeItem;
-    const origClear=p.clear;
-    const origKey=p.key;
-
-    p.getItem=function(key){
-      return origGet.call(this,PREFIX+String(key));
-    };
-    p.setItem=function(key,value){
-      return origSet.call(this,PREFIX+String(key),String(value));
-    };
-    p.removeItem=function(key){
-      return origRemove.call(this,PREFIX+String(key));
-    };
-    p.clear=function(){
+  const real=window.localStorage;
+  const mapKey=(k)=>PREFIX+String(k);
+  const api={
+    get length(){
+      let n=0;
+      for(let i=0;i<real.length;i++){if(real.key(i).indexOf(PREFIX)===0)n++;}
+      return n;
+    },
+    key(i){
       const keys=[];
-      for(let i=0;i<this.length;i++){
-        const k=origKey.call(this,i);
+      for(let j=0;j<real.length;j++){
+        const k=real.key(j);
+        if(k && k.indexOf(PREFIX)===0) keys.push(k.slice(PREFIX.length));
+      }
+      return keys[Number(i)] ?? null;
+    },
+    getItem(k){return real.getItem(mapKey(k));},
+    setItem(k,v){return real.setItem(mapKey(k),String(v));},
+    removeItem(k){return real.removeItem(mapKey(k));},
+    clear(){
+      const keys=[];
+      for(let i=0;i<real.length;i++){
+        const k=real.key(i);
         if(k && k.indexOf(PREFIX)===0) keys.push(k);
       }
-      keys.forEach(k=>origRemove.call(this,k));
-    };
-    p.key=function(index){
-      const visible=[];
-      for(let i=0;i<this.length;i++){
-        const k=origKey.call(this,i);
-        if(k && k.indexOf(PREFIX)===0) visible.push(k.slice(PREFIX.length));
+      keys.forEach(k=>real.removeItem(k));
+    }
+  };
+  const proxy=new Proxy(api,{
+    get(target,prop){
+      if(prop in target){
+        const v=target[prop];
+        return typeof v==='function'?v.bind(target):v;
       }
-      return visible[Number(index)] ?? null;
-    };
-    Object.defineProperty(p,'__nikkeTestPatched',{value:true,configurable:false});
-  }catch(e){
-    console.warn('[NIKKE test] localStorage isolation patch failed',e);
-  }
+      if(typeof prop==='string') return target.getItem(prop);
+      return undefined;
+    },
+    set(target,prop,value){
+      if(typeof prop==='string'){target.setItem(prop,value);return true;}
+      return false;
+    },
+    deleteProperty(target,prop){target.removeItem(prop);return true;},
+    ownKeys(){
+      const out=[];
+      for(let i=0;i<target.length;i++){const k=target.key(i);if(k!==null)out.push(k);}
+      return out;
+    },
+    getOwnPropertyDescriptor(target,prop){
+      if(typeof prop==='string' && target.getItem(prop)!==null){
+        return {configurable:true,enumerable:true,writable:true,value:target.getItem(prop)};
+      }
+      return undefined;
+    }
+  });
+  try{Object.defineProperty(window,'localStorage',{configurable:true,value:proxy});}
+  catch(_){window.__NIKKE_TEST_STORAGE__=proxy;}
 })();
 </script><!-- GitHub Pages deployment refresh 0.355 --><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="icon" type="image/webp" href="https://nikkegear885.github.io/nikke-/assets/nikke-manager-icon.webp?v=0439">
 <title>니케 장비관리test</title>
@@ -6484,7 +6500,7 @@ html.dark-theme #outpostPanel .outpost-final-stage-btn{
   object-position:center;
   border-radius:50%;
 }
-</style><script src="https://nikkegear885.github.io/nikke-/./profile-import-button.js?v=test1"></script><script src="./nikke-icons-test.js?v=4"></script></body></html>
+</style><script src="https://nikkegear885.github.io/nikke-/./profile-import-button.js?v=test1"></script><script src="./nikke-icons-test.js?v=5"></script></body></html>
 <style id="common-unused-power-sort-0356">
 /* v0.356: 미사용 일괄적용 창 바깥 클릭으로 닫기 지원 */
 </style>
