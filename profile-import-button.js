@@ -1,4 +1,4 @@
-/* NIKKE Gear Manager - direct BlaBlaLink public profile sync v1.010 */
+/* NIKKE Gear Manager - direct BlaBlaLink public profile sync */
 (function(){
   'use strict';
 
@@ -81,9 +81,9 @@
       '.bl-direct-primary:disabled{opacity:.55;cursor:not-allowed}',
       '.bl-direct-secondary{border:1px solid #bfd5e0;border-radius:9px;background:#fff;color:#61798a;padding:10px 12px;font-size:11px;font-weight:900;cursor:pointer}',
       'html.dark-theme .bl-direct-secondary{background:#0c1424;border-color:#2b3a54;color:#aebbd0}',
-      '.bl-direct-profile{display:grid;grid-template-columns:38px minmax(0,1fr);align-items:center;column-gap:10px;margin-top:12px;padding:10px 11px;border:1px solid #cddfe8;border-radius:9px;background:#fff}',
+      '.bl-direct-profile{display:flex;align-items:center;gap:10px;margin-top:12px;padding:10px 11px;border:1px solid #cddfe8;border-radius:9px;background:#fff}',
       '.bl-direct-profile[hidden]{display:none!important}',
-      '.bl-direct-profile img{width:38px;height:38px;min-width:38px;min-height:38px;display:block;border-radius:50%;object-fit:cover;background:#e8eef3;justify-self:start}.bl-direct-profile>div{min-width:0}.bl-direct-profile-name{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}',
+      '.bl-direct-profile img{width:38px;height:38px;border-radius:50%;object-fit:cover;background:#e8eef3}',
       '.bl-direct-profile-name{font-size:12px;font-weight:900}',
       '.bl-direct-profile-sub{margin-top:3px;font-size:9px;color:#718797}',
       'html.dark-theme .bl-direct-profile{background:#0c1424;border-color:#2b3a54}',
