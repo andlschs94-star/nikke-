@@ -4486,7 +4486,6 @@ function startBlablalinkSync(targetAccount){
   setTimeout(()=>{if(blSyncTimer){clearInterval(blSyncTimer);blSyncTimer=null}},120000);
 }
 function applyBlablalinkSyncPayload(p,targetAccount){
-  window.__NIKKE_GM_LAST_SYNC_PAYLOAD__=p;
   if(!p.ok){setBlSyncStatus('동기화 실패: '+String(p.error||'알 수 없는 오류'));return}
   // 동기화를 시작한 계정에만 결과를 적용합니다.
   const syncAccount=ACCOUNTS.includes(targetAccount)?targetAccount:activeAccount;
@@ -6439,7 +6438,7 @@ html.dark-theme #outpostPanel .outpost-final-stage-btn{
   object-position:center;
   border-radius:50%;
 }
-</style><script src="https://nikkegear885.github.io/nikke-/./profile-import-button.js?v=test1"></script></body></html>
+</style><script src="https://nikkegear885.github.io/nikke-/profile-import-button.js?v=1.009"></script></body></html>
 <style id="common-unused-power-sort-0356">
 /* v0.356: 미사용 일괄적용 창 바깥 클릭으로 닫기 지원 */
 </style>
