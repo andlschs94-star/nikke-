@@ -38,7 +38,7 @@
 
       iconByName=new Map(
         Object.entries(data.icons)
-          .map(([name,url])=>[String(name).trim(),String(url||'').trim()])
+          .map(([name,url])=>[String(name).trim(),(String(url||'').trim().startsWith('/')?WORKER_BASE+String(url||'').trim():String(url||'').trim())])
           .filter(([name,url])=>name&&url)
       );
 
