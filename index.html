@@ -5107,7 +5107,6 @@ function renderTable(){
     g.parts.forEach((x,idx)=>{const part=gearParts[idx];gearCells[part]=`<button type="button" class="gear-part ${x.type}" title="${part} · ${x.label} · 클릭하여 변경" onclick="event.stopPropagation();openQuickGearEditor(${i},'${part}')"><span class="part-name">${part}</span><span class="part-state">${x.label}</span></button>`});
     const cells={
       선택:`<button type="button" class="valid-toggle ${selectedCharacters.has(i)?'active':''}" onclick="event.stopPropagation();toggleCharacterSelection(${i},${selectedCharacters.has(i)?'false':'true'})" aria-label="${esc(r['이름'])} 유효 여부">유효</button>`,
-      아이콘:`<div class="character-icon-cell" data-character-icon-name="${esc(r['이름'])}"><span class="character-icon-placeholder">${esc(String(r['이름']||'').slice(0,1))}</span></div>`,
       이름:`<button class="name-btn" onclick="openDrawer(${i})">${esc(r['이름'])}</button>`,
       미사용:(()=>{const st=characterStatusState(i,r);const label=st==='unowned'?'미보유':'미사용';return `<button type="button" class="unused-status-toggle ${st==='unused'?'active':''} ${st==='unowned'?'unowned':''}" onclick="event.stopPropagation();toggleCharacterStatus(${i})" aria-label="${esc(r['이름'])} 상태 변경">${label}</button>`})(),
 
@@ -5123,18 +5122,18 @@ function renderTable(){
       옵션:`${opts}개`,
       큐브:r['큐브']?esc(r['큐브'])+' '+esc(r['큐브_레벨']??''): '<span class="muted">없음</span>'
     };
-    return `<tr>${visibleColumnOrder().map(k=>`<td class="${gearParts.includes(k)?'gear-single-cell ':''}${k==='아이콘'?'character-icon-column':''}">${cells[k]??''}</td>`).join('')}</tr>`;
+    return `<tr>${visibleColumnOrder().map(k=>`<td class="${gearParts.includes(k)?'gear-single-cell':''}">${cells[k]??''}</td>`).join('')}</tr>`;
   }).join('');
   updateFilterUI();
   const selectAll=document.querySelector('.row-select-all');
   if(selectAll){const vis=arr.length>0 && arr.every(({i})=>selectedCharacters.has(i)); selectAll.checked=vis; selectAll.indeterminate=!vis && arr.some(({i})=>selectedCharacters.has(i));}
 }
 const COLUMN_DEFS={
-  선택:{label:'유효',filter:true}, 아이콘:{label:'사진'}, 이름:{label:'니케',filter:true}, 미사용:{label:'미사용'}, 머리:{label:'머리',filter:true}, 몸통:{label:'몸통',filter:true}, 장갑:{label:'장갑',filter:true}, 다리:{label:'다리',filter:true},
+  선택:{label:'유효',filter:true}, 이름:{label:'니케',filter:true}, 미사용:{label:'미사용'}, 머리:{label:'머리',filter:true}, 몸통:{label:'몸통',filter:true}, 장갑:{label:'장갑',filter:true}, 다리:{label:'다리',filter:true},
   전투력:{label:'전투력',filter:true}, 기업:{label:'기업',filter:true}, 속성:{label:'속성',filter:true}, 버스트:{label:'버스트',filter:true}, 클래스:{label:'클래스',filter:true},
   돌파:{label:'돌파'}, 코강:{label:'코강'}, 스킬:{label:'스킬'}
 };
-const DEFAULT_COLUMN_ORDER=['선택','아이콘','이름','기업','클래스','머리','몸통','장갑','다리','전투력','속성','버스트','돌파','코강','스킬','미사용'];
+const DEFAULT_COLUMN_ORDER=['선택','이름','기업','클래스','머리','몸통','장갑','다리','전투력','속성','버스트','돌파','코강','스킬','미사용'];
 const COLUMN_ORDER_STORAGE='nikke_column_order_v2';
 const COLUMN_VISIBILITY_STORAGE='nikke_column_visibility_v1';
 const DETAIL_COLUMNS=['전투력','버스트','속성','돌파','코강','스킬'];
@@ -5442,15 +5441,14 @@ let columnOrder=(()=>{try{
     return ['선택',...next,'미사용'].filter((k,i,a)=>a.indexOf(k)===i&&COLUMN_DEFS[k]);
   }
 }catch(e){}return [...DEFAULT_COLUMN_ORDER]})();
-const COLUMN_LAYOUT_MIGRATION='nikke_column_layout_migration_v2';
+const COLUMN_LAYOUT_MIGRATION='nikke_column_layout_migration_v1';
 try{
-  if(localStorage.getItem(COLUMN_LAYOUT_MIGRATION)!=='icon-after-valid'){
-    const fixed=columnOrder.filter(k=>k!=='아이콘');
-    const validIdx=fixed.indexOf('선택');
-    fixed.splice(validIdx>=0?validIdx+1:0,0,'아이콘');
-    columnOrder=['선택','아이콘',...fixed.filter(k=>k!=='선택'&&k!=='미사용'&&k!=='아이콘'),'미사용']
-      .filter((k,i,a)=>a.indexOf(k)===i&&COLUMN_DEFS[k]);
-    localStorage.setItem(COLUMN_LAYOUT_MIGRATION,'icon-after-valid');
+  if(localStorage.getItem(COLUMN_LAYOUT_MIGRATION)!=='company-class-after-name'){
+    const fixed=columnOrder.filter(k=>k!=='기업'&&k!=='클래스');
+    const nameIdx=fixed.indexOf('이름');
+    fixed.splice(nameIdx>=0?nameIdx+1:0,0,'기업','클래스');
+    columnOrder=['선택',...fixed.filter(k=>k!=='선택'&&k!=='미사용'),'미사용'].filter((k,i,a)=>a.indexOf(k)===i&&COLUMN_DEFS[k]);
+    localStorage.setItem(COLUMN_LAYOUT_MIGRATION,'company-class-after-name');
     localStorage.setItem(COLUMN_ORDER_STORAGE,JSON.stringify(columnOrder));
   }
 }catch(e){}
@@ -6440,115 +6438,7 @@ html.dark-theme #outpostPanel .outpost-final-stage-btn{
   object-position:center;
   border-radius:50%;
 }
-</style><style id="character-icon-column-v1011">
-#characterPanel th[data-column-key="아이콘"],
-#characterPanel td.character-icon-column{
-  width:52px!important;
-  min-width:52px!important;
-  max-width:52px!important;
-  padding-left:6px!important;
-  padding-right:6px!important;
-  text-align:center!important;
-}
-#characterPanel .character-icon-cell{
-  width:38px;
-  height:38px;
-  margin:0 auto;
-  display:grid;
-  place-items:center;
-  overflow:hidden;
-  border-radius:50%;
-  background:#e8eef3;
-  border:1px solid rgba(128,153,176,.45);
-  box-sizing:border-box;
-  font-size:14px;
-  font-weight:900;
-  color:#60758a;
-}
-#characterPanel .character-icon-cell img{
-  display:block;
-  width:38px;
-  height:38px;
-  min-width:38px;
-  min-height:38px;
-  object-fit:cover;
-  border-radius:50%;
-}
-html.dark-theme #characterPanel .character-icon-cell{
-  background:#162033;
-  border-color:rgba(148,169,199,.45);
-  color:#9fb0c7;
-}
-</style>
-<script id="character-icon-column-js-v1011">
-(function(){
-  'use strict';
-  var WORKER_BASE='https://nikke-profile-verify.nikke-profile-verify.workers.dev';
-  var iconByName=new Map();
-  var loading=null;
-  var queued=false;
-  function queueApply(){
-    if(queued)return;
-    queued=true;
-    requestAnimationFrame(function(){queued=false;apply();});
-  }
-  function loadIcons(){
-    if(loading)return loading;
-    loading=fetch(WORKER_BASE+'/character-icons',{
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      credentials:'omit',
-      body:'{}',
-      cache:'no-store'
-    }).then(function(res){
-      return res.json().then(function(payload){
-        if(!res.ok||!payload||!payload.ok||!payload.icons)throw new Error(payload&&payload.message||'캐릭터 이미지 목록 조회 실패');
-        iconByName=new Map(Object.entries(payload.icons).map(function(entry){
-          return [String(entry[0]||'').trim(),String(entry[1]||'').trim()];
-        }).filter(function(entry){return entry[0]&&entry[1];}));
-        queueApply();
-      });
-    }).catch(function(err){
-      console.warn('[NIKKE] 캐릭터 이미지 목록 조회 실패',err);
-    });
-    return loading;
-  }
-  function apply(){
-    if(!iconByName.size)return;
-    document.querySelectorAll('#characterPanel .character-icon-cell[data-character-icon-name]').forEach(function(cell){
-      var name=String(cell.dataset.characterIconName||'').trim();
-      var url=iconByName.get(name);
-      if(!url)return;
-      var existing=cell.querySelector('img');
-      if(existing){
-        if(existing.dataset.loadedUrl!==url){
-          existing.dataset.loadedUrl=url;
-          existing.src=url;
-        }
-        return;
-      }
-      var img=document.createElement('img');
-      img.alt=name;
-      img.loading='lazy';
-      img.decoding='async';
-      img.dataset.loadedUrl=url;
-      img.src=url;
-      img.onerror=function(){this.remove();};
-      cell.innerHTML='';
-      cell.appendChild(img);
-    });
-  }
-  function init(){
-    loadIcons();
-    apply();
-    var tbody=document.getElementById('tbody');
-    if(tbody)new MutationObserver(queueApply).observe(tbody,{subtree:true,childList:true});
-  }
-  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});
-  else init();
-})();
-</script>
-<script src="profile-import-button.js?v=1.010"></script></body></html>
+</style><script src="profile-import-button.js?v=1.010"></script></body></html>
 <style id="common-unused-power-sort-0356">
 /* v0.356: 미사용 일괄적용 창 바깥 클릭으로 닫기 지원 */
 </style>
