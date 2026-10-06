@@ -223,7 +223,7 @@ async function getCharacterIconMap(){
     if(!name) continue;
     const resourceId = Number(row.resource_id);
     if(!Number.isFinite(resourceId)) continue;
-    byName[name] = blCharacterIconUrl(resourceId,0);
+    byName[name] = '/character-icon?resource_id=' + encodeURIComponent(resourceId) + '&skin=0';
   }
   return byName;
 }
@@ -741,6 +741,41 @@ export default {
       return new Response(null, {status:204,headers:corsHeaders()});
     }
 
+    const action = new URL(request.url).pathname.replace(/\/+$/,'') || '/';
+
+    // 캐릭터 아이콘은 GET으로 Worker가 BlaBlaLink CDN 이미지를 프록시합니다.
+    if(action === '/character-icon'){
+      if(request.method !== 'GET'){
+        return json({ok:false,message:'GET 요청만 사용할 수 있습니다.'}, 405);
+      }
+      const url = new URL(request.url);
+      const resourceId = Number(url.searchParams.get('resource_id'));
+      const skin = Number(url.searchParams.get('skin') || 0);
+      if(!Number.isFinite(resourceId) || resourceId < 1 || resourceId > 9999 ||
+         !Number.isFinite(skin) || skin < 0 || skin > 99){
+        return json({ok:false,message:'캐릭터 이미지 식별자가 올바르지 않습니다.'}, 400);
+      }
+
+      try{
+        const upstream = await fetch(blCharacterIconUrl(Math.trunc(resourceId),Math.trunc(skin)), {
+          headers:{'User-Agent':'Mozilla/5.0','Accept':'image/avif,image/webp,image/apng,image/svg+xml,image/*,*/*;q=0.8'}
+        });
+        if(!upstream.ok){
+          return new Response('Character image not found', {
+            status:upstream.status,
+            headers:{...corsHeaders(),'Content-Type':'text/plain; charset=UTF-8'}
+          });
+        }
+
+        const headers = new Headers(upstream.headers);
+        headers.set('Access-Control-Allow-Origin', ALLOWED_ORIGIN);
+        headers.set('Cache-Control','public, max-age=86400, stale-while-revalidate=604800');
+        return new Response(upstream.body, {status:upstream.status,headers});
+      }catch(e){
+        return json({ok:false,message:'캐릭터 이미지를 불러오지 못했습니다.'}, 502);
+      }
+    }
+
     if(request.method !== 'POST'){
       return json({ok:false,message:'POST 요청만 사용할 수 있습니다.'}, 405);
     }
@@ -751,8 +786,6 @@ export default {
     }catch(e){
       return json({ok:false,message:'요청 본문을 읽을 수 없습니다.'}, 400);
     }
-
-    const action = new URL(request.url).pathname.replace(/\/+$/,'') || '/';
 
     try{
 
