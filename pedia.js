@@ -273,7 +273,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
   let cache=null;
   async function data(){
     if(cache) return cache;
-    try{const r=await fetch('assets/nikke-skills.json?v=1043',{cache:'no-store'}); if(!r.ok) return null; cache=await r.json(); return cache;}catch(_){return null;}
+    try{const r=await fetch('assets/nikke-skills.json?v=1046',{cache:'no-store'}); if(!r.ok) return null; cache=await r.json(); return cache;}catch(_){return null;}
   }
   function find(all,name,id){
     if(!all||typeof all!=='object') return null;
