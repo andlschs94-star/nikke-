@@ -1,7 +1,7 @@
 (() => {
 'use strict';
 const SOURCE_URL='https://www.blablalink.com/shiftyspad/nikke-list';
-const DATA_URL='assets/nikke-pedia-master.json?v=1046';
+const DATA_URL='assets/nikke-pedia-master.json?v=1047';
 const esc=(v)=>String(v??'').replace(/[&<>'"]/g,(c)=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]));
 
 function injectStyle(){
