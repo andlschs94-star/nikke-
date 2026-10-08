@@ -4382,7 +4382,7 @@ html.dark-theme .name-cell-image{
 </style></style></style></style><meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"><meta http-equiv="Pragma" content="no-cache"><meta http-equiv="Expires" content="0">
 <script id="site-version-bootstrap">
 (function(){
-  var EMBEDDED_VERSION='1.123';
+  var EMBEDDED_VERSION='1.127';
   var REDIRECT_KEY='nikke_site_version_redirected_';
   function applyVersion(v){
     var el=document.getElementById('siteVersionCorner');
@@ -4440,8 +4440,33 @@ html.dark-theme #characterPanel .quick-filter-btn.valid-selected.active::after{
 .sidebar:not(.open){transform:translateX(-110%)!important;}
 .sidebar-hitarea{position:fixed!important;left:0!important;top:0!important;bottom:0!important;width:32px!important;z-index:140!important;pointer-events:auto!important;}
 .sidebar-hitarea.open{width:228px!important;}
-</style></head><body>
-<div class="site-version-corner" id="siteVersionCorner">VERSION 1.123</div><div class="sidebar-hitarea" id="sidebarHitarea" aria-label="메뉴 열기" title="왼쪽 메뉴 열기"></div>
+</style><style id="need-count-highlight-v1127">
+/* v1.127: 기업장비 필요 현황 1/2/3/4/5+ 단계별 강조 */
+.gear-summary td.need.nonzero{
+  font-weight:900!important;
+  text-shadow:none!important;
+  box-shadow:none!important;
+}
+.gear-summary td.need.need-level-1{background:rgba(255,176,32,.10)!important;border-color:rgba(255,176,32,.18)!important;}
+.gear-summary td.need.need-level-2{background:rgba(255,176,32,.17)!important;border-color:rgba(255,176,32,.25)!important;}
+.gear-summary td.need.need-level-3{background:rgba(255,176,32,.25)!important;border-color:rgba(255,176,32,.34)!important;}
+.gear-summary td.need.need-level-4{background:rgba(255,176,32,.33)!important;border-color:rgba(255,176,32,.43)!important;}
+.gear-summary td.need.need-level-5{background:rgba(255,167,20,.44)!important;border-color:rgba(255,167,20,.58)!important;font-weight:1000!important;}
+
+/* 밝은 화면: 푸른 계열 테이블 위에서도 확실히 구분되도록 주황색 농도를 별도로 적용 */
+html:not(.dark-theme) .gear-summary td.need.need-level-1{background:#fff6df!important;border-color:#f3d99d!important;color:#4b4b4b!important;}
+html:not(.dark-theme) .gear-summary td.need.need-level-2{background:#ffedc2!important;border-color:#efc878!important;color:#4a3b24!important;}
+html:not(.dark-theme) .gear-summary td.need.need-level-3{background:#ffe0a0!important;border-color:#e7b34e!important;color:#4a3517!important;}
+html:not(.dark-theme) .gear-summary td.need.need-level-4{background:#ffd078!important;border-color:#dc9a24!important;color:#3e2b10!important;}
+html:not(.dark-theme) .gear-summary td.need.need-level-5{background:#ffbd45!important;border-color:#d98500!important;color:#342100!important;font-weight:1000!important;}
+
+.gear-summary .total-row td.need.need-level-1{background:rgba(255,176,32,.14)!important;}
+.gear-summary .total-row td.need.need-level-2{background:rgba(255,176,32,.22)!important;}
+.gear-summary .total-row td.need.need-level-3{background:rgba(255,176,32,.30)!important;}
+.gear-summary .total-row td.need.need-level-4{background:rgba(255,176,32,.38)!important;}
+.gear-summary .total-row td.need.need-level-5{background:rgba(255,167,20,.50)!important;}
+</style><meta name="pages-deploy-refresh" content="1.127"></head><body>
+<div class="site-version-corner" id="siteVersionCorner">VERSION 1.127</div><div class="sidebar-hitarea" id="sidebarHitarea" aria-label="메뉴 열기" title="왼쪽 메뉴 열기"></div>
 <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
 <div class="app"><aside class="sidebar" id="sidebar"><div class="brand"><div class="logo"><img src="assets/nikke-manager-icon.webp?v=0438" alt="니케 장비관리 아이콘"></div><div><h1>니케 장비관리</h1></div></div><div class="nav"><button type="button" class="active main-view-nav" data-view="characters" onclick="switchMainView('characters')">니케 장비 현황</button><button type="button" class="main-view-nav" data-view="outpost" onclick="switchMainView('outpost')">전초기지 생산량</button><button type="button" class="main-view-nav" data-view="sole" onclick="switchMainView('sole')">솔레점수기록</button></div><div class="section" style="font-size:11px;color:#6f7b96;line-height:1.6">현재는 니케 관리 기능을 제공합니다.<br>다른 관리 기능은 설정 메뉴에서 사용할 수 있습니다.</div></aside>
 <main class="main"><div class="topbar"><div><div class="eyebrow">NIKKE / INVENTORY</div><h2 id="pageTitle">니케 장비현황</h2></div><div class="actions account-switcher"><button type="button" class="btn blsync-top-btn" style="background:#fff1dc!important;border:1px solid #e5a14f!important;color:#a85f16!important;box-shadow:0 2px 8px rgba(214,142,50,.16)!important;font-weight:900!important" onclick="openBlablalinkSyncGuide()">계정 동기화</button><button type="button" class="btn known-bugs-top-btn" id="knownBugsBtn" onclick="openKnownBugsPanel()">인지한 버그</button><button type="button" class="theme-toggle-btn" id="themeToggleBtn" aria-label="어두운 화면으로 보기" title="어두운 화면으로 보기" onclick="toggleDarkTheme()">☀️</button><button type="button" class="btn account-switch-btn active" data-account="계정1" onclick="switchAccount(ACCOUNTS[0])">계정1</button><button type="button" class="btn account-switch-btn" data-account="계정2" onclick="switchAccount(ACCOUNTS[1])">계정2</button><div class="settings-wrap"><button type="button" class="settings-btn" id="settingsBtn" aria-label="설정" title="설정" onclick="toggleSettingsMenu(event)">⚙</button></div></div></div><div class="settings-popover" id="settingsPopover" hidden>
@@ -4963,6 +4988,10 @@ function getExpectedAllGearClears(typeCounts,ratePercent,pool){
   };
   return solve(start);
 }
+function needHighlightClass(n){
+  const v=Number(n)||0;
+  return v>=5?'need-level-5':v>0?'need-level-'+v:'';
+}
 function renderDropRatePanel(){
   const box=document.getElementById('dropRatePanel');if(!box)return;
   const need=getNeedTypeTotals();
@@ -5248,8 +5277,8 @@ function renderKpis(){
         <table class="gear-summary">
           <thead><tr><th>기업</th><th>클래스</th><th>머리</th><th>몸통</th><th>장갑</th><th>다리</th></tr></thead>
           <tbody>
-            ${rows.map(x=>{const sum=x.counts.머리+x.counts.몸통+x.counts.장갑+x.counts.다리;return `<tr><td class="company-cell">${esc(x.company)}</td><td class="class-cell">${esc(x.cls)}</td>${gearParts.map(p=>`<td class="need ${x.counts[p]?'nonzero':''}">${fmt(x.counts[p])}</td>`).join('')}<td class="need ${sum?'nonzero':''}">${fmt(sum)}</td></tr>`}).join('')}
-            <tr class="total-row"><td colspan="2">전체 필요 기업장비</td>${gearParts.map(p=>`<td class="need">${fmt(totals[p])}</td>`).join('')}<td class="need">${fmt(gearParts.reduce((n,p)=>n+totals[p],0))}</td></tr>
+            ${rows.map(x=>{const sum=x.counts.머리+x.counts.몸통+x.counts.장갑+x.counts.다리;return `<tr><td class="company-cell">${esc(x.company)}</td><td class="class-cell">${esc(x.cls)}</td>${gearParts.map(p=>`<td class="need ${x.counts[p]?'nonzero '+needHighlightClass(x.counts[p]):''}">${fmt(x.counts[p])}</td>`).join('')}<td class="need ${sum?'nonzero '+needHighlightClass(sum):''}">${fmt(sum)}</td></tr>`}).join('')}
+            <tr class="total-row"><td colspan="2">전체 필요 기업장비</td>${gearParts.map(p=>`<td class="need ${totals[p]?'nonzero '+needHighlightClass(totals[p]):''}">${fmt(totals[p])}</td>`).join('')}<td class="need ${gearParts.reduce((n,p)=>n+totals[p],0)?'nonzero '+needHighlightClass(gearParts.reduce((n,p)=>n+totals[p],0)):''}">${fmt(gearParts.reduce((n,p)=>n+totals[p],0))}</td></tr>
           </tbody>
         </table>
       </div>
