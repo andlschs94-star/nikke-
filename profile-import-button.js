@@ -52,6 +52,17 @@
       'html.dark-theme .bl-direct-modal{background:#101827;color:#e7edf9;border-color:#30415e}',
       '.bl-direct-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:15px 16px;border-bottom:1px solid #d4e4ec;background:#edf7fb}',
       '.bl-direct-help-link{margin-left:auto;white-space:nowrap;color:#1976d2!important;text-decoration:underline!important;text-underline-offset:2px;font-size:10px;font-weight:900}',
+      '.bl-direct-footer{display:flex;justify-content:flex-end;padding:0 16px 14px}',
+      /* Strongly emphasize the site-guide action at the bottom-right of the sync modal. */
+      '.bl-direct-footer{display:flex;justify-content:flex-end;padding:0 16px 14px}',
+      '.bl-direct-site-help{display:inline-flex;align-items:center;justify-content:center;gap:7px;max-width:100%;box-sizing:border-box;padding:9px 13px;border:2px solid #df9328;border-radius:9px;background:#ffedcf;color:#874500!important;text-decoration:none!important;font-size:12px;font-weight:1000;line-height:1.35;text-align:right;white-space:normal;box-shadow:0 3px 0 rgba(166,93,14,.16),0 4px 12px rgba(214,142,50,.22);transition:transform .15s ease,background .15s ease,border-color .15s ease,box-shadow .15s ease}',
+      '.bl-direct-site-help:before{content:"ⓘ";display:inline-flex;align-items:center;justify-content:center;flex:0 0 18px;width:18px;height:18px;border-radius:50%;background:#d98513;color:#fff;font-size:13px;font-weight:1000;line-height:1}',
+      '.bl-direct-site-help:hover,.bl-direct-site-help:focus-visible{transform:translateY(-1px);background:#ffdfa6;border-color:#c9780d;color:#713800!important;box-shadow:0 4px 0 rgba(166,93,14,.16),0 6px 15px rgba(214,142,50,.30);outline:2px solid rgba(223,147,40,.22);outline-offset:2px}',
+      'html.dark-theme .bl-direct-site-help{background:#382713;border-color:#e6a13b;color:#ffe0a5!important;box-shadow:0 3px 0 rgba(0,0,0,.25),0 4px 13px rgba(0,0,0,.24)}',
+      'html.dark-theme .bl-direct-site-help:before{background:#e6a13b;color:#2b1b08}',
+      'html.dark-theme .bl-direct-site-help:hover,html.dark-theme .bl-direct-site-help:focus-visible{background:#4b3319;border-color:#ffc56a;color:#fff0ce!important}',
+      '.bl-direct-footer .known-bugs-top-btn{display:inline-flex!important;align-items:center!important;justify-content:center!important;height:40px!important;min-height:40px!important;max-height:40px!important;box-sizing:border-box!important;margin:0!important;line-height:1!important;white-space:nowrap!important}',
+      '.known-bugs-overlay{z-index:100100!important}',
       'html.dark-theme .bl-direct-head{background:#141f32;border-bottom-color:#293952}',
       '.bl-direct-head h3{margin:0;font-size:16px}',
       '.bl-direct-head small{display:block;margin-top:3px;color:#718797;font-size:10px}',
@@ -109,6 +120,7 @@
           '<div><h3 id="blDirectTitle">BlaBlaLink 계정 동기화</h3><small>공개 프로필 URL만 입력하면 장비 현황을 불러옵니다.</small></div>' +
           '<div style="display:flex;align-items:center;gap:8px;margin-left:auto">' +
             '<a class="bl-direct-help-link" href="https://gall.dcinside.com/mgallery/board/view?id=gov&no=5423342" target="_blank" rel="noopener noreferrer">블라링크 계정주소 확인법</a>' +
+
             '<button type="button" class="bl-direct-close" aria-label="닫기">×</button>' +
           '</div>' +
         '</div>' +
@@ -129,6 +141,9 @@
             '<img id="blDirectAvatar" alt="">' +
             '<div><div class="bl-direct-profile-name" id="blDirectName"></div><div class="bl-direct-profile-sub" id="blDirectSub"></div></div>' +
           '</div>' +
+        '</div>' +
+        '<div class="bl-direct-footer">' +
+          '<button type="button" class="btn known-bugs-top-btn" id="knownBugsBtn" onclick="openKnownBugsPanel()">인지한 버그</button>' +
         '</div>' +
       '</div>';
 
