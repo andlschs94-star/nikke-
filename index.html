@@ -4448,7 +4448,15 @@ html:not(.dark-theme) .gear-summary td.need.need-level-5{background:#ffbd45!impo
 .gear-summary .total-row td.need.need-level-3{background:rgba(255,176,32,.30)!important;}
 .gear-summary .total-row td.need.need-level-4{background:rgba(255,176,32,.38)!important;}
 .gear-summary .total-row td.need.need-level-5{background:rgba(255,167,20,.50)!important;}
-</style><meta name="pages-deploy-refresh" content="1.156"><style id="test-font-pretendard-v001">
+</style><style id="gear-summary-note-inside-panel-v1157">
+/* v1.157: 기업장비 필요 현황 설명을 접이식 패널 내부에 배치 */
+.gear-summary-wrap{overflow:hidden!important;border-radius:12px!important}
+.gear-summary-title{border-bottom:1px solid var(--line)!important}
+.gear-summary-note{display:block;padding:12px 16px!important;margin:0!important;border:0!important;border-bottom:1px solid var(--line)!important;line-height:1.55!important}
+.gear-detail-body{width:100%}
+.gear-detail-body .gear-summary-note{background:#edf6fb!important;color:#627b8c!important}
+html.dark-theme .gear-detail-body .gear-summary-note{background:#1a2b42!important;color:#c9d7e7!important;border-color:#344660!important}
+</style><meta name="pages-deploy-refresh" content="1.157"><style id="test-font-pretendard-v001">
 /* TEST ONLY: 프리텐다드 - 눈누 font_page/694 */
 @font-face{font-family:'Pretendard';src:url('https://cdn.jsdelivr.net/gh/projectnoonnu/pretendard@1.0/Pretendard-Thin.woff2') format('woff2');font-weight:100;font-style:normal;font-display:swap}
 @font-face{font-family:'Pretendard';src:url('https://cdn.jsdelivr.net/gh/projectnoonnu/pretendard@1.0/Pretendard-ExtraLight.woff2') format('woff2');font-weight:200;font-style:normal;font-display:swap}
@@ -5271,8 +5279,8 @@ function renderKpis(){
     <div id="unusedGearTransferPanel"></div>
     <div class="gear-summary-wrap">
       <div class="gear-summary-title"><button type="button" class="gear-summary-title-toggle" id="gearDetailToggle" onclick="toggleGearDetail()" aria-expanded="false"><span>기업장비 필요 현황</span><span>＋</span></button></div>
-      <div class="gear-summary-note">현재 <b>체크한 니케</b>만 집계합니다. <b>일반장비</b>를 착용한 부위는 다음 단계인 기업장비가 필요한 것으로 계산하며, 미착용과 10T 오버로드는 제외합니다. <b>니케가 0명인 기업+클래스 조합도 표시</b>합니다. 현재 선택: <b>${selectedCharacters.size}명</b></div>
       <div class="gear-detail-body" hidden>
+        <div class="gear-summary-note">현재 <b>체크한 니케</b>만 집계합니다. <b>일반장비</b>를 착용한 부위는 다음 단계인 기업장비가 필요한 것으로 계산하며, 미착용과 10T 오버로드는 제외합니다. <b>니케가 0명인 기업+클래스 조합도 표시</b>합니다. 현재 선택: <b>${selectedCharacters.size}명</b></div>
         <table class="gear-summary">
           <thead><tr><th>기업</th><th>클래스</th><th>머리</th><th>몸통</th><th>장갑</th><th>다리</th></tr></thead>
           <tbody>
