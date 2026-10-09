@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="ko"><head><!-- GitHub Pages deployment refresh 1.033 --><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="icon" type="image/webp" href="assets/nikke-manager-icon.webp?v=0439">
+<html lang="ko"><head><!-- GitHub Pages deployment refresh 1.146 --><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="icon" type="image/webp" href="assets/nikke-manager-icon.webp?v=0439">
 <title>니케 장비관리</title>
 <style>
 :root{--bg:#080d19;--panel:#0f1729;--panel2:#111c32;--line:#26324b;--text:#edf2ff;--muted:#8490aa;--accent:#927dff;--good:#47d7c7;--danger:#ff6c86}
@@ -4382,7 +4382,7 @@ html.dark-theme .name-cell-image{
 </style></style></style></style><meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"><meta http-equiv="Pragma" content="no-cache"><meta http-equiv="Expires" content="0">
 <script id="site-version-bootstrap">
 (function(){
-  var EMBEDDED_VERSION='1.145';
+  var EMBEDDED_VERSION='1.146';
   var REDIRECT_KEY='nikke_site_version_redirected_';
   function applyVersion(v){
     var el=document.getElementById('siteVersionCorner');
@@ -4465,8 +4465,8 @@ html:not(.dark-theme) .gear-summary td.need.need-level-5{background:#ffbd45!impo
 .gear-summary .total-row td.need.need-level-3{background:rgba(255,176,32,.30)!important;}
 .gear-summary .total-row td.need.need-level-4{background:rgba(255,176,32,.38)!important;}
 .gear-summary .total-row td.need.need-level-5{background:rgba(255,167,20,.50)!important;}
-</style><meta name="pages-deploy-refresh" content="1.145"></head><body>
-<div class="site-version-corner" id="siteVersionCorner">VERSION 1.145</div><div class="sidebar-hitarea" id="sidebarHitarea" aria-label="메뉴 열기" title="왼쪽 메뉴 열기"></div>
+</style><meta name="pages-deploy-refresh" content="1.146"></head><body>
+<div class="site-version-corner" id="siteVersionCorner">VERSION 1.146</div><div class="sidebar-hitarea" id="sidebarHitarea" aria-label="메뉴 열기" title="왼쪽 메뉴 열기"></div>
 <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
 <div class="app"><aside class="sidebar" id="sidebar"><div class="brand"><div class="logo"><img src="assets/nikke-manager-icon.webp?v=0438" alt="니케 장비관리 아이콘"></div><div><h1>니케 장비관리</h1></div></div><div class="nav"><button type="button" class="active main-view-nav" data-view="characters" onclick="switchMainView('characters')">니케 장비 현황</button><button type="button" class="main-view-nav" data-view="outpost" onclick="switchMainView('outpost')">전초기지 생산량</button><button type="button" class="main-view-nav" data-view="sole" onclick="switchMainView('sole')">솔레점수기록</button></div><div class="section" style="font-size:11px;color:#6f7b96;line-height:1.6">현재는 니케 관리 기능을 제공합니다.<br>다른 관리 기능은 설정 메뉴에서 사용할 수 있습니다.</div></aside>
 <main class="main"><div class="topbar"><div><div class="eyebrow">NIKKE / INVENTORY</div><h2 id="pageTitle">니케 장비현황</h2></div><div class="actions account-switcher"><button type="button" class="btn blsync-top-btn" onclick="openBlablalinkSyncGuide()"><svg class="sync-button-icon" viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="23 4 23 10 17 10"></polyline><polyline points="1 20 1 14 7 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.13-3.36L23 10M1 14l5.36 4.36A9 9 0 0 0 20.49 15"></path></svg><span>계정 동기화</span><svg class="sync-button-chevron" viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"></path></svg></button><a href="https://gall.dcinside.com/mgallery/board/view?id=gov&no=5496829" id="siteHelpTopButton" class="bl-direct-site-help" target="_blank" rel="noopener noreferrer" aria-label="사이트 이용법 (새 탭에서 열기)" title="사이트 이용법 링크 열기">사이트 이용법</a><button type="button" class="theme-toggle-btn" id="themeToggleBtn" aria-label="어두운 화면으로 보기" title="어두운 화면으로 보기" onclick="toggleDarkTheme()">☀️</button><button type="button" class="btn account-switch-btn active" data-account="계정1" onclick="switchAccount(ACCOUNTS[0])">계정1</button><button type="button" class="btn account-switch-btn" data-account="계정2" onclick="switchAccount(ACCOUNTS[1])">계정2</button><div class="settings-wrap"><button type="button" class="settings-btn" id="settingsBtn" aria-label="설정" title="설정" onclick="toggleSettingsMenu(event)">⚙</button></div></div></div><div class="settings-popover" id="settingsPopover" hidden>
@@ -4479,8 +4479,8 @@ html:not(.dark-theme) .gear-summary td.need.need-level-5{background:#ffbd45!impo
   </div>
   <div class="settings-divider"></div>
   <div class="settings-section-title">데이터 관리</div>
-  <button type="button" class="settings-action" onclick="closeSettingsMenu();exportCSV()">현재 목록 CSV 저장</button>
-  <button type="button" class="settings-action" onclick="closeSettingsMenu();exportJSON()">백업 JSON 저장</button><button type="button" class="settings-action" onclick="closeSettingsMenu();openBackupCodeModal('export')">백업 코드 생성</button><button type="button" class="settings-action" onclick="closeSettingsMenu();openBackupCodeModal('import')">백업 코드 복원</button>
+  <button type="button" class="settings-action" onclick="closeSettingsMenu();exportNikkeStatusOnlyFile()" title="두 계정의 미사용 및 유효 상태만 저장합니다.">미사용·유효 상태 내보내기</button>
+  <button type="button" class="settings-action" onclick="closeSettingsMenu();openNikkeStatusOnlyFilePicker()" title="파일의 미사용 및 유효 상태만 현재 브라우저에 적용합니다.">미사용·유효 상태 불러오기</button>
   <div class="settings-divider"></div>
   <button type="button" class="settings-action danger" onclick="closeSettingsMenu();resetAll()">원본 데이터로 초기화</button>
 </div><div class="kpis" id="kpis"></div>
@@ -6709,7 +6709,7 @@ html.dark-theme #outpostPanel .outpost-final-stage-btn{
   object-position:center;
   border-radius:50%;
 }
-</style><script src="profile-import-button.js?v=1.010"></script><script src="pedia.js?v=1047"></script><style id="character-image-column-v004">
+</style><script src="profile-import-button.js?v=1.011"></script><script src="pedia.js?v=1047"></script><style id="character-image-column-v004">
 /* v1.013: 니케 사진을 이름과 분리된 고정 폭 열로 표시 */
 #characterPanel th[data-column-key="사진"],
 #characterPanel td.character-image-column-cell{
@@ -6920,3 +6920,141 @@ html.dark-theme .blsync-modal .blsync-help-link:hover,html.dark-theme .blsync-mo
   .blsync-modal .blsync-head-actions>.btn{padding:6px 7px!important;font-size:10px!important}
 }
 </style>
+
+
+<script id="nikke-status-only-transfer-v001">
+/* Export/import only character "미사용" and "유효" flags. Gear and every other setting stay local. */
+(function(){
+  'use strict';
+  const format = 'NIKKE-GM-STATUS-ONLY';
+  const schemaVersion = 1;
+  let fileInput = null;
+
+  function knownNikkeNames(){
+    return new Set((Array.isArray(RAW)?RAW:[])
+      .map(function(row){ return String(row && row['이름'] != null ? row['이름'] : '').trim(); })
+      .filter(Boolean));
+  }
+
+  function validNamesForAccount(account, known){
+    return [...loadAccountSelection(account)]
+      .map(function(index){ return String(data[index] && data[index]['이름'] != null ? data[index]['이름'] : '').trim(); })
+      .filter(function(name){ return name && known.has(name); });
+  }
+
+  window.exportNikkeStatusOnlyFile = function(){
+    try{
+      const known = knownNikkeNames();
+      const payload = {
+        format: format,
+        version: schemaVersion,
+        accounts: [0,1].map(function(slot){
+          const account = ACCOUNTS[slot] || ('계정' + (slot + 1));
+          return {
+            slot: slot,
+            unused: [...loadAccountUnused(account)].filter(function(name){ return known.has(name); }),
+            valid: validNamesForAccount(account, known)
+          };
+        })
+      };
+      download('nikke_미사용_유효_상태.json', JSON.stringify(payload, null, 2), 'application/json;charset=utf-8');
+      if(typeof toast === 'function') toast('두 계정의 미사용·유효 상태만 파일로 저장했습니다.');
+    }catch(err){
+      alert('상태 파일을 저장하지 못했습니다. 브라우저 저장 공간을 확인해주세요.');
+    }
+  };
+
+  window.openNikkeStatusOnlyFilePicker = function(){
+    if(!fileInput){
+      fileInput = document.createElement('input');
+      fileInput.type = 'file';
+      fileInput.accept = '.json,application/json';
+      fileInput.setAttribute('aria-label', '미사용·유효 상태 파일 선택');
+      fileInput.style.position = 'fixed';
+      fileInput.style.left = '-10000px';
+      fileInput.style.top = '0';
+      fileInput.addEventListener('change', function(){
+        const file = fileInput.files && fileInput.files[0];
+        if(file) importFile(file);
+      });
+      document.body.appendChild(fileInput);
+    }
+    fileInput.value = '';
+    fileInput.click();
+  };
+
+  async function importFile(file){
+    try{
+      const payload = JSON.parse(await file.text());
+      if(!payload || payload.format !== format || payload.version !== schemaVersion || !Array.isArray(payload.accounts)){
+        throw new Error('format');
+      }
+      const sourceSlots = [0,1].map(function(slot){
+        const entry = payload.accounts.find(function(item){ return item && Number(item.slot) === slot; });
+        if(!entry || !Array.isArray(entry.unused) || !Array.isArray(entry.valid)) throw new Error('shape');
+        return entry;
+      });
+      const known = knownNikkeNames();
+      const cleaned = sourceSlots.map(function(entry){
+        function clean(list){
+          return [...new Set(list.filter(function(value){ return typeof value === 'string'; })
+            .map(function(value){ return value.trim(); })
+            .filter(function(name){ return name && known.has(name); }))];
+        }
+        return {unused:clean(entry.unused), valid:clean(entry.valid)};
+      });
+      const ignored = sourceSlots.reduce(function(total,entry){
+        return total + entry.unused.length + entry.valid.length;
+      },0) - cleaned.reduce(function(total,entry){
+        return total + entry.unused.length + entry.valid.length;
+      },0);
+      const accountLabels = [0,1].map(function(slot){
+        return ACCOUNTS[slot] || ('계정' + (slot + 1));
+      });
+      const summary = cleaned.map(function(entry,slot){
+        return accountLabels[slot] + ': 미사용 ' + entry.unused.length + '명 / 유효 ' + entry.valid.length + '명';
+      }).join('\n');
+      if(!confirm('파일에서 미사용·유효 상태만 불러옵니다.\n\n' + summary +
+        '\n\n두 계정의 기존 미사용·유효 상태만 파일 내용으로 교체합니다.\n장비·스킬·미보유 상태·계정 설정 등 나머지 데이터는 가져오지 않습니다. 계속할까요?')){
+        return;
+      }
+
+      const writes = [];
+      cleaned.forEach(function(entry,slot){
+        const account = accountLabels[slot];
+        writes.push([accountStorageKey(ACCOUNT_UNUSED_PREFIX,account), JSON.stringify(entry.unused)]);
+        writes.push([accountStorageKey(ACCOUNT_SELECTION_PREFIX,account), JSON.stringify(entry.valid)]);
+      });
+      const previous = writes.map(function(item){
+        return [item[0], localStorage.getItem(item[0])];
+      });
+      try{
+        writes.forEach(function(item){ localStorage.setItem(item[0], item[1]); });
+      }catch(storageError){
+        previous.forEach(function(item){
+          try{
+            if(item[1] === null) localStorage.removeItem(item[0]);
+            else localStorage.setItem(item[0], item[1]);
+          }catch(_){}
+        });
+        throw storageError;
+      }
+
+      unusedCharacters = loadAccountUnused(activeAccount);
+      selectedCharacters = loadAccountSelection(activeAccount);
+      updateUnusedViewButton();
+      renderHeader();
+      renderTable();
+      if(typeof toast === 'function'){
+        toast('미사용·유효 상태 불러오기 완료' + (ignored ? ' · 알 수 없는 니케 이름 ' + ignored + '개 무시' : ''));
+      }else{
+        alert('미사용·유효 상태를 불러왔습니다.\n' + summary);
+      }
+    }catch(err){
+      alert('상태 파일을 읽지 못했습니다. 내보내기 기능으로 만든 JSON 파일인지 확인해주세요.');
+    }finally{
+      if(fileInput) fileInput.value = '';
+    }
+  }
+})();
+</script>
