@@ -4382,35 +4382,18 @@ html.dark-theme .name-cell-image{
 </style></style></style></style><meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"><meta http-equiv="Pragma" content="no-cache"><meta http-equiv="Expires" content="0">
 <script id="site-version-bootstrap">
 (function(){
-  var EMBEDDED_VERSION='1.146';
-  var REDIRECT_KEY='nikke_site_version_redirected_';
-  function applyVersion(v){
+  // Keep the visible build label in sync with the version embedded in this page.
+  // Do not redirect/reload the page based on a separately cached VERSION file.
+  var EMBEDDED_VERSION='1.155';
+  function applyVersion(){
     var el=document.getElementById('siteVersionCorner');
-    if(el) el.textContent='VERSION '+v;
+    if(el) el.textContent='VERSION '+EMBEDDED_VERSION;
   }
-  function boot(){
-    var fallback=EMBEDDED_VERSION;
-    fetch('VERSION?cb='+Date.now(),{cache:'no-store'})
-      .then(function(r){if(!r.ok)throw new Error('VERSION '+r.status);return r.text();})
-      .then(function(raw){
-        var v=String(raw||'').trim()||fallback;
-        applyVersion(v);
-        if(v!==EMBEDDED_VERSION){
-          var key=REDIRECT_KEY+v;
-          var redirected=false;
-          try{redirected=sessionStorage.getItem(key)==='1';}catch(_){}
-          if(!redirected){
-            try{sessionStorage.setItem(key,'1');}catch(_){}
-            var u=new URL(location.href);
-            u.searchParams.set('__sitev',v);
-            u.searchParams.set('__cb',String(Date.now()));
-            location.replace(u.href);
-          }
-        }
-      })
-      .catch(function(){applyVersion(fallback);});
+  if(document.readyState==='loading'){
+    document.addEventListener('DOMContentLoaded',applyVersion,{once:true});
+  }else{
+    applyVersion();
   }
-  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot,{once:true});else boot();
 })();
 </script><style id="dark-valid-filter-fix-v1047">
 /* v1.047: 다크 모드 유효만 필터 선택 상태 가독성 강화 */
@@ -4465,8 +4448,23 @@ html:not(.dark-theme) .gear-summary td.need.need-level-5{background:#ffbd45!impo
 .gear-summary .total-row td.need.need-level-3{background:rgba(255,176,32,.30)!important;}
 .gear-summary .total-row td.need.need-level-4{background:rgba(255,176,32,.38)!important;}
 .gear-summary .total-row td.need.need-level-5{background:rgba(255,167,20,.50)!important;}
-</style><meta name="pages-deploy-refresh" content="1.146"></head><body>
-<div class="site-version-corner" id="siteVersionCorner">VERSION 1.146</div><div class="sidebar-hitarea" id="sidebarHitarea" aria-label="메뉴 열기" title="왼쪽 메뉴 열기"></div>
+</style><meta name="pages-deploy-refresh" content="1.155"><style id="test-font-pretendard-v001">
+/* TEST ONLY: 프리텐다드 - 눈누 font_page/694 */
+@font-face{font-family:'Pretendard';src:url('https://cdn.jsdelivr.net/gh/projectnoonnu/pretendard@1.0/Pretendard-Thin.woff2') format('woff2');font-weight:100;font-style:normal;font-display:swap}
+@font-face{font-family:'Pretendard';src:url('https://cdn.jsdelivr.net/gh/projectnoonnu/pretendard@1.0/Pretendard-ExtraLight.woff2') format('woff2');font-weight:200;font-style:normal;font-display:swap}
+@font-face{font-family:'Pretendard';src:url('https://cdn.jsdelivr.net/gh/projectnoonnu/pretendard@1.0/Pretendard-Light.woff2') format('woff2');font-weight:300;font-style:normal;font-display:swap}
+@font-face{font-family:'Pretendard';src:url('https://cdn.jsdelivr.net/gh/projectnoonnu/pretendard@1.0/Pretendard-Regular.woff2') format('woff2');font-weight:400;font-style:normal;font-display:swap}
+@font-face{font-family:'Pretendard';src:url('https://cdn.jsdelivr.net/gh/projectnoonnu/pretendard@1.0/Pretendard-Medium.woff2') format('woff2');font-weight:500;font-style:normal;font-display:swap}
+@font-face{font-family:'Pretendard';src:url('https://cdn.jsdelivr.net/gh/projectnoonnu/pretendard@1.0/Pretendard-SemiBold.woff2') format('woff2');font-weight:600;font-style:normal;font-display:swap}
+@font-face{font-family:'Pretendard';src:url('https://cdn.jsdelivr.net/gh/projectnoonnu/pretendard@1.0/Pretendard-Bold.woff2') format('woff2');font-weight:700;font-style:normal;font-display:swap}
+@font-face{font-family:'Pretendard';src:url('https://cdn.jsdelivr.net/gh/projectnoonnu/pretendard@1.0/Pretendard-ExtraBold.woff2') format('woff2');font-weight:800;font-style:normal;font-display:swap}
+@font-face{font-family:'Pretendard';src:url('https://cdn.jsdelivr.net/gh/projectnoonnu/pretendard@1.0/Pretendard-Black.woff2') format('woff2');font-weight:900;font-style:normal;font-display:swap}
+html,body,button,input,select,textarea{
+  font-family:'Pretendard',Arial,"Noto Sans KR",sans-serif!important;
+}
+</style>
+</head><body>
+<div class="site-version-corner" id="siteVersionCorner">VERSION 1.155</div><div class="sidebar-hitarea" id="sidebarHitarea" aria-label="메뉴 열기" title="왼쪽 메뉴 열기"></div>
 <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
 <div class="app"><aside class="sidebar" id="sidebar"><div class="brand"><div class="logo"><img src="assets/nikke-manager-icon.webp?v=0438" alt="니케 장비관리 아이콘"></div><div><h1>니케 장비관리</h1></div></div><div class="nav"><button type="button" class="active main-view-nav" data-view="characters" onclick="switchMainView('characters')">니케 장비 현황</button><button type="button" class="main-view-nav" data-view="outpost" onclick="switchMainView('outpost')">전초기지 생산량</button><button type="button" class="main-view-nav" data-view="sole" onclick="switchMainView('sole')">솔레점수기록</button></div><div class="section" style="font-size:11px;color:#6f7b96;line-height:1.6">현재는 니케 관리 기능을 제공합니다.<br>다른 관리 기능은 설정 메뉴에서 사용할 수 있습니다.</div></aside>
 <main class="main"><div class="topbar"><div><div class="eyebrow">NIKKE / INVENTORY</div><h2 id="pageTitle">니케 장비현황</h2></div><div class="actions account-switcher"><button type="button" class="btn blsync-top-btn" onclick="openBlablalinkSyncGuide()"><svg class="sync-button-icon" viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="23 4 23 10 17 10"></polyline><polyline points="1 20 1 14 7 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.13-3.36L23 10M1 14l5.36 4.36A9 9 0 0 0 20.49 15"></path></svg><span>계정 동기화</span><svg class="sync-button-chevron" viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"></path></svg></button><a href="https://gall.dcinside.com/mgallery/board/view?id=gov&no=5496829" id="siteHelpTopButton" class="bl-direct-site-help" target="_blank" rel="noopener noreferrer" aria-label="사이트 이용법 (새 탭에서 열기)" title="사이트 이용법 링크 열기">사이트 이용법</a><button type="button" class="theme-toggle-btn" id="themeToggleBtn" aria-label="어두운 화면으로 보기" title="어두운 화면으로 보기" onclick="toggleDarkTheme()">☀️</button><button type="button" class="btn account-switch-btn active" data-account="계정1" onclick="switchAccount(ACCOUNTS[0])">계정1</button><button type="button" class="btn account-switch-btn" data-account="계정2" onclick="switchAccount(ACCOUNTS[1])">계정2</button><div class="settings-wrap"><button type="button" class="settings-btn" id="settingsBtn" aria-label="설정" title="설정" onclick="toggleSettingsMenu(event)">⚙</button></div></div></div><div class="settings-popover" id="settingsPopover" hidden>
@@ -6709,7 +6707,7 @@ html.dark-theme #outpostPanel .outpost-final-stage-btn{
   object-position:center;
   border-radius:50%;
 }
-</style><script src="profile-import-button.js?v=1.011"></script><script src="pedia.js?v=1047"></script><style id="character-image-column-v004">
+</style><script src="profile-import-button.js?v=1.021"></script><script src="pedia.js?v=1047"></script><style id="character-image-column-v004">
 /* v1.013: 니케 사진을 이름과 분리된 고정 폭 열로 표시 */
 #characterPanel th[data-column-key="사진"],
 #characterPanel td.character-image-column-cell{
@@ -7056,5 +7054,63 @@ html.dark-theme .blsync-modal .blsync-help-link:hover,html.dark-theme .blsync-mo
       if(fileInput) fileInput.value = '';
     }
   }
+})();
+</script>
+
+
+<script id="test-font-size-increase-v001">
+(function(){
+  'use strict';
+  var marker='data-test-font-size-1154';
+  var skipTags={SCRIPT:1,STYLE:1,NOSCRIPT:1,SVG:1,PATH:1,CIRCLE:1,RECT:1,LINE:1,POLYLINE:1,POLYGON:1,DEFS:1,USE:1};
+  var inputTags={INPUT:1,SELECT:1,TEXTAREA:1};
+  function titleSize(){
+    var title=document.getElementById('pageTitle');
+    if(!title)return 24;
+    var size=parseFloat(getComputedStyle(title).fontSize);
+    return isFinite(size)&&size>0?size:24;
+  }
+  function hasOwnText(el){
+    for(var i=0;i<el.childNodes.length;i++){
+      var n=el.childNodes[i];
+      if(n.nodeType===3 && n.nodeValue && n.nodeValue.trim())return true;
+    }
+    return false;
+  }
+  function adjustElement(el,limit){
+    if(!el || el.nodeType!==1 || el.hasAttribute(marker) || skipTags[el.tagName])return;
+    var isInput=!!inputTags[el.tagName];
+    if(!isInput&&!hasOwnText(el))return;
+    el.setAttribute(marker,'1');
+    if(el.id==='pageTitle')return;
+    var size=parseFloat(getComputedStyle(el).fontSize);
+    if(!isFinite(size)||size<=0||size>limit+0.1)return;
+    el.style.setProperty('font-size',(size+4)+'px','important');
+  }
+  function scan(root){
+    var limit=titleSize();
+    if(root.nodeType===1)adjustElement(root,limit);
+    if(root.querySelectorAll){
+      var nodes=root.querySelectorAll('*');
+      for(var i=0;i<nodes.length;i++)adjustElement(nodes[i],limit);
+    }
+  }
+  function init(){
+    if(!document.body)return;
+    scan(document.body);
+    if(window.MutationObserver){
+      var observer=new MutationObserver(function(records){
+        records.forEach(function(record){
+          for(var i=0;i<record.addedNodes.length;i++){
+            var node=record.addedNodes[i];
+            if(node.nodeType===1)scan(node);
+          }
+        });
+      });
+      observer.observe(document.body,{childList:true,subtree:true});
+    }
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});
+  else init();
 })();
 </script>
