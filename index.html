@@ -4384,7 +4384,7 @@ html.dark-theme .name-cell-image{
 (function(){
   // Keep the visible build label in sync with the version embedded in this page.
   // Do not redirect/reload the page based on a separately cached VERSION file.
-  var EMBEDDED_VERSION='1.156';
+  var EMBEDDED_VERSION='1.157';
   function applyVersion(){
     var el=document.getElementById('siteVersionCorner');
     if(el) el.textContent='VERSION '+EMBEDDED_VERSION;
@@ -4471,8 +4471,42 @@ html,body,button,input,select,textarea{
   font-family:'Pretendard',Arial,"Noto Sans KR",sans-serif!important;
 }
 </style>
+
+<style id="v1157-dark-character-name-contrast">
+/* v1.157: 다크 모드 전체 니케 표의 실제 이름 열 가독성 보정 */
+html.dark-theme #characterPanel td.name-column-cell,
+html.dark-mode #characterPanel td.name-column-cell,
+body.dark-theme #characterPanel td.name-column-cell,
+body.dark-mode #characterPanel td.name-column-cell,
+html[data-theme="dark"] #characterPanel td.name-column-cell,
+body[data-theme="dark"] #characterPanel td.name-column-cell {
+  color:#edf4ff!important;
+  opacity:1!important;
+  filter:none!important;
+}
+html.dark-theme #characterPanel td.name-column-cell .name-btn,
+html.dark-mode #characterPanel td.name-column-cell .name-btn,
+body.dark-theme #characterPanel td.name-column-cell .name-btn,
+body.dark-mode #characterPanel td.name-column-cell .name-btn,
+html[data-theme="dark"] #characterPanel td.name-column-cell .name-btn,
+body[data-theme="dark"] #characterPanel td.name-column-cell .name-btn {
+  color:#f2f7ff!important;
+  font-weight:900!important;
+  opacity:1!important;
+  filter:none!important;
+  text-shadow:0 1px 3px rgba(0,0,0,.95)!important;
+}
+html.dark-theme #characterPanel td.name-column-cell .name-btn:hover,
+html.dark-mode #characterPanel td.name-column-cell .name-btn:hover,
+body.dark-theme #characterPanel td.name-column-cell .name-btn:hover,
+body.dark-mode #characterPanel td.name-column-cell .name-btn:hover,
+html[data-theme="dark"] #characterPanel td.name-column-cell .name-btn:hover,
+body[data-theme="dark"] #characterPanel td.name-column-cell .name-btn:hover {
+  color:#b9d9ff!important;
+}
+</style>
 </head><body>
-<div class="site-version-corner" id="siteVersionCorner">VERSION 1.156</div><div class="sidebar-hitarea" id="sidebarHitarea" aria-label="메뉴 열기" title="왼쪽 메뉴 열기"></div>
+<div class="site-version-corner" id="siteVersionCorner">VERSION 1.157</div><div class="sidebar-hitarea" id="sidebarHitarea" aria-label="메뉴 열기" title="왼쪽 메뉴 열기"></div>
 <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
 <div class="app"><aside class="sidebar" id="sidebar"><div class="brand"><div class="logo"><img src="assets/nikke-manager-icon.webp?v=0438" alt="니케 장비관리 아이콘"></div><div><h1>니케 장비관리</h1></div></div><div class="nav"><button type="button" class="active main-view-nav" data-view="characters" onclick="switchMainView('characters')">니케 장비 현황</button><button type="button" class="main-view-nav" data-view="outpost" onclick="switchMainView('outpost')">전초기지 생산량</button><button type="button" class="main-view-nav" data-view="sole" onclick="switchMainView('sole')">솔레점수기록</button></div><div class="section" style="font-size:11px;color:#6f7b96;line-height:1.6">현재는 니케 관리 기능을 제공합니다.<br>다른 관리 기능은 설정 메뉴에서 사용할 수 있습니다.</div></aside>
 <main class="main"><div class="topbar"><div><div class="eyebrow">NIKKE / INVENTORY</div><h2 id="pageTitle">니케 장비현황</h2></div><div class="actions account-switcher"><button type="button" class="btn blsync-top-btn" onclick="openBlablalinkSyncGuide()"><svg class="sync-button-icon" viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="23 4 23 10 17 10"></polyline><polyline points="1 20 1 14 7 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.13-3.36L23 10M1 14l5.36 4.36A9 9 0 0 0 20.49 15"></path></svg><span>계정 동기화</span><svg class="sync-button-chevron" viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"></path></svg></button><a href="https://gall.dcinside.com/mgallery/board/view?id=gov&no=5496829" id="siteHelpTopButton" class="bl-direct-site-help" target="_blank" rel="noopener noreferrer" aria-label="사이트 이용법 (새 탭에서 열기)" title="사이트 이용법 링크 열기">사이트 이용법</a><button type="button" class="theme-toggle-btn" id="themeToggleBtn" aria-label="어두운 화면으로 보기" title="어두운 화면으로 보기" onclick="toggleDarkTheme()">☀️</button><button type="button" class="btn account-switch-btn active" data-account="계정1" onclick="switchAccount(ACCOUNTS[0])">계정1</button><button type="button" class="btn account-switch-btn" data-account="계정2" onclick="switchAccount(ACCOUNTS[1])">계정2</button><div class="settings-wrap"><button type="button" class="settings-btn" id="settingsBtn" aria-label="설정" title="설정" onclick="toggleSettingsMenu(event)">⚙</button></div></div></div><div class="settings-popover" id="settingsPopover" hidden>
