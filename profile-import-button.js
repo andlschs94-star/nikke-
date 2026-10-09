@@ -131,6 +131,7 @@
             '<button type="button" class="bl-direct-account" data-slot="0"><b id="blDirectA1">계정1</b><span>이 계정에 동기화</span></button>' +
             '<button type="button" class="bl-direct-account" data-slot="1"><b id="blDirectA2">계정2</b><span>이 계정에 동기화</span></button>' +
           '</div>' +
+          '<div style="margin-top:6px;font-size:10px;color:#71828f;text-align:center">계정명은 우측 톱니 아이콘을 눌러 변경가능합니다</div>' +
           '<div class="bl-direct-actions">' +
             '<button type="button" class="bl-direct-primary">동기화 시작</button>' +
             '<button type="button" class="bl-direct-secondary">닫기</button>' +
