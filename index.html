@@ -4384,7 +4384,7 @@ html.dark-theme .name-cell-image{
 (function(){
   // Keep the visible build label in sync with the version embedded in this page.
   // Do not redirect/reload the page based on a separately cached VERSION file.
-  var EMBEDDED_VERSION='1.157';
+  var EMBEDDED_VERSION='1.158';
   function applyVersion(){
     var el=document.getElementById('siteVersionCorner');
     if(el) el.textContent='VERSION '+EMBEDDED_VERSION;
@@ -4505,8 +4505,50 @@ body[data-theme="dark"] #characterPanel td.name-column-cell .name-btn:hover {
   color:#b9d9ff!important;
 }
 </style>
+<style id="v0376-outpost-core-level-tabs">
+#outpostPanel .outpost-core-tabs{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.15fr);gap:6px;margin:0 0 10px;padding:0 0 9px;border-bottom:1px solid #33455f}
+#outpostPanel .outpost-core-tab{min-width:0;min-height:37px;padding:7px 10px;border:1px solid #2d3953;border-radius:7px;background:#0d1527;color:#9eabc1;font:inherit;font-size:13px;font-weight:900;line-height:1.25;text-align:center;cursor:pointer}
+#outpostPanel .outpost-core-tab:hover{border-color:#596986;color:#e7ecf8}
+#outpostPanel .outpost-core-tab.active{background:#211d3b;border-color:#927dff;color:#fff;box-shadow:inset 0 0 0 1px rgba(146,125,255,.12)}
+#outpostPanel .outpost-core-tab-panel[hidden]{display:none!important}
+#outpostPanel .outpost-core-level-head{display:grid;grid-template-columns:minmax(0,1fr) 132px 112px;gap:10px;align-items:center;padding:4px 4px 8px;border-bottom:1px solid #33455f;color:#7f8da5;font-size:11px;font-weight:900}
+#outpostPanel .outpost-core-level-head span:nth-child(2){text-align:center}
+#outpostPanel .outpost-core-level-head span:last-child{text-align:right}
+#outpostPanel .outpost-core-level-row{display:grid;grid-template-columns:minmax(0,1fr) 132px 112px;align-items:center;gap:10px;padding:12px 4px;border-bottom:1px solid #27374f;font-size:14px;color:#aebbd0}
+#outpostPanel .outpost-core-level-row:nth-child(even){background:rgba(35,52,76,.18)}
+#outpostPanel .outpost-core-level-row .outpost-core-level-target{font-weight:900;color:#eef4ff}
+#outpostPanel .outpost-core-level-row .outpost-core-level-dust{text-align:center;color:#9fb5d0}
+#outpostPanel .outpost-core-level-row strong{color:#c8dcff;text-align:right}
+#outpostPanel .outpost-core-level-list{margin-top:0}
+html:not(.dark-theme) #outpostPanel .outpost-core-tabs{border-bottom-color:#cfe1eb}
+html:not(.dark-theme) #outpostPanel .outpost-core-tab{background:#fff;border-color:#bfd5df;color:#607989}
+html:not(.dark-theme) #outpostPanel .outpost-core-tab:hover{background:#eef7fb;border-color:#8fc3d9;color:#347a9e}
+html:not(.dark-theme) #outpostPanel .outpost-core-tab.active{background:#dceef8;border-color:#73b3d2;color:#347a9e;box-shadow:none}
+html:not(.dark-theme) #outpostPanel .outpost-core-level-head{border-bottom-color:#cfe1eb;color:#6b8291}
+html:not(.dark-theme) #outpostPanel .outpost-core-level-row{border-bottom-color:#d7e5ec;color:#607989}
+html:not(.dark-theme) #outpostPanel .outpost-core-level-row:nth-child(even){background:rgba(220,238,248,.35)}
+html:not(.dark-theme) #outpostPanel .outpost-core-level-row .outpost-core-level-target{color:#405b6c}
+html:not(.dark-theme) #outpostPanel .outpost-core-level-row .outpost-core-level-dust{color:#6b8291}
+html:not(.dark-theme) #outpostPanel .outpost-core-level-row strong{color:#347a9e}
+html.dark-theme #outpostPanel .outpost-core-tabs{border-bottom-color:#33455f}
+html.dark-theme #outpostPanel .outpost-core-tab{background:#0d1527;border-color:#2d3953;color:#9eabc1}
+html.dark-theme #outpostPanel .outpost-core-tab:hover{border-color:#596986;color:#e7ecf8}
+html.dark-theme #outpostPanel .outpost-core-tab.active{background:#211d3b;border-color:#927dff;color:#fff}
+html.dark-theme #outpostPanel .outpost-core-level-head{border-bottom-color:#33455f;color:#7f8da5}
+html.dark-theme #outpostPanel .outpost-core-level-row{border-bottom-color:#27374f;color:#aebbd0}
+html.dark-theme #outpostPanel .outpost-core-level-row:nth-child(even){background:rgba(35,52,76,.18)}
+html.dark-theme #outpostPanel .outpost-core-level-row .outpost-core-level-target{color:#eef4ff}
+html.dark-theme #outpostPanel .outpost-core-level-row .outpost-core-level-dust{color:#9fb5d0}
+html.dark-theme #outpostPanel .outpost-core-level-row strong{color:#c8dcff}
+@media(max-width:650px){
+ #outpostPanel .outpost-core-tabs{grid-template-columns:1fr;gap:5px}
+ #outpostPanel .outpost-core-tab{font-size:12px}
+ #outpostPanel .outpost-core-level-head,#outpostPanel .outpost-core-level-row{grid-template-columns:minmax(0,1fr) 100px 92px;gap:6px;font-size:12px;padding:10px 3px}
+ #outpostPanel .outpost-core-level-head{font-size:10px}
+}
+</style>
 </head><body>
-<div class="site-version-corner" id="siteVersionCorner">VERSION 1.157</div><div class="sidebar-hitarea" id="sidebarHitarea" aria-label="메뉴 열기" title="왼쪽 메뉴 열기"></div>
+<div class="site-version-corner" id="siteVersionCorner">VERSION 1.158</div><div class="sidebar-hitarea" id="sidebarHitarea" aria-label="메뉴 열기" title="왼쪽 메뉴 열기"></div>
 <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
 <div class="app"><aside class="sidebar" id="sidebar"><div class="brand"><div class="logo"><img src="assets/nikke-manager-icon.webp?v=0438" alt="니케 장비관리 아이콘"></div><div><h1>니케 장비관리</h1></div></div><div class="nav"><button type="button" class="active main-view-nav" data-view="characters" onclick="switchMainView('characters')">니케 장비 현황</button><button type="button" class="main-view-nav" data-view="outpost" onclick="switchMainView('outpost')">전초기지 생산량</button><button type="button" class="main-view-nav" data-view="sole" onclick="switchMainView('sole')">솔레점수기록</button></div><div class="section" style="font-size:11px;color:#6f7b96;line-height:1.6">현재는 니케 관리 기능을 제공합니다.<br>다른 관리 기능은 설정 메뉴에서 사용할 수 있습니다.</div></aside>
 <main class="main"><div class="topbar"><div><div class="eyebrow">NIKKE / INVENTORY</div><h2 id="pageTitle">니케 장비현황</h2></div><div class="actions account-switcher"><button type="button" class="btn blsync-top-btn" onclick="openBlablalinkSyncGuide()"><svg class="sync-button-icon" viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="23 4 23 10 17 10"></polyline><polyline points="1 20 1 14 7 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.13-3.36L23 10M1 14l5.36 4.36A9 9 0 0 0 20.49 15"></path></svg><span>계정 동기화</span><svg class="sync-button-chevron" viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"></path></svg></button><a href="https://gall.dcinside.com/mgallery/board/view?id=gov&no=5496829" id="siteHelpTopButton" class="bl-direct-site-help" target="_blank" rel="noopener noreferrer" aria-label="사이트 이용법 (새 탭에서 열기)" title="사이트 이용법 링크 열기">사이트 이용법</a><button type="button" class="theme-toggle-btn" id="themeToggleBtn" aria-label="어두운 화면으로 보기" title="어두운 화면으로 보기" onclick="toggleDarkTheme()">☀️</button><button type="button" class="btn account-switch-btn active" data-account="계정1" onclick="switchAccount(ACCOUNTS[0])">계정1</button><button type="button" class="btn account-switch-btn" data-account="계정2" onclick="switchAccount(ACCOUNTS[1])">계정2</button><div class="settings-wrap"><button type="button" class="settings-btn" id="settingsBtn" aria-label="설정" title="설정" onclick="toggleSettingsMenu(event)">⚙</button></div></div></div><div class="settings-popover" id="settingsPopover" hidden>
@@ -4530,10 +4572,18 @@ body[data-theme="dark"] #characterPanel td.name-column-cell .name-btn:hover {
 <div class="outpost-calc-field"><label for="outpostNormalChapter">노말</label><div class="outpost-stage-pick"><select class="outpost-calc-select outpost-stage-chapter" id="outpostNormalChapter" onchange="updateOutpostStageOptions()"><option value="0">0스테이지</option><option value="1">1스테이지</option><option value="2">2스테이지</option><option value="3">3스테이지</option><option value="4">4스테이지</option><option value="5">5스테이지</option><option value="6">6스테이지</option><option value="7">7스테이지</option><option value="8">8스테이지</option><option value="9">9스테이지</option><option value="10">10스테이지</option><option value="11">11스테이지</option><option value="12">12스테이지</option><option value="13">13스테이지</option><option value="14">14스테이지</option><option value="15">15스테이지</option><option value="16">16스테이지</option><option value="17">17스테이지</option><option value="18">18스테이지</option><option value="19">19스테이지</option><option value="20">20스테이지</option><option value="21">21스테이지</option><option value="22">22스테이지</option><option value="23">23스테이지</option><option value="24">24스테이지</option><option value="25">25스테이지</option><option value="26">26스테이지</option><option value="27">27스테이지</option><option value="28">28스테이지</option><option value="29">29스테이지</option><option value="30">30스테이지</option><option value="31">31스테이지</option><option value="32">32스테이지</option><option value="33">33스테이지</option><option value="34">34스테이지</option><option value="35">35스테이지</option><option value="36">36스테이지</option><option value="37">37스테이지</option><option value="38">38스테이지</option><option value="39">39스테이지</option><option value="40">40스테이지</option><option value="41">41스테이지</option><option value="42">42스테이지</option><option value="43">43스테이지</option><option value="44">44스테이지</option><option value="45">45스테이지</option><option value="46">46스테이지</option><option value="47">47스테이지</option><option value="48">48스테이지</option></select><span>-</span><select class="outpost-calc-select outpost-stage-number" id="outpostNormalStage" onchange="updateOutpostCalculator()"></select></div></div>
 <div class="outpost-calc-field"><label for="outpostHardChapter">하드</label><div class="outpost-stage-pick"><select class="outpost-calc-select outpost-stage-chapter" id="outpostHardChapter" onchange="updateOutpostHardStageOptions()"><option value="0">0스테이지</option><option value="1">1스테이지</option><option value="2">2스테이지</option><option value="3">3스테이지</option><option value="4">4스테이지</option><option value="5">5스테이지</option><option value="6">6스테이지</option><option value="7">7스테이지</option><option value="8">8스테이지</option><option value="9">9스테이지</option><option value="10">10스테이지</option><option value="11">11스테이지</option><option value="12">12스테이지</option><option value="13">13스테이지</option><option value="14">14스테이지</option><option value="15">15스테이지</option><option value="16">16스테이지</option><option value="17">17스테이지</option><option value="18">18스테이지</option><option value="19">19스테이지</option><option value="20">20스테이지</option><option value="21">21스테이지</option><option value="22">22스테이지</option><option value="23">23스테이지</option><option value="24">24스테이지</option><option value="25">25스테이지</option><option value="26">26스테이지</option><option value="27">27스테이지</option><option value="28">28스테이지</option><option value="29">29스테이지</option><option value="30">30스테이지</option><option value="31">31스테이지</option><option value="32">32스테이지</option><option value="33">33스테이지</option><option value="34">34스테이지</option><option value="35">35스테이지</option><option value="36">36스테이지</option><option value="37">37스테이지</option><option value="38">38스테이지</option><option value="39">39스테이지</option><option value="40">40스테이지</option><option value="41">41스테이지</option><option value="42">42스테이지</option><option value="43">43스테이지</option><option value="44">44스테이지</option><option value="45">45스테이지</option><option value="46">46스테이지</option><option value="47">47스테이지</option><option value="48">48스테이지</option></select><span>-</span><select class="outpost-calc-select outpost-stage-number" id="outpostHardStage" onchange="updateOutpostCalculator()"><option value="">미클리어</option></select></div></div>
 </div><div class="outpost-level-card"><div class="outpost-level-label">전초기지 레벨</div><div class="outpost-level-main"><div class="outpost-level-number" id="outpostLevelValue">1 <span>of 800</span></div><div><div class="outpost-progress-caption"><span>다음 레벨 진행도</span><strong id="outpostProgressText">0 · 0 / 5 stages</strong></div><div class="outpost-progress-bars" id="outpostProgressBars"><div class="outpost-progress-bar"></div><div class="outpost-progress-bar"></div><div class="outpost-progress-bar"></div><div class="outpost-progress-bar"></div><div class="outpost-progress-bar"></div></div><div class="outpost-level-help" id="outpostLevelHelp">스테이지를 선택하면 전초기지 레벨을 계산합니다.</div></div></div></div><div class="outpost-current-production" id="outpostCurrentProduction"><div class="outpost-current-production-title">현재 전초기지 생산량</div><div class="outpost-current-production-grid" id="outpostCurrentProductionGrid"></div></div><div class="outpost-core-hint" id="outpostCoreHint">
-  <button type="button" class="outpost-core-hint-toggle" id="outpostCoreHintToggle" onclick="toggleOutpostCoreHint()"><span>하드 코어더스트 상승구간</span><span class="outpost-core-hint-arrow">▼</span></button>
-  <div class="outpost-core-hint-body" id="outpostCoreHintBody">
+  <div class="outpost-core-tabs" role="tablist" aria-label="코어더스트 상승 정보">
+    <button type="button" class="outpost-core-tab" id="outpostCoreLevelTabButton" role="tab" aria-selected="false" aria-controls="outpostCoreLevelTab" onclick="switchOutpostCoreTab('level')">다음 코어더스트 상승 레벨</button>
+    <button type="button" class="outpost-core-tab active" id="outpostCoreHardTabButton" role="tab" aria-selected="true" aria-controls="outpostCoreHintBody" onclick="switchOutpostCoreTab('hard')">하드 코어더스트 상승구간</button>
+  </div>
+  <div class="outpost-core-hint-body outpost-core-tab-panel" id="outpostCoreHintBody" role="tabpanel" aria-labelledby="outpostCoreHardTabButton">
     <div class="outpost-core-sort"><span class="outpost-core-sort-label">정렬</span><button type="button" class="outpost-core-sort-btn active" data-sort="asc" onclick="setOutpostCoreSort('asc')">오름차순</button><button type="button" class="outpost-core-sort-btn" data-sort="desc" onclick="setOutpostCoreSort('desc')">내림차순</button><label class="outpost-core-half-toggle"><input type="checkbox" id="outpostCoreHalfToggle" onchange="toggleOutpostCoreHalf()"><span>0.5단위 보기</span></label></div>
     <div class="outpost-core-breakpoint-list" id="outpostCoreHintList"></div>
+  </div>
+  <div class="outpost-core-tab-panel outpost-core-level-tab-panel" id="outpostCoreLevelTab" role="tabpanel" aria-labelledby="outpostCoreLevelTabButton" hidden>
+    <div class="outpost-core-sort"><span class="outpost-core-sort-label">정렬</span><button type="button" class="outpost-core-sort-btn active" data-sort="asc" onclick="setOutpostCoreLevelSort('asc')">오름차순</button><button type="button" class="outpost-core-sort-btn" data-sort="desc" onclick="setOutpostCoreLevelSort('desc')">내림차순</button><label class="outpost-core-half-toggle"><input type="checkbox" id="outpostCoreLevelHalfToggle" onchange="toggleOutpostCoreLevelHalf()"><span>0.5단위 보기</span></label></div>
+    <div class="outpost-core-level-head"><span>전초기지 레벨</span><span>코어더스트 / H</span><span>남은 클리어</span></div>
+    <div class="outpost-core-breakpoint-list outpost-core-level-list" id="outpostCoreLevelList"></div>
   </div>
 </div></div></div><div class="outpost-production-collapse" id="outpostProductionCollapse">
   <button type="button" class="outpost-production-toggle" id="outpostProductionToggle" aria-expanded="false" onclick="toggleOutpostProduction()">
@@ -6000,6 +6050,7 @@ function updateOutpostCalculator(){
   if(progressEl)progressEl.textContent=level>=800?'MAX · 800':(progress+' · '+progress+' / 5 stages');
   bars.forEach((bar,i)=>bar.classList.toggle('active',i<progress || (level>=800&&i<5)));
   updateOutpostCoreDustHint(normalCount,level,hardCount);
+  updateOutpostCoreLevelHint(selectedCount,level);
   if(helpEl){
     const normalText=normalStage||'미클리어';
     const hardText=hardStage||'미클리어';
@@ -6028,13 +6079,90 @@ function goOutpostNormalFinalStage(){
   stage.value=finalStages[finalStages.length-1];
   updateOutpostCalculator();
 }
+function switchOutpostCoreTab(tab){
+  const showLevel=tab==='level';
+  const hardPanel=document.getElementById('outpostCoreHintBody');
+  const levelPanel=document.getElementById('outpostCoreLevelTab');
+  const hardButton=document.getElementById('outpostCoreHardTabButton');
+  const levelButton=document.getElementById('outpostCoreLevelTabButton');
+  if(hardPanel)hardPanel.hidden=showLevel;
+  if(levelPanel)levelPanel.hidden=!showLevel;
+  if(hardButton){hardButton.classList.toggle('active',!showLevel);hardButton.setAttribute('aria-selected',showLevel?'false':'true');}
+  if(levelButton){levelButton.classList.toggle('active',showLevel);levelButton.setAttribute('aria-selected',showLevel?'true':'false');}
+}
+let outpostCoreLevelSort='asc';
+let outpostCoreLevelShowHalf=false;
+function setOutpostCoreLevelSort(dir){
+  outpostCoreLevelSort=dir==='desc'?'desc':'asc';
+  document.querySelectorAll('#outpostCoreLevelTab .outpost-core-sort-btn').forEach(btn=>btn.classList.toggle('active',btn.dataset.sort===outpostCoreLevelSort));
+  const list=document.getElementById('outpostCoreLevelList');
+  if(!list)return;
+  [...list.querySelectorAll('.outpost-core-level-row')]
+    .sort((a,b)=>{
+      const av=Number(a.dataset.level||0),bv=Number(b.dataset.level||0);
+      return outpostCoreLevelSort==='asc'?av-bv:bv-av;
+    })
+    .forEach(row=>list.appendChild(row));
+}
+function toggleOutpostCoreLevelHalf(){
+  const cb=document.getElementById('outpostCoreLevelHalfToggle');
+  outpostCoreLevelShowHalf=!!cb?.checked;
+  const toggle=cb?.closest('.outpost-core-half-toggle');
+  toggle?.classList.toggle('active',outpostCoreLevelShowHalf);
+  updateOutpostCalculator();
+}
+function updateOutpostCoreLevelHint(selectedCount,currentLevel){
+  const list=document.getElementById('outpostCoreLevelList');
+  if(!list)return;
+  const rows=OUTPOST_PRODUCTION_MD.split(/\r?\n/)
+    .map(line=>line.trim())
+    .filter(line=>line.startsWith('|'))
+    .map(line=>line.replace(/^\||\|$/g,'').split('|').map(cell=>cell.trim()))
+    .filter(cells=>/^\d+$/.test(cells[0])&&cells.length===7)
+    .map(cells=>({level:Number(cells[0]),dust:Number(String(cells[6]).replace(/,/g,''))}))
+    .filter(item=>Number.isFinite(item.level)&&Number.isFinite(item.dust))
+    .sort((a,b)=>a.level-b.level);
+  if(!rows.length){list.innerHTML='';return;}
+  const levelNow=Math.max(1,Number(currentLevel)||1);
+  const countNow=Math.max(0,Number(selectedCount)||0);
+  const step=outpostCoreLevelShowHalf?0.5:1;
+  const factor=Math.round(1/step);
+  const items=[];
+  let previousBucket=null;
+  for(const item of rows){
+    const bucket=Math.floor(item.dust*factor+0.000001);
+    if(item.level<=levelNow){previousBucket=bucket;continue;}
+    if(previousBucket===null)previousBucket=bucket;
+    if(bucket>previousBucket){
+      // 전초기지 계산기의 기존 레벨 공식에 맞춰 목표 레벨까지 필요한 스테이지 수를 계산한다.
+      const targetCount=18+((item.level-1)*5);
+      items.push({
+        level:item.level,
+        dust:item.dust,
+        remaining:Math.max(0,targetCount-countNow)
+      });
+    }
+    previousBucket=bucket;
+  }
+  if(!items.length){
+    list.innerHTML='<div class="outpost-core-level-empty">현재 레벨 이후의 코어더스트 상승 구간이 없습니다.</div>';
+    return;
+  }
+  list.innerHTML=items.map(item=>
+    '<div class="outpost-core-level-row" data-level="'+item.level+'">'+
+    '<span class="outpost-core-level-target">Lv.'+item.level+'</span>'+
+    '<span class="outpost-core-level-dust">'+item.dust.toFixed(2)+'/H</span>'+
+    '<strong>+'+item.remaining+'스테이지</strong></div>'
+  ).join('');
+  setOutpostCoreLevelSort(outpostCoreLevelSort);
+}
 function toggleOutpostCoreHint(){
   const panel=document.getElementById('outpostCoreHint');
   if(panel)panel.classList.toggle('open');
 }
 function setOutpostCoreSort(dir){
   outpostCoreSort=dir==='desc'?'desc':'asc';
-  document.querySelectorAll('.outpost-core-sort-btn').forEach(btn=>btn.classList.toggle('active',btn.dataset.sort===outpostCoreSort));
+  document.querySelectorAll('#outpostCoreHintBody .outpost-core-sort-btn').forEach(btn=>btn.classList.toggle('active',btn.dataset.sort===outpostCoreSort));
   const list=document.getElementById('outpostCoreHintList');
   if(!list)return;
   [...list.querySelectorAll('.outpost-core-breakpoint-row')]
