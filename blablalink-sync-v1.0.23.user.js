@@ -325,10 +325,10 @@
 
   function chooseNikkeArea(candidates){
     if(candidates.length === 1) return candidates[0];
-    const options = candidates.map(a => a.id + ' = ' + a.label).join('\\n');
+    const options = candidates.map(a => a.id + ' = ' + a.label).join('\n');
     const answer = window.prompt(
-      '여러 NIKKE 지역에서 로스터가 확인되었습니다. 잘못된 지역의 장비를 가져오지 않도록 동기화할 지역을 직접 선택해 주세요.\\n\\n' +
-      options + '\\n\\n지역 ID 또는 코드(JP / NA / KR / Global / SEA)를 입력하세요.',
+      '여러 NIKKE 지역에서 로스터가 확인되었습니다. 잘못된 지역의 장비를 가져오지 않도록 동기화할 지역을 직접 선택해 주세요.\n\n' +
+      options + '\n\n지역 ID 또는 코드(JP / NA / KR / Global / SEA)를 입력하세요.',
       ''
     );
     if(answer === null) throw new Error('지역 선택이 취소되었습니다. 동기화를 다시 실행하고 올바른 지역을 선택해 주세요.');
