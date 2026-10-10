@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         NIKKE Gear Manager - BlablaLink 자동 장비 동기화
 // @namespace    https://nikkegear885.github.io/nikke-/
-// @version      1.0.25
+// @version      1.0.27
 // @updateURL    https://raw.githubusercontent.com/nikkegear885/nikke-/main/blablalink-sync-v1.0.24.user.js
 // @downloadURL  https://raw.githubusercontent.com/nikkegear885/nikke-/main/blablalink-sync-v1.0.24.user.js
 // @description  로그인된 BlablaLink 세션에서 NIKKE 캐릭터별 기업장비 현황을 NIKKE Gear Manager로 전송하고 프로필 캐릭터 조회를 중계합니다.
@@ -12,7 +12,7 @@
 // @grant        GM_xmlhttpRequest
 // @connect      api.blablalink.com
 // @run-at       document-start
-// @require      https://raw.githubusercontent.com/nikkegear885/nikke-/main/blablalink-sync-v1.0.23.user.js
+// @require      https://raw.githubusercontent.com/nikkegear885/nikke-/main/blablalink-sync-v1.0.27.user.js
 // @license      MIT
 // ==/UserScript==
 (function(){
